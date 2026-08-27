@@ -38,16 +38,18 @@
 /* === PORTFOLIO PAGE - PREMIUM EDITION 2025 === */
 
 /* === LOKALNE FONTY POPPINS === */
-@font-face{font-family:'Poppins';src:url('../fonts/Poppins-Regular.woff2') format('woff2'),url('../fonts/Poppins-Regular.woff') format('woff');font-weight:400;font-style:normal;font-display:swap;}
-@font-face{font-family:'Poppins';src:url('../fonts/Poppins-SemiBold.woff2') format('woff2'),url('../fonts/Poppins-SemiBold.woff') format('woff');font-weight:600;font-style:normal;font-display:swap;}
-@font-face{font-family:'Poppins';src:url('../fonts/Poppins-Bold.woff2') format('woff2'),url('../fonts/Poppins-Bold.woff') format('woff');font-weight:700;font-style:normal;font-display:swap;}
+@font-face{font-family:'Poppins';src:url('../fonts/Poppins-Light.woff2') format('woff2');font-weight:300;font-style:normal;font-display:swap;}
+@font-face{font-family:'Poppins';src:url('../fonts/Poppins-Regular.woff2') format('woff2');font-weight:400;font-style:normal;font-display:swap;}
+@font-face{font-family:'Poppins';src:url('../fonts/Poppins-Medium.woff2') format('woff2');font-weight:500;font-style:normal;font-display:swap;}
+@font-face{font-family:'Poppins';src:url('../fonts/Poppins-MediumItalic.woff2') format('woff2');font-weight:500;font-style:italic;font-display:swap;}
+@font-face{font-family:'Poppins';src:url('../fonts/Poppins-Bold.woff2') format('woff2');font-weight:700;font-style:normal;font-display:swap;}
 
 /* === GLOBALNY RESET === */
 *{box-sizing:border-box;margin:0;padding:0;}
 html,body{overflow-x:hidden;scroll-behavior:smooth;}
 
 /* === HERO SECTION === */
-body.portfolio-page .hero-section{background-image:url('../images/ja-biznesowy-v2.jpg')!important;}
+body.portfolio-page .hero-section{background-image:url('../images/ja-biznesowy-v2.webp')!important;}
 .hero-section{
   position:relative;
   min-height:100dvh;
@@ -808,7 +810,6 @@ body.portfolio-page .hero-section{background-image:url('../images/ja-biznesowy-v
 body.portfolio-page.page-voucher-magdy .breadcrumbs{max-width:1150px;margin:18px auto 0;padding:0 28px;font:500 14px/1.4 Poppins,system-ui,sans-serif;opacity:.9;}
 body.portfolio-page.page-voucher-magdy .breadcrumbs a{color:#175bf7;text-decoration:none;transition:color .2s;}
 body.portfolio-page.page-voucher-magdy .breadcrumbs a:hover{color:#0f44b7;}
-.voucher-hero{min-height:65vh;background-image:url('../images/voucher/salon%20Magdy%20mockup%20copy.webp');background-position:center 25%;background-size:cover;}
 .meta-list{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px 24px;margin:.8rem 0 0;padding:0;}
 .meta-list li{list-style:none;color:#334155;font-weight:400;}
 .badge{display:inline-block;background:rgba(238,243,255,0.9);color:#133b7b;border:1px solid rgba(207,224,255,0.6);padding:.35rem .8rem;border-radius:999px;font-size:.9rem;font-weight:600;backdrop-filter:blur(10px);}
