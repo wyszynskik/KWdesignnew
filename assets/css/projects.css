@@ -4733,3 +4733,29 @@ body { overflow-x: hidden; }
   font-weight: 600;
   color: #334155;
 }
+
+/* ============================================================
+   CyfraDruk — zrzuty panelu CEP (362×639, wąskie i pionowe).
+   Globalny .showcase-row to siatka 2fr/1fr, a modyfikator
+   --single istnieje tylko w scope #case-razdwa-pelne — bez
+   poniższych reguł pojedynczy zrzut zostawiłby pustą kolumnę,
+   a para rozjechałaby się na nierówne szerokości.
+   ============================================================ */
+#case-cyfradruk-pelne .showcase-row--single {
+  grid-template-columns: minmax(0, 420px);
+  justify-content: center;
+}
+#case-cyfradruk-pelne .showcase-row--pair {
+  grid-template-columns: repeat(2, minmax(0, 362px));
+  justify-content: center;
+}
+/* Panel jest wyższy niż globalny cap 450px — pełna wysokość bez letterboxu. */
+#case-cyfradruk-pelne .showcase-row--pair .showcase-item img,
+#case-cyfradruk-pelne .showcase-row--single .showcase-item img {
+  max-height: 639px;
+}
+@media (max-width: 768px) {
+  #case-cyfradruk-pelne .showcase-row--pair {
+    grid-template-columns: minmax(0, 362px);
+  }
+}

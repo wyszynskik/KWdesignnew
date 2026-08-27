@@ -404,14 +404,14 @@
           <div class="showcase-section">
             <h3>Skaner obiektów i grubości linii</h3>
             <p class="tab-description">Rekurencyjne przeszukiwanie wszystkich warstw — grupy, maski, zagnieżdżone symbole. Czerwone wiersze oznaczają błędy wymagające interwencji.</p>
-            <div class="showcase-row showcase-row--single">
+            <div class="showcase-row showcase-row--pair">
               <div class="showcase-item">
-                <div class="asset-missing" role="img" aria-label="Zrzut do wstawienia: UI panelu progów">
-                  <span class="asset-missing-icon" aria-hidden="true">📁</span>
-                  <span class="asset-missing-label">Zrzut do wstawienia</span>
-                  <code class="asset-missing-filename">cyfradruk-panel-progow.webp</code>
-                  <span>UI panelu progów — ustawienie minimalnej grubości + lista wykrytych obiektów (wymiar, warstwa)</span>
-                </div>
+                <img class="lightbox-trigger" src="/assets/images/cyfradruk/Cyfra_obkiety.webp" width="362" height="639" alt="Zakładka Obiekty w panelu CyfraDruk — lista obiektów z minimalnym wymiarem, czerwone wiersze poniżej progu 0,25 mm" loading="lazy" decoding="async" data-caption="Zakładka Obiekty — 726 obiektów, czerwone wiersze poniżej progu 0,25 mm, zielone w normie">
+                <p>Obiekty — minimalny wymiar</p>
+              </div>
+              <div class="showcase-item">
+                <img class="lightbox-trigger" src="/assets/images/cyfradruk/Cyfra_obrys.webp" width="362" height="639" alt="Zakładka Obrysy w panelu CyfraDruk — grubość obrysu, kolor obrysu i warstwa dla każdego obiektu" loading="lazy" decoding="async" data-caption="Zakładka Obrysy — 627 obrysów z grubością, kolorem (CMYK, Pasery, diecut) i warstwą">
+                <p>Obrysy — grubość linii</p>
               </div>
             </div>
             <div class="features-box">
@@ -427,7 +427,17 @@
 
           <div class="showcase-section">
             <h3>Weryfikacja kolorów CMYK i Pantone</h3>
-            <p class="tab-description">Panel sprawdza wypełnienia i obrysy wszystkich obiektów — wykrywa kolory RGB zamiast CMYK oraz niezatwierdzone Spot Colors (Pantone). Widok kolorów zawiera się w zrzucie panelu progów i raportu poniżej.</p>
+            <p class="tab-description">Panel sprawdza wypełnienia i obrysy wszystkich obiektów — wykrywa kolory RGB zamiast CMYK oraz niezatwierdzone Spot Colors (Pantone). Zakładka <strong>Kolory</strong> dzieli się na dwa widoki: wypełnienia i obrysy.</p>
+            <div class="showcase-row showcase-row--pair">
+              <div class="showcase-item">
+                <img class="lightbox-trigger" src="/assets/images/cyfradruk/Cyfra_kolory_wypelnienie.webp" width="362" height="639" alt="Zakładka Kolory w panelu CyfraDruk, widok Wypełnienia — lista kolorów CMYK z licznikiem obiektów" loading="lazy" decoding="async" data-caption="Kolory → Wypełnienia — 12 kolorów CMYK, przy każdym liczba obiektów i przycisk skoku do obiektu">
+                <p>Kolory — wypełnienia</p>
+              </div>
+              <div class="showcase-item">
+                <img class="lightbox-trigger" src="/assets/images/cyfradruk/Cyfra_kolory_obrys.webp" width="362" height="639" alt="Zakładka Kolory w panelu CyfraDruk, widok Obrysy — kolory obrysów CMYK, Pasery i diecut" loading="lazy" decoding="async" data-caption="Kolory → Obrysy — 4 kolory obrysów: CMYK, Spot Colors (Pasery) i techniczny diecut">
+                <p>Kolory — obrysy</p>
+              </div>
+            </div>
             <div class="features-box">
               <h4>Co sprawdza moduł kolorów</h4>
               <ul class="features-list">
@@ -441,17 +451,7 @@
 
           <div class="showcase-section">
             <h3>Interaktywny raport i nawigacja do błędów</h3>
-            <p class="tab-description">Kliknięcie wiersza wykonuje skok do obiektu w Illustratorze — bez scrollowania, bez szukania w warstwach.</p>
-            <div class="showcase-row showcase-row--single">
-              <div class="showcase-item">
-                <div class="asset-missing" role="img" aria-label="Zrzut do wstawienia: raport / lista błędów z inspekcji (zanonimizowany)">
-                  <span class="asset-missing-icon" aria-hidden="true">📁</span>
-                  <span class="asset-missing-label">Zrzut do wstawienia</span>
-                  <code class="asset-missing-filename">cyfradruk-raport-listabledow.webp</code>
-                  <span>Raport / lista błędów z inspekcji (zanonimizowany) — klik w wiersz zaznacza obiekt w Illustratorze</span>
-                </div>
-              </div>
-            </div>
+            <p class="tab-description">Raportem są listy z zakładek powyżej — nie ma osobnego ekranu podsumowania. Kliknięcie wiersza wykonuje skok do obiektu w Illustratorze: bez scrollowania, bez szukania w warstwach. Pasek statusu na dole panelu trzyma wynik ostatniego skanu — liczbę sprawdzonych obiektów i użyty próg — a przyciski „Zaznacz wszystkie…” pozwalają poprawić całą grupę błędów jedną operacją.</p>
             <div class="features-box">
               <h4>Architektura interaktywnego raportu</h4>
               <ul class="features-list">
