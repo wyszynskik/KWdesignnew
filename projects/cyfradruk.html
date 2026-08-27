@@ -292,7 +292,7 @@
           <div class="flow-step">
             <div class="flow-step-icon">02</div>
             <div class="flow-step-label">Reguły i progi</div>
-            <div class="flow-step-sub">04.2026 — progi grubości pod technikę druku, reguła oceny obiektu (OK / ostrzeżenie / błąd)</div>
+            <div class="flow-step-sub">04.2026 — ustalenie progu grubości pod druk cyfrowy, reguła oceny obiektu (OK / ostrzeżenie / błąd)</div>
           </div>
           <div class="flow-arrow">→</div>
           <div class="flow-step">
@@ -346,9 +346,9 @@
           </div>
           <div class="ux-decision-box">
             <div class="ux-label">Decyzja 2</div>
-            <h4>Próg grubości konfigurowalny, nie sztywny</h4>
-            <p>Jeden panel obsługuje różne techniki druku i typy prac — bez rekompilacji pod każdą specyfikację.</p>
-            <p class="razdwa-tradeoff"><strong>Kompromis:</strong> nieco więcej ustawień w zamian za elastyczność bez udziału developera.</p>
+            <h4>Jeden sztywny próg, zero ustawień</h4>
+            <p>Próg 0,1 mm jest zaszyty w narzędziu. Operator nie podejmuje żadnej decyzji przed skanem — nie ma pola, które można wypełnić błędnie, i nie ma czego tłumaczyć na szkoleniu.</p>
+            <p class="razdwa-tradeoff"><strong>Kompromis:</strong> zmiana progu pod inną technikę druku wymaga wejścia w kod — w zamian za brak ryzyka złego ustawienia i onboarding liczony w minutach.</p>
           </div>
           <div class="ux-decision-box">
             <div class="ux-label">Decyzja 3</div>
@@ -404,21 +404,21 @@
           <div class="showcase-section">
             <h3>Skaner obiektów i grubości linii</h3>
             <p class="tab-description">Rekurencyjne przeszukiwanie wszystkich warstw — grupy, maski, zagnieżdżone symbole. Czerwone wiersze oznaczają błędy wymagające interwencji.</p>
-            <div class="showcase-row showcase-row--single">
+            <div class="showcase-row showcase-row--pair">
               <div class="showcase-item">
-                <div class="asset-missing" role="img" aria-label="Zrzut do wstawienia: UI panelu progów">
-                  <span class="asset-missing-icon" aria-hidden="true">📁</span>
-                  <span class="asset-missing-label">Zrzut do wstawienia</span>
-                  <code class="asset-missing-filename">cyfradruk-panel-progow.webp</code>
-                  <span>UI panelu progów — ustawienie minimalnej grubości + lista wykrytych obiektów (wymiar, warstwa)</span>
-                </div>
+                <img class="lightbox-trigger" src="/assets/images/cyfradruk/Cyfra_obkiety.webp" width="362" height="639" alt="Zakładka Obiekty w panelu CyfraDruk — lista obiektów z minimalnym wymiarem, czerwone wiersze poniżej progu grubości" loading="lazy" decoding="async" data-caption="Zakładka Obiekty — 726 obiektów; czerwone wiersze poniżej progu, zielone w normie">
+                <p>Obiekty — minimalny wymiar</p>
+              </div>
+              <div class="showcase-item">
+                <img class="lightbox-trigger" src="/assets/images/cyfradruk/Cyfra_obrys.webp" width="362" height="639" alt="Zakładka Obrysy w panelu CyfraDruk — grubość obrysu, kolor obrysu i warstwa dla każdego obiektu" loading="lazy" decoding="async" data-caption="Zakładka Obrysy — 627 obrysów z grubością, kolorem (CMYK, Pasery, diecut) i warstwą">
+                <p>Obrysy — grubość linii</p>
               </div>
             </div>
             <div class="features-box">
               <h4>Jak działa skaner obiektów</h4>
               <ul class="features-list">
                 <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg><strong>Rekurencyjne przeszukiwanie:</strong> skaner wchodzi w grupy, symbole i maski — żaden obiekt nie ucieka.</li>
-                <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg><strong>Konfigurowalny próg:</strong> minimalna grubość ustawiana pod technikę druku danej pracy.</li>
+                <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg><strong>Stały próg 0,1 mm:</strong> jedna wartość zaszyta w narzędziu — bez ustawień po stronie operatora.</li>
                 <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg><strong>Czerwone wiersze = błędy:</strong> czytelne oznaczenie kolorem, bez czytania wartości.</li>
                 <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg><strong>Klik wiersza → zaznacz w AI:</strong> kursor Illustratora skacze prosto na błędny obiekt.</li>
               </ul>
@@ -427,7 +427,17 @@
 
           <div class="showcase-section">
             <h3>Weryfikacja kolorów CMYK i Pantone</h3>
-            <p class="tab-description">Panel sprawdza wypełnienia i obrysy wszystkich obiektów — wykrywa kolory RGB zamiast CMYK oraz niezatwierdzone Spot Colors (Pantone). Widok kolorów zawiera się w zrzucie panelu progów i raportu poniżej.</p>
+            <p class="tab-description">Panel sprawdza wypełnienia i obrysy wszystkich obiektów — wykrywa kolory RGB zamiast CMYK oraz niezatwierdzone Spot Colors (Pantone). Zakładka <strong>Kolory</strong> dzieli się na dwa widoki: wypełnienia i obrysy.</p>
+            <div class="showcase-row showcase-row--pair">
+              <div class="showcase-item">
+                <img class="lightbox-trigger" src="/assets/images/cyfradruk/Cyfra_kolory_wypelnienie.webp" width="362" height="639" alt="Zakładka Kolory w panelu CyfraDruk, widok Wypełnienia — lista kolorów CMYK z licznikiem obiektów" loading="lazy" decoding="async" data-caption="Kolory → Wypełnienia — 12 kolorów CMYK, przy każdym liczba obiektów i przycisk skoku do obiektu">
+                <p>Kolory — wypełnienia</p>
+              </div>
+              <div class="showcase-item">
+                <img class="lightbox-trigger" src="/assets/images/cyfradruk/Cyfra_kolory_obrys.webp" width="362" height="639" alt="Zakładka Kolory w panelu CyfraDruk, widok Obrysy — kolory obrysów CMYK, Pasery i diecut" loading="lazy" decoding="async" data-caption="Kolory → Obrysy — 4 kolory obrysów: CMYK, Spot Colors (Pasery) i techniczny diecut">
+                <p>Kolory — obrysy</p>
+              </div>
+            </div>
             <div class="features-box">
               <h4>Co sprawdza moduł kolorów</h4>
               <ul class="features-list">
@@ -441,17 +451,7 @@
 
           <div class="showcase-section">
             <h3>Interaktywny raport i nawigacja do błędów</h3>
-            <p class="tab-description">Kliknięcie wiersza wykonuje skok do obiektu w Illustratorze — bez scrollowania, bez szukania w warstwach.</p>
-            <div class="showcase-row showcase-row--single">
-              <div class="showcase-item">
-                <div class="asset-missing" role="img" aria-label="Zrzut do wstawienia: raport / lista błędów z inspekcji (zanonimizowany)">
-                  <span class="asset-missing-icon" aria-hidden="true">📁</span>
-                  <span class="asset-missing-label">Zrzut do wstawienia</span>
-                  <code class="asset-missing-filename">cyfradruk-raport-listabledow.webp</code>
-                  <span>Raport / lista błędów z inspekcji (zanonimizowany) — klik w wiersz zaznacza obiekt w Illustratorze</span>
-                </div>
-              </div>
-            </div>
+            <p class="tab-description">Raportem są listy z zakładek powyżej — nie ma osobnego ekranu podsumowania. Kliknięcie wiersza wykonuje skok do obiektu w Illustratorze: bez scrollowania, bez szukania w warstwach. Pasek statusu na dole panelu trzyma wynik ostatniego skanu — liczbę sprawdzonych obiektów i obowiązujący próg — a przyciski „Zaznacz wszystkie…” pozwalają poprawić całą grupę błędów jedną operacją.</p>
             <div class="features-box">
               <h4>Architektura interaktywnego raportu</h4>
               <ul class="features-list">
@@ -488,7 +488,7 @@
             <ul>
               <li>Instalacja bez IT — pakiet <code>.zxp</code>, bez uprawnień administratora.</li>
               <li>Szkolenie ≤ 30 min — jeden przycisk „Skanuj", czytelny raport, akcja naprawy.</li>
-              <li>Krótkie przekazanie — jak ustawić próg grubości, jak czytać kolory raportu, jak zaznaczyć błąd.</li>
+              <li>Krótkie przekazanie — jak czytać kolory raportu i jak zaznaczyć błędny obiekt; progu nie trzeba ustawiać.</li>
             </ul>
           </div>
         </div>
@@ -497,7 +497,7 @@
         <div class="features-box">
           <h4>Checklista kontroli pliku przed drukiem (wewnętrzny GoLive)</h4>
           <ul class="features-list">
-            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg><strong>Skan grubości:</strong> zero linii poniżej progu ustawionego pod technikę druku danej pracy.</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg><strong>Skan grubości:</strong> zero linii poniżej progu 0,1 mm.</li>
             <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg><strong>Mikro-obiekty:</strong> brak obiektów poniżej progu ukrytych w grupach, symbolach i maskach.</li>
             <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg><strong>Kolory:</strong> brak wypełnień/obrysów w RGB; kolory Pantone zgodne z zatwierdzoną listą.</li>
             <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg><strong>Raport:</strong> lista błędów pusta (lub każdy wpis naprawiony i ponownie przeskanowany).</li>
@@ -530,7 +530,7 @@
           <div class="ux-decision-box">
             <div class="ux-label">Materiał wizualny</div>
             <h4>Dowody do wstawienia</h4>
-            <p>Do przygotowania trzy artefakty — miejsca oznaczone w treści jako „Zrzut do wstawienia": <strong>UI panelu progów</strong>, <strong>raport / lista błędów</strong> (zanonimizowany) oraz <strong>checklista kontroli pliku / GoLive</strong>. Zdjęcie przeglądowe panelu jest już w hero.</p>
+            <p>Zrzuty panelu są wstawione: skaner obiektów i obrysów oraz oba widoki kolorów (wypełnienia i obrysy). Do przygotowania został jeden artefakt, oznaczony w treści jako „Zrzut do wstawienia": <strong>checklista kontroli pliku / GoLive</strong>. Zdjęcie przeglądowe panelu jest w hero.</p>
           </div>
         </div>
       </div>
