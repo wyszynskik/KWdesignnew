@@ -49,7 +49,7 @@
 html,body{overflow-x:hidden;scroll-behavior:smooth;}
 
 /* === HERO SECTION === */
-body.portfolio-page .hero-section{background-image:url('../images/ja-biznesowy-v2.jpg')!important;}
+body.portfolio-page .hero-section{background-image:url('../images/ja-biznesowy-v2.webp')!important;}
 .hero-section{
   position:relative;
   min-height:100dvh;

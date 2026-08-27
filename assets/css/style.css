@@ -89,7 +89,7 @@ a{color:inherit;text-decoration:none}
   display:flex;align-items:center;justify-content:flex-start;
   min-height:90vh;position:relative;overflow:hidden;z-index:0;
   padding:6rem 4vw 4rem 8vw;text-align:center;
-  background-image: url('/assets/images/ja-biznesowy-v2.jpg'); /* RELATYWNA ŚCIEŻKA */
+  background-image: url('/assets/images/ja-biznesowy-v2.webp'); /* RELATYWNA ŚCIEŻKA */
   background-size:cover;background-position:center top;background-repeat:no-repeat;
 }
 .hero-section::before{
