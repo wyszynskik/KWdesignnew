@@ -15,7 +15,7 @@
   <meta property="og:url" content="https://kwyszynski.pl/projects/cyfradruk">
   <meta property="og:title" content="CyfraDruk — automatyzacja kontroli pliku przed drukiem">
   <meta property="og:description" content="Wewnętrzna wtyczka do Adobe Illustrator w PolonisDruk. Ręczna inspekcja 5–20 min → ~1 s skanu + ~1 min pełnej kontroli. Zaprojektowana i wdrożona end-to-end.">
-  <meta property="og:image" content="https://kwyszynski.pl/assets/images/Automatyzacja_liniekolory.webp">
+  <meta property="og:image" content="https://kwyszynski.pl/assets/images/cyfradruk/Automatyzacja_liniekolory.webp">
   <meta property="og:image:width" content="1254">
   <meta property="og:image:height" content="1254">
   <meta property="og:locale" content="pl_PL">
@@ -24,7 +24,7 @@
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="CyfraDruk — automatyzacja kontroli pliku przed drukiem">
   <meta name="twitter:description" content="Wewnętrzna wtyczka do Adobe Illustrator — skan pliku przed drukiem jednym kliknięciem.">
-  <meta name="twitter:image" content="https://kwyszynski.pl/assets/images/Automatyzacja_liniekolory.webp">
+  <meta name="twitter:image" content="https://kwyszynski.pl/assets/images/cyfradruk/Automatyzacja_liniekolory.webp">
 
   <link rel="icon" type="image/png" sizes="32x32" href="/assets/images/favicon-32x32.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/assets/images/favicon-16x16.png">
@@ -39,7 +39,7 @@
     "@type": "CreativeWork",
     "name": "CyfraDruk — automatyzacja kontroli pliku przed drukiem",
     "description": "Wewnętrzna wtyczka do Adobe Illustrator w PolonisDruk, która zastąpiła ręczną inspekcję pliku przed drukiem skanem jednym kliknięciem. Inspekcja z 5–20 minut do ~1 s skanu i ~1 min pełnej kontroli. Onboarding operatora poniżej 30 minut.",
-    "image": "https://kwyszynski.pl/assets/images/Automatyzacja_liniekolory.webp",
+    "image": "https://kwyszynski.pl/assets/images/cyfradruk/Automatyzacja_liniekolory.webp",
     "url": "https://kwyszynski.pl/projects/cyfradruk",
     "author": {
       "@type": "Person",
@@ -150,7 +150,7 @@
           <div class="hero-image">
             <img
               class="cover"
-              src="/assets/images/Automatyzacja_liniekolory.webp"
+              src="/assets/images/cyfradruk/Automatyzacja_liniekolory.webp"
               alt="CyfraDruk — panel kontroli grubości linii i kolorów w Adobe Illustrator"
               loading="lazy"
               decoding="async"
@@ -403,14 +403,14 @@
 
           <div class="showcase-section">
             <h3>Skaner obiektów i grubości linii</h3>
-            <p class="tab-description">Rekurencyjne przeszukiwanie wszystkich warstw — grupy, maski, zagnieżdżone symbole. Czerwone wiersze oznaczają błędy wymagające interwencji.</p>
+            <p class="tab-description">Rekurencyjne przeszukiwanie wszystkich warstw — grupy, maski, zagnieżdżone symbole. Lista pokazuje wszystko poniżej 0,25 mm, ale na czerwono tylko to, co schodzi poniżej 0,1 mm — czyli realne błędy. Zielone wiersze to margines bezpieczeństwa: warto na nie spojrzeć, nie trzeba ich poprawiać.</p>
             <div class="showcase-row showcase-row--pair">
               <div class="showcase-item">
-                <img class="lightbox-trigger" src="/assets/images/cyfradruk/Cyfra_obkiety.webp" width="362" height="639" alt="Zakładka Obiekty w panelu CyfraDruk — lista obiektów z minimalnym wymiarem, czerwone wiersze poniżej progu grubości" loading="lazy" decoding="async" data-caption="Zakładka Obiekty — 726 obiektów; czerwone wiersze poniżej progu, zielone w normie">
+                <img class="lightbox-trigger" src="/assets/images/cyfradruk/Cyfra_obkiety.webp" width="362" height="648" alt="Zakładka Obiekty w panelu CyfraDruk — lista obiektów z minimalnym wymiarem, czerwone wiersze poniżej 0,1 mm" loading="lazy" decoding="async" data-caption="Zakładka Obiekty — 755 obiektów na liście; czerwone poniżej 0,1 mm, zielone w normie">
                 <p>Obiekty — minimalny wymiar</p>
               </div>
               <div class="showcase-item">
-                <img class="lightbox-trigger" src="/assets/images/cyfradruk/Cyfra_obrys.webp" width="362" height="639" alt="Zakładka Obrysy w panelu CyfraDruk — grubość obrysu, kolor obrysu i warstwa dla każdego obiektu" loading="lazy" decoding="async" data-caption="Zakładka Obrysy — 627 obrysów z grubością, kolorem (CMYK, Pasery, diecut) i warstwą">
+                <img class="lightbox-trigger" src="/assets/images/cyfradruk/Cyfra_obrys.webp" width="362" height="648" alt="Zakładka Obrysy w panelu CyfraDruk — grubość obrysu, kolor obrysu i warstwa dla każdego obiektu" loading="lazy" decoding="async" data-caption="Zakładka Obrysy — 541 obrysów z grubością, kolorem (CMYK, Pasery, diecut) i warstwą">
                 <p>Obrysy — grubość linii</p>
               </div>
             </div>
@@ -418,7 +418,7 @@
               <h4>Jak działa skaner obiektów</h4>
               <ul class="features-list">
                 <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg><strong>Rekurencyjne przeszukiwanie:</strong> skaner wchodzi w grupy, symbole i maski — żaden obiekt nie ucieka.</li>
-                <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg><strong>Stały próg 0,1 mm:</strong> jedna wartość zaszyta w narzędziu — bez ustawień po stronie operatora.</li>
+                <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg><strong>Stały próg 0,1 mm:</strong> jedna wartość zaszyta w narzędziu — bez ustawień po stronie operatora. Lista wyświetla wszystko do 0,25 mm, żeby widać było też przypadki graniczne.</li>
                 <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg><strong>Czerwone wiersze = błędy:</strong> czytelne oznaczenie kolorem, bez czytania wartości.</li>
                 <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg><strong>Klik wiersza → zaznacz w AI:</strong> kursor Illustratora skacze prosto na błędny obiekt.</li>
               </ul>
@@ -427,14 +427,14 @@
 
           <div class="showcase-section">
             <h3>Weryfikacja kolorów CMYK i Pantone</h3>
-            <p class="tab-description">Panel sprawdza wypełnienia i obrysy wszystkich obiektów — wykrywa kolory RGB zamiast CMYK oraz niezatwierdzone Spot Colors (Pantone). Zakładka <strong>Kolory</strong> dzieli się na dwa widoki: wypełnienia i obrysy.</p>
+            <p class="tab-description">Panel sprawdza wypełnienia i obrysy wszystkich obiektów — wykrywa kolory RGB zamiast CMYK oraz Spot Colors (Pantone, pasery, diecut) wymagające decyzji przed drukiem. Zakładka <strong>Kolory</strong> dzieli się na dwa widoki: wypełnienia i obrysy.</p>
             <div class="showcase-row showcase-row--pair">
               <div class="showcase-item">
-                <img class="lightbox-trigger" src="/assets/images/cyfradruk/Cyfra_kolory_wypelnienie.webp" width="362" height="639" alt="Zakładka Kolory w panelu CyfraDruk, widok Wypełnienia — lista kolorów CMYK z licznikiem obiektów" loading="lazy" decoding="async" data-caption="Kolory → Wypełnienia — 12 kolorów CMYK, przy każdym liczba obiektów i przycisk skoku do obiektu">
+                <img class="lightbox-trigger" src="/assets/images/cyfradruk/Cyfra_kolory_wypelnienie.webp" width="362" height="648" alt="Zakładka Kolory w panelu CyfraDruk, widok Wypełnienia — lista kolorów CMYK i Pantone z licznikiem obiektów" loading="lazy" decoding="async" data-caption="Kolory → Wypełnienia — 8 kolorów, w tym PANTONE 211 C; przy każdym liczba obiektów i przycisk skoku">
                 <p>Kolory — wypełnienia</p>
               </div>
               <div class="showcase-item">
-                <img class="lightbox-trigger" src="/assets/images/cyfradruk/Cyfra_kolory_obrys.webp" width="362" height="639" alt="Zakładka Kolory w panelu CyfraDruk, widok Obrysy — kolory obrysów CMYK, Pasery i diecut" loading="lazy" decoding="async" data-caption="Kolory → Obrysy — 4 kolory obrysów: CMYK, Spot Colors (Pasery) i techniczny diecut">
+                <img class="lightbox-trigger" src="/assets/images/cyfradruk/Cyfra_kolory_obrys.webp" width="362" height="648" alt="Zakładka Kolory w panelu CyfraDruk, widok Obrysy — kolory obrysów CMYK, Pasery i diecut" loading="lazy" decoding="async" data-caption="Kolory → Obrysy — 4 kolory obrysów: CMYK, Spot Colors (Pasery) i techniczny diecut">
                 <p>Kolory — obrysy</p>
               </div>
             </div>
@@ -451,7 +451,7 @@
 
           <div class="showcase-section">
             <h3>Interaktywny raport i nawigacja do błędów</h3>
-            <p class="tab-description">Raportem są listy z zakładek powyżej — nie ma osobnego ekranu podsumowania. Kliknięcie wiersza wykonuje skok do obiektu w Illustratorze: bez scrollowania, bez szukania w warstwach. Pasek statusu na dole panelu trzyma wynik ostatniego skanu — liczbę sprawdzonych obiektów i obowiązujący próg — a przyciski „Zaznacz wszystkie…” pozwalają poprawić całą grupę błędów jedną operacją.</p>
+            <p class="tab-description">Raportem są listy z zakładek powyżej — nie ma osobnego ekranu podsumowania. Kliknięcie wiersza wykonuje skok do obiektu w Illustratorze: bez scrollowania, bez szukania w warstwach. Nagłówek panelu trzyma nazwę pliku, liczbę sprawdzonych obiektów i legendę progów, a pasek na dole potwierdza ostatnią akcję — po kliknięciu „Zaznacz wszystkie obrysy kol.” pokazuje, ile obiektów właśnie trafiło do zaznaczenia. Dzięki temu całą grupę błędów poprawia się jedną operacją.</p>
             <div class="features-box">
               <h4>Architektura interaktywnego raportu</h4>
               <ul class="features-list">

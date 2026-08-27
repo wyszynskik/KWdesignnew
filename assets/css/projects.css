@@ -4752,7 +4752,7 @@ body { overflow-x: hidden; }
 /* Panel jest wyższy niż globalny cap 450px — pełna wysokość bez letterboxu. */
 #case-cyfradruk-pelne .showcase-row--pair .showcase-item img,
 #case-cyfradruk-pelne .showcase-row--single .showcase-item img {
-  max-height: 639px;
+  max-height: 648px;
 }
 @media (max-width: 768px) {
   #case-cyfradruk-pelne .showcase-row--pair {
