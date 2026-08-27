@@ -38,9 +38,11 @@
 /* === PORTFOLIO PAGE - PREMIUM EDITION 2025 === */
 
 /* === LOKALNE FONTY POPPINS === */
-@font-face{font-family:'Poppins';src:url('../fonts/Poppins-Regular.woff2') format('woff2'),url('../fonts/Poppins-Regular.woff') format('woff');font-weight:400;font-style:normal;font-display:swap;}
-@font-face{font-family:'Poppins';src:url('../fonts/Poppins-SemiBold.woff2') format('woff2'),url('../fonts/Poppins-SemiBold.woff') format('woff');font-weight:600;font-style:normal;font-display:swap;}
-@font-face{font-family:'Poppins';src:url('../fonts/Poppins-Bold.woff2') format('woff2'),url('../fonts/Poppins-Bold.woff') format('woff');font-weight:700;font-style:normal;font-display:swap;}
+@font-face{font-family:'Poppins';src:url('../fonts/Poppins-Light.woff2') format('woff2');font-weight:300;font-style:normal;font-display:swap;}
+@font-face{font-family:'Poppins';src:url('../fonts/Poppins-Regular.woff2') format('woff2');font-weight:400;font-style:normal;font-display:swap;}
+@font-face{font-family:'Poppins';src:url('../fonts/Poppins-Medium.woff2') format('woff2');font-weight:500;font-style:normal;font-display:swap;}
+@font-face{font-family:'Poppins';src:url('../fonts/Poppins-MediumItalic.woff2') format('woff2');font-weight:500;font-style:italic;font-display:swap;}
+@font-face{font-family:'Poppins';src:url('../fonts/Poppins-Bold.woff2') format('woff2');font-weight:700;font-style:normal;font-display:swap;}
 
 /* === GLOBALNY RESET === */
 *{box-sizing:border-box;margin:0;padding:0;}
