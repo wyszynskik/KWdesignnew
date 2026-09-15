@@ -1,4 +1,4 @@
-# Karol Wyszyński – Digital Product Designer
+# Karol Wyszyński – Prowadzenie Projektów i Automatyzacja Procesów
 
 Strona portfolio i usług: produkty cyfrowe, automatyzacje procesów, usprawnienia.
 
@@ -112,5 +112,5 @@ nieaktywny (nie wysyła żadnych żądań). Domeny GA są już dopisane do CSP w
 
 ## 👤 Autor
 
-**Karol Wyszyński** – Digital Product Designer  
+**Karol Wyszyński** – Prowadzenie Projektów i Automatyzacja Procesów  
 [wyszynski.k@onet.pl](mailto:wyszynski.k@onet.pl) • [LinkedIn](https://www.linkedin.com/in/karol-wyszynski/)
