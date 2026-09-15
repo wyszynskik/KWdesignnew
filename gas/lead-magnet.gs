@@ -58,7 +58,7 @@ function handleLeadMagnet(e) {
     '<p>Jeśli masz konkretny proces, który chcesz omówić — napisz lub przejdź na ',
     '<a href="https://kwyszynskidesign.com/uslugi.html">kwyszynskidesign.com/uslugi</a>.',
     '</p>',
-    '<p>Karol Wyszyński<br>Digital Product Designer</p>',
+    '<p>Karol Wyszyński<br>Prowadzenie Projektów i Automatyzacja Procesów</p>',
     '<hr>',
     '<p style="font-size:12px;color:#888">Jeśli załącznik nie dotarł: ',
     '<a href="' + PDF_URL + '">pobierz PDF bezpośrednio</a>.</p>'
