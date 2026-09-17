@@ -56,7 +56,7 @@ function handleLeadMagnet(e) {
     '<p>Cześć,</p>',
     '<p>Dziękuję za pobranie materiału. Znajdziesz go w załączniku.</p>',
     '<p>Jeśli masz konkretny proces, który chcesz omówić — napisz lub przejdź na ',
-    '<a href="https://kwyszynskidesign.com/uslugi.html">kwyszynskidesign.com/uslugi</a>.',
+    '<a href="https://kwyszynski.pl/uslugi">kwyszynski.pl/uslugi</a>.',
     '</p>',
     '<p>Karol Wyszyński<br>Prowadzenie Projektów i Automatyzacja Procesów</p>',
     '<hr>',
