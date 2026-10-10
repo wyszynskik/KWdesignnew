@@ -56,7 +56,14 @@
     <!-- Style -->
     <link rel="stylesheet" href="assets/css/index-styles.css" />
     <link rel="stylesheet" href="assets/css/portfolio.css" />
-    <link rel="stylesheet" href="assets/css/projects.css" />
+    <!-- projects.css nie jest potrzebny do pierwszego ekranu (case study
+         wstrzykiwany dynamicznie, zero .kwcs-* w DOM przy starcie) -
+         nieblokujacy preload+swap. portfolio.js czeka na zdarzenie
+         "projects-css-ready" (z limitem czasu) przed odsloniecem
+         wstrzykanej tresci case study, zeby uniknac FOUC przy wejsciu
+         z hashem (np. /portfolio#RazDwa). -->
+    <link rel="preload" href="assets/css/projects.css" as="style" onload="this.onload=null;this.rel='stylesheet';window.__projectsCssReady=true;document.dispatchEvent(new Event('projects-css-ready'));">
+    <noscript><link rel="stylesheet" href="assets/css/projects.css"></noscript>
     <!-- KW Buttons — bazowe klasy .kw-btn wymagane przez case studies wczytywane
          inline do #case-viewer (np. ghost CTA „Zobacz stronę"). Po projects.css,
          żeby aliasy .kw-btn wygrywały w kaskadzie. -->

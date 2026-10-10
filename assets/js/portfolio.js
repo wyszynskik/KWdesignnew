@@ -47,6 +47,24 @@ document.addEventListener('DOMContentLoaded', () => {
   let activeCard = null;
   let railObserver = null;
 
+  // projects.css sie laduje nieblokujaco (preload+swap w <head>). Zanim
+  // odslonimy wstrzykniety case study (ma klasy .kwcs-*), czekamy na
+  // zdarzenie "projects-css-ready" - z limitem czasu, zeby blad sieci
+  // nie zablokowal tresci na zawsze.
+  function waitForProjectsCss(timeoutMs) {
+    return new Promise(resolve => {
+      if (window.__projectsCssReady) { resolve(); return; }
+      let settled = false;
+      const finish = () => {
+        if (settled) return;
+        settled = true;
+        resolve();
+      };
+      document.addEventListener('projects-css-ready', finish, { once: true });
+      setTimeout(finish, timeoutMs);
+    });
+  }
+
   // .razdwa-chapter-rail jest `position: fixed` wzgledem calego viewportu
   // (patrz projects.css), wiec bez tego obserwatora zostaje przyklejony
   // do ekranu nawet po odscrollowaniu z powrotem do siatki "wszystkie
@@ -127,12 +145,14 @@ document.addEventListener('DOMContentLoaded', () => {
           wrapper.appendChild(projNav);
         }
 
-        viewer.innerHTML = '';
-        viewer.appendChild(wrapper);
+        waitForProjectsCss(2000).then(() => {
+          viewer.innerHTML = '';
+          viewer.appendChild(wrapper);
 
-        if (typeof initAccordion === 'function') initAccordion();
-        if (typeof initChapterRail === 'function') initChapterRail();
-        watchRailVisibility();
+          if (typeof initAccordion === 'function') initAccordion();
+          if (typeof initChapterRail === 'function') initChapterRail();
+          watchRailVisibility();
+        });
       })
       .catch(() => {
         viewer.innerHTML = '<div class="error-msg">Błąd wczytywania projektu. Spróbuj ponownie.</div>';
