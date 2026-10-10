@@ -48,10 +48,17 @@
     <link rel="icon" type="image/png" sizes="192x192" href="assets/images/android-chrome-192x192.png">
     <link rel="icon" type="image/png" sizes="512x512" href="assets/images/android-chrome-512x512.png">
 
-    <!-- Google Fonts -->
+    <!-- Google Fonts - nieblokujacy preload+swap. font-display:swap jest juz
+         w CSS zwracanym przez Google (sprawdzone), wiec tekst renderuje sie
+         od razu fallbackiem niezaleznie od tego kiedy ten arkusz sie
+         zaaplikuje. Preload konkretnych woff2 pominiety: adresy
+         fonts.gstatic.com sa wersjonowane (np. /s/inter/v20/...) i zalezne
+         od User-Agent (osobne pliki per subset: latin, latin-ext,
+         cyrillic...) - nie da sie ich wskazac stabilnie z wyprzedzeniem. -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet" />
+    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@400;700&display=swap" onload="this.onload=null;this.rel='stylesheet';">
+    <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet" /></noscript>
 
     <!-- Style -->
     <link rel="stylesheet" href="assets/css/index-styles.css" />
