@@ -55,7 +55,6 @@
 
     <!-- Style -->
     <link rel="stylesheet" href="assets/css/index-styles.css" />
-    <link rel="stylesheet" href="assets/css/about-me.css" />
     <link rel="stylesheet" href="assets/css/portfolio.css" />
     <link rel="stylesheet" href="assets/css/projects.css" />
     <!-- KW Buttons — bazowe klasy .kw-btn wymagane przez case studies wczytywane
@@ -72,21 +71,21 @@
     <header class="header">
         <div class="container header-inner">
             <a href="/" class="logo-link">
-                <img src="assets/images/KW_DESIGN_LOGO.png" alt="Karol Wyszyński – strony i automatyzacje" class="logo-img" />
+                <img src="assets/images/kw-design-logo-160w.webp" alt="Karol Wyszyński – strony i automatyzacje" class="logo-img" width="160" height="96" />
             </a>
             <nav class="nav">
-                <ul class="nav-list">
+                <ul class="nav-list" id="nav-list">
                     <li><a href="/">Start</a></li>
                     <li><a href="/portfolio" class="active">Portfolio</a></li>
                     <li><a href="/uslugi">Usługi</a></li>
                     <li><a href="/#about">O mnie</a></li>
                     <li><a href="/#contact">Kontakt</a></li>
                 </ul>
-                <div class="hamburger">
+                <button type="button" class="hamburger" aria-expanded="false" aria-controls="nav-list" aria-label="Otwórz menu">
                     <span></span>
                     <span></span>
                     <span></span>
-                </div>
+                </button>
             </nav>
         </div>
     </header>
@@ -98,6 +97,7 @@
         </svg>
     </button>
 
+    <main>
     <!-- About Me Section -->
     <section class="about-me-section">
         <div class="container about-me-grid">
@@ -111,8 +111,22 @@
             <!-- VISUALS -->
             <div class="about-me-visuals">
                 <div class="about-me-image">
-                    <img class="ami-base" src="assets/images/ja biznesowyv2 30.07.2026_bez tła_M.webp" alt="Karol Wyszyński - Prowadzenie Projektów i Automatyzacja Procesów">
-                    <img class="ami-hover" src="assets/images/ja biznesowyv2 30.07.2026_bez tła_smile_M.webp" alt="" aria-hidden="true" loading="lazy" decoding="async">
+                    <img
+                        class="ami-base"
+                        src="assets/images/karol-wyszynski-hero-800.webp"
+                        srcset="assets/images/karol-wyszynski-hero-480.webp 480w, assets/images/karol-wyszynski-hero-800.webp 800w, assets/images/karol-wyszynski-hero-1200.webp 1200w"
+                        sizes="(max-width: 480px) 220px, (max-width: 768px) 240px, 370px"
+                        width="1200" height="1410"
+                        fetchpriority="high"
+                        decoding="async"
+                        alt="Karol Wyszyński - Prowadzenie Projektów i Automatyzacja Procesów">
+                    <img
+                        class="ami-hover"
+                        data-src="assets/images/karol-wyszynski-hero-smile-800.webp"
+                        data-srcset="assets/images/karol-wyszynski-hero-smile-480.webp 480w, assets/images/karol-wyszynski-hero-smile-800.webp 800w, assets/images/karol-wyszynski-hero-smile-1200.webp 1200w"
+                        sizes="(max-width: 480px) 220px, (max-width: 768px) 240px, 370px"
+                        width="1200" height="1410"
+                        alt="" aria-hidden="true" decoding="async">
                 </div>
             </div>
 
@@ -129,9 +143,9 @@
 
             <div class="portfolio-new-grid">
 
-               <article class="portfolio-new-card" data-project="RazDwa" role="button" tabindex="0" aria-label="Raz Dwa Druk — Aplikacja biznesowa PWA">
+               <article class="portfolio-new-card" data-project="RazDwa">
                     <div class="card-image-wrapper">
-                        <img src="assets/images/razdwa/Ekran_RAZDWA_KWdesign.webp" alt="Raz Dwa Druk — ekran aplikacji PWA do wyceny druku" class="card-image--contain" loading="lazy" decoding="async">
+                        <img src="assets/images/razdwa/ekran-razdwa-kwdesign-720w.webp" alt="Raz Dwa Druk — ekran aplikacji PWA do wyceny druku" class="card-image--contain" width="720" height="648" loading="lazy" decoding="async">
                     </div>
                     <div class="card-content">
                         <span class="card-category">Aplikacja biznesowa · PWA</span>
@@ -142,13 +156,13 @@
                             <span class="feature-item">Google Sheets</span>
                             <span class="feature-item">PDF</span>
                         </div>
-                        <span class="card-cta">Zobacz projekt <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg></span>
+                        <button type="button" class="card-cta" aria-label="Zobacz projekt: Raz Dwa Druk">Zobacz projekt <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9 18 15 12 9 6"/></svg></button>
                     </div>
                 </article>
 
-                <article class="portfolio-new-card" data-project="cyfradruk" role="button" tabindex="0" aria-label="CyfraDruk — Automatyzacja przygotowania plików do druku">
+                <article class="portfolio-new-card" data-project="cyfradruk">
                     <div class="card-image-wrapper">
-                        <img src="assets/images/cyfradruk/Automatyzacja_liniekolory.webp" alt="CyfraDruk — automatyczne wykrywanie błędów kolorów i cienkich linii przed drukiem" loading="eager" decoding="async">
+                        <img src="assets/images/cyfradruk/automatyzacja-liniekolory-720w.webp" alt="CyfraDruk — automatyczne wykrywanie błędów kolorów i cienkich linii przed drukiem" width="720" height="720" loading="lazy" decoding="async">
                     </div>
                     <div class="card-content">
                         <span class="card-category">Automatyzacja · Przygotowanie do druku</span>
@@ -159,13 +173,13 @@
                             <span class="feature-item">Illustrator</span>
                             <span class="feature-item">Przygotowanie do druku</span>
                         </div>
-                        <span class="card-cta">Zobacz projekt <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg></span>
+                        <button type="button" class="card-cta" aria-label="Zobacz projekt: CyfraDruk">Zobacz projekt <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9 18 15 12 9 6"/></svg></button>
                     </div>
                 </article>
 
-                <article class="portfolio-new-card" data-project="power-of-mind" role="button" tabindex="0" aria-label="Power of Mind — Platforma zapisów i wdrożenie">
+                <article class="portfolio-new-card" data-project="power-of-mind">
                     <div class="card-image-wrapper">
-                        <img src="assets/images/power-of-mind/POWEROFMIND_HERO_1.webp" alt="Power of Mind — hero strony marki trenerki odporności psychicznej" loading="eager" decoding="async">
+                        <img src="assets/images/power-of-mind/powerofmind-hero-1-720w.webp" alt="Power of Mind — hero strony marki trenerki odporności psychicznej" width="720" height="633" loading="lazy" decoding="async">
                     </div>
                     <div class="card-content">
                         <span class="card-category">Platforma · Wdrożenie</span>
@@ -176,13 +190,13 @@
                             <span class="feature-item">Automatyzacje</span>
                             <span class="feature-item">Wdrożenie</span>
                         </div>
-                        <span class="card-cta">Zobacz projekt <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg></span>
+                        <button type="button" class="card-cta" aria-label="Zobacz projekt: Power of Mind">Zobacz projekt <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9 18 15 12 9 6"/></svg></button>
                     </div>
                 </article>
 
-                 <article class="portfolio-new-card" data-project="karoma" role="button" tabindex="0" aria-label="Karoma — Sklep B2B, prowadzenie od początku do końca">
+                 <article class="portfolio-new-card" data-project="karoma">
                     <div class="card-image-wrapper">
-                        <img src="assets/images/karoma/KAROMA_FRONT.webp" alt="Karoma — front sklepu WooCommerce marki narzędzi CNC B2B" loading="eager" decoding="async">
+                        <img src="assets/images/karoma/karoma-front-720w.webp" alt="Karoma — front sklepu WooCommerce marki narzędzi CNC B2B" width="720" height="614" loading="lazy" decoding="async">
                     </div>
                     <div class="card-content">
                         <span class="card-category">Sklep B2B · Od analizy po wdrożenie</span>
@@ -193,7 +207,7 @@
                             <span class="feature-item">Integracje</span>
                             <span class="feature-item">Przekazanie</span>
                         </div>
-                        <span class="card-cta">Zobacz projekt <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg></span>
+                        <button type="button" class="card-cta" aria-label="Zobacz projekt: Karoma">Zobacz projekt <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9 18 15 12 9 6"/></svg></button>
                     </div>
                 </article>
 
@@ -236,36 +250,36 @@
             <p class="section-subtitle archive-note">Starsze realizacje projektowe i graficzne — pokazuję je dla pełnego obrazu doświadczenia. Główny nurt portfolio to prowadzenie projektów i wdrożenia (wyżej).</p>
             <div class="archive-grid">
 
-                <article class="portfolio-new-card" data-project="KW-Design" role="button" tabindex="0" aria-label="kwyszynski — Logo i identyfikacja">
+                <article class="portfolio-new-card" data-project="KW-Design">
                     <div class="card-image-wrapper">
-                        <img src="assets/images/kwyszynski/KWDESIGN_HERO.png" alt="kwyszynski — aktualna strona główna marki (sekcja hero)" loading="lazy" decoding="async">
+                        <img src="assets/images/kwyszynski/kwdesign-hero-720w.webp" alt="kwyszynski — aktualna strona główna marki (sekcja hero)" width="720" height="470" loading="lazy" decoding="async">
                     </div>
                     <div class="card-content">
                         <span class="card-category">Marka · Identyfikacja wizualna</span>
                         <h3 class="card-title">kwyszynski</h3>
-                        <span class="card-cta">Zobacz projekt <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg></span>
+                        <button type="button" class="card-cta" aria-label="Zobacz projekt: kwyszynski">Zobacz projekt <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9 18 15 12 9 6"/></svg></button>
                     </div>
                 </article>
 
-                <article class="portfolio-new-card" data-project="sir-roger" role="button" tabindex="0" aria-label="Sir Roger — Odświeżenie marki i opakowania">
+                <article class="portfolio-new-card" data-project="sir-roger">
                     <div class="card-image-wrapper">
-                        <img src="assets/images/sir-roger/Roger.png" alt="Sir Roger — odświeżenie marki i opakowania marki herbat wysokiej klasy" loading="lazy" decoding="async">
+                        <img src="assets/images/sir-roger/Roger.png" alt="Sir Roger — odświeżenie marki i opakowania marki herbat wysokiej klasy" width="229" height="134" loading="lazy" decoding="async">
                     </div>
                     <div class="card-content">
                         <span class="card-category">Marka · Opakowania</span>
                         <h3 class="card-title">Sir Roger</h3>
-                        <span class="card-cta">Zobacz projekt <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg></span>
+                        <button type="button" class="card-cta" aria-label="Zobacz projekt: Sir Roger">Zobacz projekt <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9 18 15 12 9 6"/></svg></button>
                     </div>
                 </article>
 
-                <article class="portfolio-new-card" data-project="voucher-magdy" role="button" tabindex="0" aria-label="Voucher Salon u Magdy — Grafika i druk">
+                <article class="portfolio-new-card" data-project="voucher-magdy">
                     <div class="card-image-wrapper">
-                        <img src="assets/images/voucher/salon Magdy mockup copy.webp" alt="Voucher Salon u Magdy — projekt graficzny vouchera prezentowego" loading="lazy" decoding="async">
+                        <img src="assets/images/voucher/salon-magdy-mockup-720w.webp" alt="Voucher Salon u Magdy — projekt graficzny vouchera prezentowego" width="720" height="480" loading="lazy" decoding="async">
                     </div>
                     <div class="card-content">
                         <span class="card-category">Grafika · Druk</span>
                         <h3 class="card-title">Voucher Salon u Magdy</h3>
-                        <span class="card-cta">Zobacz projekt <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg></span>
+                        <button type="button" class="card-cta" aria-label="Zobacz projekt: Voucher Salon u Magdy">Zobacz projekt <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9 18 15 12 9 6"/></svg></button>
                     </div>
                 </article>
 
@@ -281,6 +295,7 @@
             <a href="mailto:wyszynski.k@onet.pl" class="btn-cta">Napisz wiadomość</a>
         </div>
     </section>
+    </main>
 
     <!-- Footer -->
     <footer class="footer">

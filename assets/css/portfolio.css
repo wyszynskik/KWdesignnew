@@ -48,29 +48,45 @@
 *{box-sizing:border-box;margin:0;padding:0;}
 html,body{overflow-x:hidden;scroll-behavior:smooth;}
 
-/* === HERO SECTION === */
-body.portfolio-page .hero-section{background-image:url('../images/ja-biznesowy-v2.webp')!important;}
-.hero-section{
-  position:relative;
-  min-height:100dvh;
-  display:flex;
-  flex-direction:column;
-  justify-content:center;
-  align-items:flex-start;
-  background-size:cover;
-  background-position:center;
-  background-attachment:fixed;
-  padding:2rem clamp(16px,4vw,40px);
-  font-family:'Poppins',sans-serif;
-  overflow:hidden;
+/* .hamburger to teraz <button> (a11y: klawiatura + aria-expanded), reset
+   domyslnego wygladu buttona - zachowuje dotychczasowy wyglad z index-styles.css. */
+body.portfolio-page .hamburger{background:none;border:none;font:inherit;color:inherit;}
+body.portfolio-page .hamburger:hover{background:var(--color-dark-light);}
+
+/* === KONTRAST TEKSTU (axe + Lighthouse na realnym renderze, scope tylko
+   /portfolio) === Zmienne nizej zastepuja --color-primary (#06b6d4),
+   #64748b i efektywny #63656c (compounding opacity w stopce) WYLACZNIE
+   jako kolor tekstu na /portfolio - tla, obramowania i ikony w tych samych
+   klasach (np. border-left na .razdwa-summary-cell) zostaja nietkniete.
+   Brak stanow :hover/:focus do synchronizacji - zadna z selektorow nizej
+   nie ma zdefiniowanego hover/focus gdzies w kodzie (sprawdzone grepem).
+   Selektory #id .class (nie .class .class) zeby wygrac z kaskada
+   index-styles.css/projects.css bez zgadywania - zmierzone realnym
+   Lighthouse, nie reczna kalkulacja (patrz audyt-portfolio.md).
+   TODO sprint 2: przeniesc do index-styles.css jako nowa wartosc
+   --color-primary / zmienna globalna, zamiast nadpisywac per-strona. */
+body.portfolio-page {
+  --portfolio-text-accent: #0e7490;  /* 5.12:1 na #f8fafc, 5.36:1 na #fff (bylo #06b6d4: 2.32-2.43:1) */
+  --portfolio-text-subtle: #52606d;  /* 6.06:1 na #f6f8f8 (bylo #64748b: 4.46:1) */
+  --portfolio-text-footer: #9ca3af;  /* 7.54:1 na #0b0f19 (bylo efektywne #63656c: 3.29:1) */
 }
-.hero-section::before{content:"";position:absolute;inset:0;background:rgba(0,0,0,.45);backdrop-filter:blur(2px);z-index:1;}
-.hero-section::after{content:"";position:absolute;top:0;left:0;right:0;height:65%;background:linear-gradient(to right,rgba(0,0,0,.6)0%,rgba(0,0,0,.2)35%,rgba(0,0,0,0)65%);pointer-events:none;z-index:1;}
-.hero-section>*{position:relative;z-index:2;}
-.hero-content{max-width:750px;color:#fff;padding-left:clamp(20px,5vw,60px);}
-.hero-eyebrow{color:#e2e8f0;font-size:.95rem;text-transform:uppercase;letter-spacing:.1em;margin-bottom:.8rem;opacity:.9;font-weight:500;}
-.hero-title{color:#fff;font-size:clamp(2.2rem,5.5vw,4rem);margin-bottom:1.2rem;text-shadow:0 2px 16px rgba(0,0,0,.3);font-weight:700;line-height:1.1;}
-.hero-subtitle{color:#f1f5f9;font-size:clamp(1.1rem,2.8vw,1.3rem);max-width:620px;margin:0 0 3rem 0;line-height:1.6;font-weight:400;}
+
+body.portfolio-page .adg-label,
+body.portfolio-page .kwcs-hero-head .eyebrow,
+body.portfolio-page .razdwa-summary-cell .label {
+  color: var(--portfolio-text-accent);
+}
+
+body.portfolio-page #portfolio-section .section-subtitle,
+body.portfolio-page #experience-section .section-subtitle,
+body.portfolio-page #design-archive .section-subtitle {
+  color: var(--portfolio-text-subtle);
+}
+
+body.portfolio-page .footer-bottom p {
+  color: var(--portfolio-text-footer);
+  opacity: 1;
+}
 
 /* === PREMIUM ABOUT SECTION === */
 .about-me-section{
@@ -549,7 +565,7 @@ body.portfolio-page .hero-section{background-image:url('../images/ja-biznesowy-v
   opacity: 1;
 }
 
-.portfolio-new-card:focus-visible {
+.portfolio-new-card:focus-within {
   outline: 3px solid #2563eb;
   outline-offset: 4px;
   border-radius: 20px;
@@ -674,7 +690,9 @@ body.portfolio-page .hero-section{background-image:url('../images/ja-biznesowy-v
   color: #0c4a6e;
 }
 
-/* CTA */
+/* CTA — <button> stretched-link: ::after z inset:0 pokrywa cala karte
+   (.portfolio-new-card ma position:relative), bo cala karta ma zostac
+   klikalna mimo ze realny interaktywny element to teraz przycisk. */
 .card-cta {
   display: inline-flex;
   align-items: center;
@@ -684,6 +702,17 @@ body.portfolio-page .hero-section{background-image:url('../images/ja-biznesowy-v
   color: #2563eb;
   margin-top: auto;
   transition: gap 0.3s ease;
+  background: none;
+  border: none;
+  padding: 0;
+  font-family: inherit;
+}
+
+.card-cta::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: auto;
 }
 
 .card-cta svg {

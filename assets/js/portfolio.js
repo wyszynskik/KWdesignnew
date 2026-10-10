@@ -8,9 +8,28 @@ document.addEventListener('DOMContentLoaded', () => {
   const navList = document.querySelector('.nav-list');
   if (burger && navList) {
     burger.addEventListener('click', () => {
-      navList.classList.toggle('open');
-      burger.classList.toggle('active');
+      const isOpen = navList.classList.toggle('open');
+      burger.classList.toggle('active', isOpen);
+      burger.setAttribute('aria-expanded', String(isOpen));
+      burger.setAttribute('aria-label', isOpen ? 'Zamknij menu' : 'Otwórz menu');
     });
+  }
+
+  // Wariant hover zdjecia hero: zero fetchu na dotyku (brak hover), prefetch
+  // w czasie idle na urzadzeniach z hover - obraz jest juz w cache, zanim
+  // user realnie najedzie, zero migniecia przy pierwszym hover.
+  const amiHover = document.querySelector('.about-me-image .ami-hover');
+  if (amiHover && amiHover.dataset.src && window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
+    const loadHoverImage = () => {
+      if (amiHover.src) return;
+      amiHover.srcset = amiHover.dataset.srcset || '';
+      amiHover.src = amiHover.dataset.src;
+    };
+    if ('requestIdleCallback' in window) {
+      requestIdleCallback(loadHoverImage, { timeout: 2000 });
+    } else {
+      setTimeout(loadHoverImage, 1500);
+    }
   }
 
   const projectPages = {
@@ -147,10 +166,14 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  document.querySelectorAll('.portfolio-new-card').forEach(card => {
-    card.addEventListener('click', function (e) {
+  // Interakcja zyje teraz na .card-cta (button, stretched-link przez CSS
+  // ::after z inset:0) - cala karta zostaje klikalna, ale klawiatura/AT
+  // widzi jeden, prawdziwy interaktywny element zamiast article role="button".
+  document.querySelectorAll('.portfolio-new-card .card-cta').forEach(cta => {
+    cta.addEventListener('click', function (e) {
       e.preventDefault();
-      const id = this.getAttribute('data-project');
+      const card = this.closest('.portfolio-new-card');
+      const id = card && card.getAttribute('data-project');
       if (!id || !projectPages[id]) return;
 
       if (activeProjectId === id) {
@@ -158,14 +181,7 @@ document.addEventListener('DOMContentLoaded', () => {
         return;
       }
 
-      openProject(id, this);
-    });
-
-    card.addEventListener('keydown', function (e) {
-      if (e.key === 'Enter' || e.key === ' ') {
-        e.preventDefault();
-        this.click();
-      }
+      openProject(id, card);
     });
   });
 
