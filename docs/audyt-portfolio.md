@@ -404,3 +404,17 @@ CLS: oba mediany bezpiecznie w budżecie (0,0091 / 0,0089 ≤ 0,02) — poprawka
 - Best Practices: 100, bez regresji względem Rundy 2 ✓.
 - `git status`: tylko pliki z zakresu (`portfolio.html`, `assets/css/portfolio.css`, `assets/js/portfolio.js`, `assets/data/testimonials.json`) ✓.
 - Commit po każdym zadaniu, bez `git stash`: `e799dab`, `6fc9d76`, `e7d2968`, `daba406`, `afde35b`, `529ad0a` (CLS fix) ✓.
+
+### Push do `origin/main` i weryfikacja produkcji
+
+Przed pushem: `git merge-base --is-ancestor <hash> origin/main` dla commitów Rund 1-2 (`9f2a83f`, `842c9e8`, `192ced8`, `d576e97`) — wszystkie potwierdzone jako przodkowie `origin/main`, brak rozjazdu historii. Push `main` → `origin/main`: `d576e97..d417530` (7 commitów Rundy 3, w tym raport).
+
+**Hosting produkcji** (nagłówki `https://kwyszynski.pl/portfolio`): `Server: GitHub.com`, `X-GitHub-Request-Id` obecny, brak `cf-ray` — **GitHub Pages**, CDN **Fastly** (`Via: 1.1 varnish`, `X-Served-By: cache-vie6372-VIE`, `X-Fastly-Request-ID`), edge region Szwajcaria Północ. Brak Cloudflare w ścieżce odpowiedzi.
+
+**Cache-Control**:
+- `/portfolio` (HTML): `Cache-Control: max-age=600` (10 min).
+- `/assets/images/razdwa/ekran-razdwa-kwdesign-720w.webp`: `Cache-Control: max-age=600` — **taki sam TTL jak HTML**, brak długiego cache/`immutable` dla assetów statycznych (GitHub Pages domyślny, niekonfigurowalny bez CDN nakładki). Residual, poza zakresem tej rundy.
+
+**Deploy po pushu**: build GitHub Pages przeszedł `building`→`built` w ok. 10-20s (`gh api repos/.../pages/builds/latest`). Po zbudowaniu: `Last-Modified` na `/portfolio` zmienił się na czas tuż po pushu, HTML zawiera nowy H1 "Prowadzę projekty cyfrowe od zakresu do działającego wdrożenia" (stary "Wybrane realizacje" zniknął).
+
+**`https://kwyszynski.pl/portfolio#RazDwa`**: zweryfikowane Puppeteer na produkcji — `#case-viewer` wypełniony (39729 znaków HTML), zawiera węzeł `.kwcs-*` (treść case study RazDwa), zero błędów konsoli. ✓ działa.
