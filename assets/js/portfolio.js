@@ -123,6 +123,43 @@ document.addEventListener('DOMContentLoaded', () => {
     renderTestimonials(data.items);
   });
 
+  // Przycisk "Pobierz CV" tylko gdy cvUrl niepusty - bez osobnego zadania
+  // HEAD, korzysta z tego samego pobrania co opinie (siteDataPromise).
+  // Domyslny statyczny HTML (lead + brak przycisku CV) juz odpowiada
+  // stanowi "cvUrl puste" - tu tylko nadpisujemy, gdy jest inaczej.
+  siteDataPromise.then(data => {
+    if (!data.cvUrl) return;
+
+    const lead = document.querySelector('.cta-lead');
+    if (lead) {
+      lead.textContent = 'Pobierz CV albo napisz na LinkedIn. Opowiem, jak wyglądał zakres, harmonogram i decyzje w każdym z nich.';
+    }
+
+    const buttonsWrap = document.querySelector('.cta-buttons');
+    if (buttonsWrap) {
+      const cvBtn = document.createElement('a');
+      cvBtn.href = data.cvUrl;
+      cvBtn.className = 'btn-cta';
+      cvBtn.textContent = 'Pobierz CV';
+      cvBtn.setAttribute('download', '');
+      cvBtn.addEventListener('click', () => {
+        if (typeof window.gtag === 'function') {
+          window.gtag('event', 'cv_download', { file: data.cvUrl });
+        }
+      });
+      buttonsWrap.insertBefore(cvBtn, buttonsWrap.firstChild);
+    }
+  });
+
+  const linkedinCta = document.getElementById('cta-linkedin');
+  if (linkedinCta) {
+    linkedinCta.addEventListener('click', () => {
+      if (typeof window.gtag === 'function') {
+        window.gtag('event', 'linkedin_click');
+      }
+    });
+  }
+
   const projectPages = {
     'voucher-magdy': 'projects/voucher-salon-magdy',
     'karoma': 'projects/karoma',

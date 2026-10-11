@@ -1392,6 +1392,29 @@ body.portfolio-page.page-voucher-magdy .breadcrumbs a:hover{color:#0f44b7;}
   box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
 }
 
+.cta-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 16px;
+  margin-bottom: 28px;
+}
+
+.cta-secondary {
+  margin: 0;
+  font-size: 0.9rem;
+  color: var(--portfolio-text-footer);
+}
+
+.cta-secondary a {
+  color: var(--portfolio-text-footer);
+  text-decoration: underline;
+}
+
+.cta-secondary-sep {
+  margin: 0 8px;
+}
+
 @media (max-width: 768px) {
   .cta-section {
     padding: 60px 0 80px;
