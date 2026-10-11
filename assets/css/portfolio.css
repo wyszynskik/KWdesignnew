@@ -1209,8 +1209,13 @@ body.portfolio-page.page-voucher-magdy .breadcrumbs a:hover{color:#0f44b7;}
     margin-bottom:18px !important;
     display:block !important;
     visibility:visible !important;
+    /* Rezerwacja 3 linii. Realny line-height tej p to 1.65 (z .about-me-text>p
+       !important nizej, nie z 1.4 w bazowej regule .subtitle - zweryfikowane
+       CSS.getMatchedStylesForNode). Bez tego: fallback-font 2 linie, Inter po
+       swapie 3 linie, roznica wysokosci przesuwa #portfolio-section (CLS). */
+    min-height:4.95em;
   }
-  
+
   .about-me-text>p{
     font-size:0.9rem !important;
     margin-bottom:22px !important;
