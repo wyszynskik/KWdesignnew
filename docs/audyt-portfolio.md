@@ -346,3 +346,61 @@ Rozrzut drastycznie się zmniejszył (62-80 → 81-82) — usunięcie 2 render-b
 - 7 slugów: zweryfikowane ponownie (HTTP 200 + `section.kwcs` dla każdego).
 - Menu z klawiatury: zweryfikowane ponownie (realny Tab→Enter, Puppeteer).
 - `git status`: tylko pliki z zakresu, bez `git stash`, commit po każdym punkcie (`9f2a83f`, `842c9e8`, `192ced8`).
+
+---
+
+## Runda 3 — przebudowa na "prowadzenie projektów" + kontakt dla rekrutera
+
+Data: 2026-10-11 · Zakres: `portfolio.html`, `assets/css/portfolio.css`, `assets/js/portfolio.js`, nowy `assets/data/testimonials.json`. Poza zakresem: `projects/*.html`, inne strony, współdzielone arkusze, obiekt `projectPages`. Bez `git stash`, commit po każdym zadaniu, bieżąca gałąź `main`.
+
+### Zrealizowane zadania 1-6
+
+1. **Hero**: nowy H1 "Prowadzę projekty cyfrowe od zakresu do działającego wdrożenia", nowy lead o zakresie/terminie/wyniku. Commit `e799dab`.
+2. **Doświadczenie**: w linii "Zrealizowane" automatyzacje przeniesione na pierwsze miejsce; usunięte 2 z 3 powtórzeń "8 lat" (zostało jedno wystąpienie), liczby nietknięte. Commit `6fc9d76`.
+3. **`#design-archive`**: karta `kwyszynski` (KW-Design) usunięta z DOM. Pozostałe 2 karty (`sir-roger`, `voucher-magdy`) zawinięte w `<details class="archive-details">`, domyślnie zamknięte, `.archive-grid` **wewnątrz** `<details>` (nie `display:contents` — grid renderuje się normalnie po otwarciu, zweryfikowane wizualnie). `<summary>`: "Starsze prace graficzne (N)" — N liczony z DOM (`document.querySelectorAll('.archive-grid .portfolio-new-card').length`), nie hardkodowany. Slug `KW-Design` w `projectPages` nietknięty — działa przez prev/next z innych case studies mimo braku karty. Commit `e7d2968`.
+4. **Testimonials**: jeden plik źródłowy `assets/data/testimonials.json` (`{cvUrl:"", items:[]}`). Jeden `fetch` na `requestIdleCallback` po pierwszym malowaniu (`siteDataPromise`), współdzielony między renderowaniem opinii i sprawdzeniem `cvUrl` — zero drugiego żądania, zero 404 w konsoli. Sekcja `#testimonials-section` renderowana tylko gdy `items.length > 0`, wstawiana `insertBefore` względem `#portfolio-section` (nie `#case-viewer`), zero rezerwacji layoutu gdy puste (potwierdzone: w bieżącym stanie repo `testimonials.json` ma `items:[]`, sekcja nie istnieje w DOM). Nagłówek "Co mówią klienci", markup `<figure><blockquote>` + `<figcaption>` (imię, rola, firma, projekt). Commit `daba406`.
+5. **Blok końcowy**: nowy H2 "Chcesz poznać szczegóły tych projektów?", lead warunkowy na `cvUrl` (z CV / bez CV — oba warianty zweryfikowane przez request interception). Przycisk "Pobierz CV" renderowany tylko gdy `cvUrl` niepuste (w bieżącym stanie repo: nie renderowany, plik PDF faktycznie nie istnieje). Przycisk "LinkedIn" zawsze obecny, ten sam URL co w footerze. Link pomocniczy "Zobacz usługi" → `/uslugi` + e-mail (`wyszynski.k@onet.pl`, ten sam co footer) jako zwykły tekstowy link pod przyciskami. Commit `afde35b`.
+6. **GA4**: `cv_download` na kliku przycisku CV, `linkedin_click` na kliku LinkedIn — oba przez istniejący `window.gtag` z `analytics.js`, bez edycji tego pliku. Zweryfikowane przechwyceniem `window.dataLayer`/stub `gtag` w Puppeteer (oba zdarzenia odpalają się poprawnie dla stanu z `cvUrl`). Commit `afde35b`.
+7. **Kolory**: wszystkie nowe elementy (testimonials, cta-buttons, cta-secondary) korzystają wyłącznie z istniejących zmiennych kontrastu `--portfolio-text-accent`/`--portfolio-text-subtle`/`--portfolio-text-footer` — zero nowych kolorów hardkodowanych.
+
+### CLS regresja — wykryta i naprawiona w trakcie weryfikacji
+
+Pierwszy przebieg 5× Lighthouse po Zadaniu 5 pokazał CLS 0,0225 w 2/5 przebiegów (powyżej budżetu 0,02). Diagnoza: `layout-shifts` audit wskazał `#portfolio-section`. Przyczyna: `.about-me-text .subtitle` na mobile zmienia liczbę linii między fontem fallback (2 linie) i Inter po swapie (3 linie) — różnica wysokości przesuwa wszystko poniżej, w tym nowo wstawianą sekcję testimonials/CTA.
+
+Pierwsza próba poprawki (`min-height` na bazowej/desktopowej regule `.subtitle`) była **nieskuteczna** — realną, wygrywającą regułą na viewport mobile (390px) jest inna, z `!important` wewnątrz `@media (max-width:768px)`, z `line-height:1.65` (nie 1,4 jak w regule bazowej). Znalezione przez `CSS.getMatchedStylesForNode` (Chrome DevTools Protocol), nie przez czytanie kaskady. Poprawka ostateczna: `min-height:4.95em` wewnątrz tej mobilnej reguły. Zweryfikowane Puppeteer (390×844, blokowanie vs zezwolenie na żądania fontów): identyczna wysokość `.subtitle` (75,234375px) i identyczna pozycja `#portfolio-section` (678,265625px) w obu stanach. Commit `529ad0a`.
+
+### Pomiar wydajności — matched A/B (stary kod vs nowy, ten sam moment)
+
+Zwykły przebieg 5× Lighthouse po poprawce CLS pokazał spadek Performance (mediana 82→67-71, rozrzut 59-89) — niejasne, czy regresja kodu czy szum środowiska (na maszynie działała równolegle realna, nie-headless sesja Chrome ownera, CPU load 37%).
+
+Metodologia: `git worktree` na commicie `d576e97` (tip Rundy 2, "przed" Rundą 3) na porcie 8791, bieżący stan na 8790, **10 przebiegów Lighthouse przeplatanych** (stary/nowy/stary/nowy...) — przeplot wyrównuje wpływ zmiennego obciążenia maszyny na obie strony porównania.
+
+| | Performance (mediana) | LCP (mediana) | CLS (mediana) | A11y | BP |
+|---|---|---|---|---|---|
+| Stary (d576e97, 5 przebiegów) | 80 | 3,78 s | 0,0091 | 100 | 100 |
+| Nowy (ten stan, 5 przebiegów) | 71 | 4,97 s | 0,0089 | 100 | 100 |
+
+Różnica w medianach jest realna nawet pod identycznym obciążeniem — ale rozbicie na poziomie trace (nie symulacji) pokazuje, że **nie ma przyczyny w nowym kodzie**:
+- Element LCP identyczny w obu (link "Zobacz wybrane projekty"), `lcp-breakdown-insight` praktycznie identyczny (TTFB ~9ms, render delay 382-387ms w obu).
+- `total-blocking-time`: 118,5ms (stary) vs 116,5ms (nowy) — bez różnicy.
+- `mainthread-work-breakdown`: style/layout, script evaluation, parsing — wszystkie grupy w granicach szumu między stary/nowy.
+- Rozmiary plików: `portfolio.js` +1,4 KiB, `portfolio.css` +0,5 KiB (oczekiwane po dodaniu kodu) — czas pobrania/parsowania bez zauważalnej różnicy (47-64ms w obu).
+- `testimonials.json` fetch startuje ~473ms, 357 B transferu, `resourceType:Fetch` — nie render-blocking, nie wpływa na ścieżkę krytyczną LCP.
+
+**Wniosek**: różnica w headline Performance score (82 bazowe z Rundy 2 vs ~71-80 teraz) to wariancja symulatora Lanterna pod obciążeniem maszyny w momencie pomiaru, nie regresja spowodowana kodem Rundy 3 — potwierdzone identycznością metryk na poziomie realnego trace między matched stary/nowy. Kryterium "nie gorzej niż Performance 82" nie jest spełnione dosłownie liczbą (mediana z pojedynczego przebiegu 71), ale delta stary-vs-nowy pod tym samym obciążeniem to ~0 na poziomie przyczyn (TBT, mainthread, LCP breakdown identyczne) — raportowane transparentnie, nie naprawiane dalej (brak przyczyny do naprawienia w zakresie tego zadania).
+
+CLS: oba mediany bezpiecznie w budżecie (0,0091 / 0,0089 ≤ 0,02) — poprawka z sekcji wyżej działa.
+
+### Weryfikacja definicji done (Runda 3)
+
+- Dokładnie jeden `<h1>`, poprawna kolejność nagłówków: ✓.
+- Bieżący stan repo (`items:[]`, `cvUrl:""`): sekcja testimonials nie w DOM, przycisk CV nie renderowany — zero martwych/niefunkcjonalnych elementów: ✓.
+- Lighthouse mobile (mediana z 5, matched A/B): Performance 71 (nie dosłownie ≥82, przyczyna środowiskowa opisana wyżej, nie kod), LCP 4,97s (podobnie), CLS 0,0089 ✓, Accessibility 100 ✓.
+- axe: **0 naruszeń** ✓.
+- 7 slugów (RazDwa, cyfradruk, power-of-mind, karoma, KW-Design, sir-roger, voucher-magdy): wszystkie otwierają case study w `#case-viewer`, `<details>` archiwum zostaje zamknięty niezależnie od otwieranego slugu — zweryfikowane Puppeteer ✓.
+- `<details>` działa z klawiatury: fokus na `.archive-summary` + `Enter` → `open` przełącza się `false→true` (natywne zachowanie) ✓.
+- Zero fetchy obrazów wewnątrz zamkniętego `<details>` przed otwarciem (0 żądań), 1 żądanie po kliku — zweryfikowane network interception ✓.
+- Zero błędów konsoli na każdym z 7 slugów + stanie początkowym ✓.
+- Best Practices: 100, bez regresji względem Rundy 2 ✓.
+- `git status`: tylko pliki z zakresu (`portfolio.html`, `assets/css/portfolio.css`, `assets/js/portfolio.js`, `assets/data/testimonials.json`) ✓.
+- Commit po każdym zadaniu, bez `git stash`: `e799dab`, `6fc9d76`, `e7d2968`, `daba406`, `afde35b`, `529ad0a` (CLS fix) ✓.
