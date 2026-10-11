@@ -37,6 +37,92 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
+  // Jedno pobranie assets/data/testimonials.json po idle (po pierwszym
+  // malowaniu, nie blokuje renderu) - obsluguje opinie (items) i przycisk
+  // CV (cvUrl), zeby nie robic dwoch zadan do tego samego pliku.
+  function loadSiteData() {
+    return fetch('assets/data/testimonials.json')
+      .then(r => (r.ok ? r.json() : { cvUrl: '', items: [] }))
+      .catch(() => ({ cvUrl: '', items: [] }));
+  }
+
+  const siteDataPromise = new Promise(resolve => {
+    const run = () => loadSiteData().then(resolve);
+    if ('requestIdleCallback' in window) {
+      requestIdleCallback(run, { timeout: 2000 });
+    } else {
+      setTimeout(run, 1500);
+    }
+  });
+
+  // Renderuje sekcje opinii TYLKO gdy jest co najmniej jeden wpis - przy
+  // pustej tablicy zaden element nie trafia do DOM (zero zarezerwowanego
+  // miejsca, zero przesuniecia layoutu). Wstawiana wzgledem #portfolio-section
+  // (siatka 4 glownych projektow), nie wzgledem #case-viewer.
+  function renderTestimonials(items) {
+    if (!items || !items.length) return;
+
+    const section = document.createElement('section');
+    section.id = 'testimonials-section';
+    section.className = 'testimonials-section';
+
+    const container = document.createElement('div');
+    container.className = 'container';
+
+    const h2 = document.createElement('h2');
+    h2.className = 'section-title';
+    h2.textContent = 'Co mówią klienci';
+    container.appendChild(h2);
+
+    const grid = document.createElement('div');
+    grid.className = 'testimonials-grid';
+
+    items.forEach(item => {
+      const figure = document.createElement('figure');
+      figure.className = 'testimonial-card';
+
+      const quote = document.createElement('blockquote');
+      quote.className = 'testimonial-quote';
+      quote.textContent = item.quote || '';
+      figure.appendChild(quote);
+
+      const caption = document.createElement('figcaption');
+      caption.className = 'testimonial-caption';
+
+      const who = document.createElement('strong');
+      who.textContent = item.name || '';
+      caption.appendChild(who);
+
+      const roleCompany = [item.role, item.company].filter(Boolean).join(' · ');
+      if (roleCompany) {
+        caption.appendChild(document.createTextNode(', ' + roleCompany));
+      }
+
+      if (item.project) {
+        const project = document.createElement('span');
+        project.className = 'testimonial-project';
+        project.textContent = item.project;
+        caption.appendChild(document.createTextNode(' — '));
+        caption.appendChild(project);
+      }
+
+      figure.appendChild(caption);
+      grid.appendChild(figure);
+    });
+
+    container.appendChild(grid);
+    section.appendChild(container);
+
+    const portfolioSection = document.getElementById('portfolio-section');
+    if (portfolioSection && portfolioSection.parentNode) {
+      portfolioSection.parentNode.insertBefore(section, portfolioSection.nextSibling);
+    }
+  }
+
+  siteDataPromise.then(data => {
+    renderTestimonials(data.items);
+  });
+
   const projectPages = {
     'voucher-magdy': 'projects/voucher-salon-magdy',
     'karoma': 'projects/karoma',
