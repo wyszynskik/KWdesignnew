@@ -12,6 +12,24 @@
     margin-bottom: var(--space-10, 2.5rem);
 }
 
+.archive-details {
+    max-width: 1040px;
+    margin: 0 auto;
+}
+
+.archive-summary {
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 0.95rem;
+    color: var(--portfolio-text-accent);
+    padding: 12px 0;
+    width: fit-content;
+}
+
+.archive-details[open] .archive-summary {
+    margin-bottom: var(--space-6, 1.5rem);
+}
+
 .archive-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));

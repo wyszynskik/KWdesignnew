@@ -4,6 +4,11 @@ document.addEventListener('DOMContentLoaded', () => {
     yearSpan.textContent = new Date().getFullYear();
   }
 
+  const archiveCount = document.querySelector('.archive-count');
+  if (archiveCount) {
+    archiveCount.textContent = document.querySelectorAll('.archive-grid .portfolio-new-card').length;
+  }
+
   const burger = document.querySelector('.hamburger');
   const navList = document.querySelector('.nav-list');
   if (burger && navList) {
