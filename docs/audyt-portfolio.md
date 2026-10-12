@@ -536,3 +536,34 @@ WCAG 2.5.3 (Label in Name): nazwa dostępna (`aria-label`) musi zawierać widocz
   - „Zobacz aplikację na żywo – Raz Dwa Druk"
 
 Widoczny tekst (treść) niezmieniony. Po zmianie detektor zgłasza **0 niezgodności** we wszystkich 7 plikach; axe nadal 0 we wszystkich 14 kontekstach.
+
+### Zadanie 8 — weryfikacja końcowa i definicja done
+
+**axe-core (wcag2a/2aa/21a/21aa/best-practice) — stan końcowy:**
+
+| | color-contrast | heading-order | landmark-one-main | scrollable | label-mismatch | **Σ** |
+|---|---|---|---|---|---|---|
+| 7× viewer `/portfolio#slug` | 0 | 0 | 0 | 0 | 0 | **0** |
+| 7× standalone `projects/<slug>` | 0 | 0 | 0 | 0 | 0 | **0** |
+| bare `/portfolio` | 0 | 0 | 0 | 0 | 0 | **0** |
+
+**Lighthouse Accessibility = 100** na wszystkich testowanych celach: `/portfolio`, viewer (karoma, RazDwa), standalone (karoma, power-of-mind, cyfradruk).
+
+**Nawigacja poprzedni/następny:** działa. Viewer: `/portfolio#RazDwa` → „następny" → `#karoma` (hash + treść się zmieniają), „poprzedni" → `#RazDwa`. Standalone: linki `.kwcs-project-nav` wskazują `/portfolio#<slug>` (JS przepisuje je na sam hash w viewerze).
+
+**Brak zmian układu (zrzuty 390/1440, baza `origin/main` vs runda-c1, z pełnym doczytaniem obrazów):** różnice wysokości pełnej strony < 0,4% (karoma −19 px / 15269, power-of-mind 0 px, RazDwa −14 px, KW-Design −2 px, voucher 0 px). Porównanie wizualne pełnej strony karoma = identyczny układ (jedyna widoczna różnica to zamierzony ciemniejszy kolor akcentu kontrastu i mniejsze warianty WebP). *(Uwaga metodyczna: pierwszy zestaw zrzutów „przed" zaniżał wysokość, bo obrazy bez `width/height` i z `lazy` nie zdążyły się namalować w trybie fullPage — po dodaniu `width/height` obrazy rezerwują miejsce niezawodnie; porównanie apples-to-apples zrobiono na świeżym worktree `origin/main`.)*
+
+**Konsola:** jedyny komunikat to `net::ERR_TUNNEL_CONNECTION_FAILED` dla `googletagmanager.com` (GA4) — blokada proxy sandboxa, artefakt środowiska; w produkcji zasób się ładuje. Zero NOWYCH błędów wprowadzonych tą rundą.
+
+**Residual poza zakresem (do przyszłej rundy):** w viewerze przycisk zamykający wstrzykiwany przez `portfolio.js` — `<button class="close-button" aria-label="Zamknij case study">← Wróć do listy projektów</button>` — ma niezgodność WCAG 2.5.3 (widoczny tekst „← Wróć do listy projektów" ⊄ aria-label „Zamknij case study"). Element pochodzi z **`portfolio.js` (poza zakresem tej rundy)** i jest wcześniej istniejący; nie obniża wyniku Lighthouse a11y (100). Reguła ujawnia się tylko przy uruchomieniu axe po ID reguły (jak robi to wewnętrznie Lighthouse), nie w przebiegu po tagach. **Sugerowana poprawka (1 linia w `portfolio.js`):** `aria-label="Wróć do listy projektów"` (lub ujednolicić z widocznym tekstem).
+
+**`git status`:** tylko pliki z zakresu — `assets/css/projects.css`, `projects/{7 case studies}.html`, 45 nowych wariantów w `assets/images/**`, `docs/audyt-portfolio.md`. Zero plików spoza zakresu (portfolio.html, portfolio.js, index-styles.css nietknięte).
+
+**Definicja done:**
+- [x] axe 0 dla 7 slugów w viewerze i 7 samodzielnych podstron.
+- [x] Łączna waga obrazów każdego case study >1 MB spada ≥50% (voucher −86%, KW-Design −91%, power-of-mind −53%, karoma −68%).
+- [x] Nawigacja poprzedni/następny działa.
+- [x] Zrzuty przed/po (390/1440): brak zmian układu.
+- [x] `/portfolio` bez regresji: Accessibility 100, axe 0, zero NOWYCH błędów konsoli (GA4 = artefakt proxy).
+- [x] `git status`: tylko pliki z zakresu. Raport dopisany do `docs/audyt-portfolio.md`.
+- [ ] (poza zakresem) `portfolio.js` close-button WCAG 2.5.3 — rekomendacja do osobnej rundy.
