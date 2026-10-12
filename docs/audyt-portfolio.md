@@ -513,3 +513,11 @@ Definicja done wymaga axe=0 także dla 7 samodzielnych podstron, gdzie oprócz c
 ### Zadanie 5 — power-of-mind.html: usunięcie zakomentowanego bloku — ZROBIONE
 
 Usunięto zakomentowany blok „SLOT GALERII BRANDINGU" (`<!-- … -->`) z 4 obrazami, których pliki nie istnieją w repo (`power-of-mind-logo/paleta/wizytowki/social.webp`). Blok był niewidoczny w renderze (komentarz HTML), więc zero zmian wizualnych. Po usunięciu wszystkie referencje `<img>` w power-of-mind.html rozwiązują się do istniejących plików (0 brakujących).
+
+### Zadanie 6 — podwójne dołączenie projects.css (karoma, razdwa) — POMINIĘTE (brak duplikatu)
+
+Weryfikacja na bazie `origin/main`: oba pliki mają **dokładnie jeden** element `<link rel="stylesheet" href="…/assets/css/projects.css">`:
+- `karoma.html`: linia 53 (jedyny `<link>`). Drugie trafienie `grep` to komentarz w treści (linia 560: „…gotowe w assets/css/projects.css (scope #case-karoma-pelne)").
+- `razdwa_aplikacja.html`: linia 51 (jedyny `<link>`). Drugie trafienie to komentarz (linia 732).
+
+`portfolio.css`/`kw-buttons.css`/Google Fonts ładowane po jednym razie; brak `@import` ani `rel="preload"` do projects.css. Podwójnego dołączenia nie ma (prawdopodobnie naprawione we wcześniejszej rundzie przed `1cccc53`). **Zgodnie z ustaleniem: zaraportowano i pominięto — bez zmian w kodzie.**
