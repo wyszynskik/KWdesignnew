@@ -602,3 +602,11 @@ Utworzono `assets/css/tokens.css` i podłączono jako pierwszy arkusz na 14 stro
 - **Decyzja: znaki wodne prezentacyjne.** `.service-num` („01/02/03" /uslugi) — numer przeniesiony do `::before { content: attr(data-num) }` (atrybut `data-num`, element pusty, `aria-hidden`). axe nie liczy go już jako tekstu treści; wygląd (opacity 0.12) bez zmian.
 
 **axe color-contrast = 0 na WSZYSTKICH 7 stronach Kroku 1** (/, /uslugi, /portfolio, /narzedzie, /polityka, /kontakt, /404) oraz 7 case studies (viewer+standalone). Pozostałe naruszenia (inne niż kolory, do zaraportowania): index — aria-prohibited-attr(2), heading-order(1); uslugi — heading-order(3), landmark-one-main(1), region(15); kontakt — landmark-one-main(1), region(13); 404 — landmark-one-main(1), region(1).
+
+### Krok 2 pkt 2 (dok.) — 8 wyróżnionych kolorów: podział A/B/C — ZROBIONE
+
+- **Grupa A (UI witryny → tokeny semantyczne):** `#d52b1e`→`--color-text-error` (#b91c1c); `#f59e0b`, `#ffd700`, `#78350f`→`--color-text-warning` (#b45309, 4.95:1). Złoto gwiazdek i brąz placeholdera zmieniły odcień na bursztyn (warunek kontrastu). `success` = #047857 (zieleń #10b981 złożona wcześniej).
+- **Grupa B (marka klienta w case study → twarde, scoped, komentarz):** `#10473f` zostaje w `projects/voucher-salon-magdy.html` („100 zł", marka voucher Salon Magdy), kontrast 10.53:1, z komentarzem HTML „kolor marki klienta, poza systemem tokenów". **Jedyna twarda wartość koloru tekstu w całym repo.**
+- **Grupa C (granat własny KW → token):** `#133b7b`, `#19356d`, `#194c92`→`--color-text-navy` (#133b7b, 10.83:1). Zachowany granatowy charakter viewera /portfolio i motywu /kontakt.
+
+**Grep twardych kolorów tekstu:** czysty we wszystkich arkuszach i HTML — **jedyny wynik to wyjątek Grupy B** (`projects/voucher-salon-magdy.html` #10473f). axe color-contrast = 0 na 7 stronach + 15 kontekstach case studies (viewer+standalone).

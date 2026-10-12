@@ -19,6 +19,8 @@
   --color-text-inverse: #ffffff;   /*  tekst na ciemnym/marki          */
   --color-text-success: #047857;   /*  5.48:1 — stan pozytywny         */
   --color-text-error:   #b91c1c;   /*  6.47:1 — błąd / stan negatywny  */
+  --color-text-warning: #b45309;   /*  4.95:1 — ostrzeżenie / bursztyn (marker, ocena, placeholder) */
+  --color-text-navy:    #133b7b;   /* 10.83:1 — granat własny KW (viewer /portfolio, motyw /kontakt) */
 
   /* — marka (NIE tekst): tła, przyciski, ikony, obramowania — */
   --color-brand:        #06b6d4;

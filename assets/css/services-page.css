@@ -954,7 +954,7 @@
 }
 
 .testimonial-rating {
-    color: #ffd700;
+    color: var(--color-text-warning);
     font-size: 1.25rem;
     margin-bottom: 16px;
 }
