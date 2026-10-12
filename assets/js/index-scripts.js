@@ -312,9 +312,15 @@ function initHeroTextAnimation() {
 
     if (!reduceMotion) {
         let i = 0;
-        heroTitle.querySelectorAll('.ht-line1, .ht-line2').forEach(function(line) {
+        const lines = heroTitle.querySelectorAll('.ht-line1, .ht-line2');
+        // Nazwa dostępna H1: złożona z tekstu linii przed rozbiciem na litery.
+        // aria-label trafia na <h1> (dozwolone), nie na generyczne <span> (aria-prohibited-attr).
+        const accessibleName = Array.prototype.map.call(lines, function(line) {
+            return line.textContent;
+        }).join('');
+        heroTitle.setAttribute('aria-label', accessibleName);
+        lines.forEach(function(line) {
             const text = line.textContent;
-            line.setAttribute('aria-label', text);
             line.textContent = '';
             [...text].forEach(function(char) {
                 const span = document.createElement('span');
