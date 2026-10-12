@@ -418,3 +418,152 @@ Przed pushem: `git merge-base --is-ancestor <hash> origin/main` dla commitów Ru
 **Deploy po pushu**: build GitHub Pages przeszedł `building`→`built` w ok. 10-20s (`gh api repos/.../pages/builds/latest`). Po zbudowaniu: `Last-Modified` na `/portfolio` zmienił się na czas tuż po pushu, HTML zawiera nowy H1 "Prowadzę projekty cyfrowe od zakresu do działającego wdrożenia" (stary "Wybrane realizacje" zniknął).
 
 **`https://kwyszynski.pl/portfolio#RazDwa`**: zweryfikowane Puppeteer na produkcji — `#case-viewer` wypełniony (39729 znaków HTML), zawiera węzeł `.kwcs-*` (treść case study RazDwa), zero błędów konsoli. ✓ działa.
+
+---
+
+## Runda C1 — dostępność i waga case studies (gałąź `runda-c1` od `origin/main`)
+
+**Cel:** poprawić dostępność i wagę 7 case studies ładowanych do `/portfolio`, bez zmiany treści i układu.
+**Zakres plików:** `projects/{razdwa_aplikacja,cyfradruk,power-of-mind,karoma,KW-Design,sir-roger,voucher-salon-magdy}.html`, `assets/css/projects.css`, `assets/images/` (tylko nowe warianty).
+**Poza zakresem:** `portfolio.html`, `portfolio.js`, `index-styles.css`, teksty, slugi, kolejność sekcji.
+
+**Metodyka:** statyczny serwer repo + Playwright/Chromium (DPR=1), `axe-core` 4.10.2 (tagi `wcag2a/2aa/21a/21aa/best-practice`). Każdy slug testowany w dwóch kontekstach: viewer `/portfolio#<slug>` (po wstrzyknięciu `section.kwcs`) oraz samodzielna podstrona `projects/<slug>`. Narzędzia poza repozytorium (scratchpad).
+
+### Zadanie 1 — baseline axe (stan PRZED zmianami)
+
+| Kontekst | Slug | Naruszenia axe (węzły) |
+|---|---|---|
+| viewer | voucher-magdy | color-contrast(19) |
+| standalone | voucher-magdy | color-contrast(22), landmark-one-main(1) |
+| viewer | karoma | color-contrast(14), heading-order(4) |
+| standalone | karoma | color-contrast(25), heading-order(4), landmark-one-main(1) |
+| viewer | power-of-mind | color-contrast(17), heading-order(4) |
+| standalone | power-of-mind | color-contrast(28), heading-order(4), landmark-one-main(1) |
+| viewer | KW-Design | color-contrast(9), heading-order(1) |
+| standalone | KW-Design | color-contrast(16), heading-order(1), landmark-one-main(1) |
+| viewer | sir-roger | color-contrast(4) |
+| standalone | sir-roger | color-contrast(7), landmark-one-main(1) |
+| viewer | RazDwa | color-contrast(18), heading-order(4) |
+| standalone | RazDwa | color-contrast(29), heading-order(4), landmark-one-main(1) |
+| viewer | cyfradruk | color-contrast(13), heading-order(5) |
+| standalone | cyfradruk | color-contrast(24), heading-order(5), landmark-one-main(1), scrollable-region-focusable(1) |
+| **portfolio (bare)** | — | **0** |
+
+**Typy naruszeń do naprawy:**
+- `color-contrast` — wszędzie (zadanie 2, w `projects.css`).
+- `heading-order` — karoma, power-of-mind, KW-Design, RazDwa, cyfradruk (zadanie 3).
+- `landmark-one-main` — wszystkie 7 podstron standalone (brak `<main>`); nie występuje w viewerze (tam `<main>` daje `portfolio.html`). Objęte definicją done (axe 0 dla podstron) → naprawa strukturalna bez zmiany wyglądu.
+- `scrollable-region-focusable` — cyfradruk standalone, `.user-flow--6` (region przewijalny bez fokusu klawiaturą) → `tabindex="0"`.
+
+**Błędy konsoli:** jedyny błąd na KAŻDEJ stronie (łącznie z bare `/portfolio`) to `net::ERR_TUNNEL_CONNECTION_FAILED` dla `https://www.googletagmanager.com/gtag/js?id=G-TG0HE09DE7` — GA4 blokowany przez proxy sandboxa. Artefakt środowiska testowego; w produkcji zasób ładuje się poprawnie (zweryfikowane w Rundzie 3). Nie jest powodowany zmianami tej rundy; cel „zero błędów konsoli" dotyczy braku NOWYCH błędów wprowadzonych kodem.
+
+### Zadanie 2 — kontrast (color-contrast) — ZROBIONE
+
+Dodano blok na końcu `projects.css` nadpisujący **tylko kolor tekstu** (property `color`) dla selektorów zgłoszonych przez axe. Wartości jak w `portfolio.css`:
+- **#0e7490** (accent, 5.36:1 na #fff): `.kwcs-hero-head .eyebrow`, `.contribution-step`, `.kwcs-card h3/h4`, `.ux-decision-box .ux-label`, `.razdwa-summary-cell .label`, `.razdwa-chapter-rail-label`, `.contribution-cell--solo h3/h4`, `.kwcs-back-btn`, `.kwcs-footer a` (link Polityka prywatności). Zastępuje `#06b6d4` (2.42), `#0284c7` (4.09), `#0292AA` (3.68).
+- **#52606d** (subtle, 6.06:1 na #fff): `.ui-swatch-hex`, `.ui-type-label`, `.ui-type-sample.is-caption`, rail-label dla karoma/pom/cyfra. Zastępuje `#94a3b8` (2.56).
+
+Tła/obramowania/ikony/gradienty z tymi hexami **nietknięte** (border-left `#0ea5e9` na `.ux-decision-box`, border `#0284c7` na `.kwcs-cta--ghost`, gradienty `#06b6d4→#0284c7`, duże `.razdwa-stat-num` które przechodziły próg 3:1). Zmiana jest czysto kolorystyczna → zero wpływu na układ.
+
+**Strony spoza zakresu ładujące `projects.css`:** `portfolio.html` (viewer — objęty testami) oraz `projects/wizualizacje.html`. Zrzuty przed/po potwierdzają brak regresji (patrz zadanie 8).
+
+**Wynik axe po zadaniu 2:** `color-contrast` = **0** we wszystkich 14 kontekstach (7 viewer + 7 standalone) oraz bare `/portfolio`. Pozostają: `heading-order` (5 slugów), `landmark-one-main` (7 podstron), `scrollable-region-focusable` (cyfradruk) — kolejne zadania.
+
+### Zadanie 3 — heading-order — ZROBIONE
+
+Wszystkie naruszenia `heading-order` dotyczyły tytułów kart `.ux-decision-box`, które jako `<h4>` następowały bezpośrednio po `<h2>` sekcji (przeskok h2→h4 z pominięciem h3). Zamieniono `<h4>`→`<h3>` **wyłącznie wewnątrz `.ux-decision-box`** (skrypt z kontrolą zagnieżdżenia `<div>`), w 5 plikach: karoma (14), power-of-mind (11), KW-Design (4), razdwa_aplikacja (18), cyfradruk (14). Nagłówki `.features-box h4` i inne (poprzedzone h3) pozostały bez zmian.
+
+**Wygląd bez zmian:** reguła `.ux-decision-box h3, .ux-decision-box h4 { ... }` jest wspólna dla obu poziomów (ta sama specyficzność nadpisuje bazowe reguły elementów), więc font/rozmiar/kolor identyczne.
+
+**Wynik axe po zadaniu 3:** `heading-order` = **0**. Wszystkie 7 kontekstów **viewer = 0 naruszeń**. W standalone pozostają tylko `landmark-one-main` (7 podstron) i `scrollable-region-focusable` (cyfradruk) — naprawa w ramach dopełnienia definicji done.
+
+### Zadanie 3b — landmark-one-main + scrollable-region-focusable (dopełnienie DoD) — ZROBIONE
+
+Definicja done wymaga axe=0 także dla 7 samodzielnych podstron, gdzie oprócz color-contrast/heading-order axe zgłaszał:
+- **landmark-one-main** (7 podstron): brak znacznika `<main>`. Każda podstrona ma układ `<nav breadcrumb>` + `<section class="kwcs">` + `<nav project-nav>` + `<footer>`. Owinięto **`<section class="kwcs">` w `<main>`** (dokładnie jeden `<main>` na stronę).
+  - **Bez wpływu na viewer:** `portfolio.js` wyciąga do viewera tylko `section.kwcs` (`querySelector`), więc opakowujący `<main>` nie trafia do `/portfolio` — nie powstaje drugi `<main>` obok istniejącego `<main>` w `portfolio.html` (linia 114). Dlatego użyto opakowania, nie `role="main"` na sekcji.
+  - **Bez wpływu na układ:** `body` nie jest flex/grid, brak selektorów `body > .kwcs`; reguły pozycjonujące to `#case-… > .child` (dzieci sekcji, niezmienione), a rail chapter jest przenoszony JS-em do `<body>`.
+- **scrollable-region-focusable** (cyfradruk, `.user-flow--6`): dodano `tabindex="0"` — region przewijalny dostępny z klawiatury. W viewerze element nie przepełnia kontenera (brak scrolla), `tabindex` nieszkodliwy.
+
+**Wynik axe po zadaniu 3b:** **0 naruszeń** we wszystkich 14 kontekstach (7 viewer + 7 standalone) oraz bare `/portfolio`. Jedyny komunikat konsoli to GA4 blokowany przez proxy (artefakt środowiska).
+
+### Zadanie 4 — obrazy (width/height/lazy, WebP, przeskalowanie >2×) — ZROBIONE
+
+**Atrybuty:** każdy `<img>` ma teraz `width`, `height` (intrynsyczne wymiary serwowanego pliku → zero CLS; CSS kontenerów ma `height:auto`/`max-width:100%`) i `loading="lazy"`. Wyjątek: **pierwszy obraz hero** na każdej podstronie — bez `lazy`, z `fetchpriority="high"` (tylko standalone; w viewerze case study ładuje się po kliknięciu). Reużywany `POWEROFMIND_HERO_1` traktowany per-tag: wystąpienie hero = eager, wystąpienie w galerii = lazy.
+
+**Nowe warianty WebP (45 plików, narzędzie ImageMagick poza repo, jakość 82):**
+- **Przeskalowanie** obrazów >2× rozmiaru wyświetlanego do `min(natural, 2×wyświetlany)` — docelowa szerokość dla retiny.
+- **PNG/JPG → WebP** (KWDESIGN_HERO.png, KAROMA_v1-3/FINALL/BUILD .png, FLY_BASKET_KAROMA.jpg, Roger.png, index-about/footer/portfolio-footer .png).
+- Nazwy ASCII, kebab-case, sufiks `-<W>w.webp`. **Oryginały pozostają** na dysku (grep repo potwierdził współdzielenie: `Roger.png` używany też w `wizualizacje.html`/`portfolio.html`, obrazy `index-*`/`portfolio-*` w `docs/case-study/kwdesign-screens.html` — te odwołania spoza zakresu dalej wskazują oryginały).
+
+**Łączna waga obrazów na case study (przed → po):**
+
+| Case study | przed | po | zmiana | >1 MB → −50%? |
+|---|---|---|---|---|
+| voucher-magdy | 2298 KB | 322 KB | −86% | ✅ |
+| KW-Design | 2578 KB | 229 KB | −91% | ✅ |
+| power-of-mind | 1024 KB | 480 KB | −53% | ✅ |
+| karoma | 1013 KB | 326 KB | −68% | ✅ (granica 1 MB) |
+| RazDwa | 787 KB | 663 KB | −16% | <1 MB (n/d) |
+| cyfradruk | 148 KB | 57 KB | −61% | <1 MB (n/d) |
+| sir-roger | 27 KB | 3 KB | −87% | <1 MB (n/d) |
+
+**Wynik axe po zadaniu 4:** 0 naruszeń we wszystkich 14 kontekstach (alt-teksty zachowane). Wszystkie referencje obrazów rozwiązują się do istniejących plików (jedyne „brakujące" to 4 obrazy w zakomentowanym bloku power-of-mind — usuwane w zadaniu 5).
+
+### Zadanie 5 — power-of-mind.html: usunięcie zakomentowanego bloku — ZROBIONE
+
+Usunięto zakomentowany blok „SLOT GALERII BRANDINGU" (`<!-- … -->`) z 4 obrazami, których pliki nie istnieją w repo (`power-of-mind-logo/paleta/wizytowki/social.webp`). Blok był niewidoczny w renderze (komentarz HTML), więc zero zmian wizualnych. Po usunięciu wszystkie referencje `<img>` w power-of-mind.html rozwiązują się do istniejących plików (0 brakujących).
+
+### Zadanie 6 — podwójne dołączenie projects.css (karoma, razdwa) — POMINIĘTE (brak duplikatu)
+
+Weryfikacja na bazie `origin/main`: oba pliki mają **dokładnie jeden** element `<link rel="stylesheet" href="…/assets/css/projects.css">`:
+- `karoma.html`: linia 53 (jedyny `<link>`). Drugie trafienie `grep` to komentarz w treści (linia 560: „…gotowe w assets/css/projects.css (scope #case-karoma-pelne)").
+- `razdwa_aplikacja.html`: linia 51 (jedyny `<link>`). Drugie trafienie to komentarz (linia 732).
+
+`portfolio.css`/`kw-buttons.css`/Google Fonts ładowane po jednym razie; brak `@import` ani `rel="preload"` do projects.css. Podwójnego dołączenia nie ma (prawdopodobnie naprawione we wcześniejszej rundzie przed `1cccc53`). **Zgodnie z ustaleniem: zaraportowano i pominięto — bez zmian w kodzie.**
+
+### Zadanie 7 — label-content-name-mismatch — ZROBIONE
+
+WCAG 2.5.3 (Label in Name): nazwa dostępna (`aria-label`) musi zawierać widoczny tekst elementu. axe klasyfikuje tę regułę jako *incomplete/needs-review* (nie „violation"), dlatego nie pojawiała się w licznikach naruszeń — wykryta własnym detektorem (widoczny tekst ⊄ aria-label). Znaleziono i uzgodniono **27** elementów:
+
+- **Linki rail (spis treści, `.razdwa-chapter-link`):** `aria-label` ustawiony na **widoczny tekst** (np. `aria-label="Problem"`), a pełny opis został w atrybucie `title` (tooltip). Dotyczy pom (8), razdwa (9), voucher (1 — „Koncepcja"), sir-roger (1 — „Identyfikacja"). Linki już zgodne (np. karoma, gdzie aria-label zawierał widoczny tekst) pozostawiono bez zmian. Tekst linków nie jest ukrywany CSS-em, więc nazwa jest stabilna na każdym breakpoincie.
+- **Przyciski CTA:** `aria-label` przepisany tak, by **zaczynał się od dokładnego widocznego tekstu**, z zachowaniem kontekstu:
+  - „Zapytaj o projekt vouchera" (×2, było „Skontaktuj się w sprawie projektu vouchera")
+  - „Obejrzyj stronę sklepu Karoma" (było „Zobacz sklep Karoma")
+  - „Zobacz sklep na żywo – Karoma" (było „Otwórz sklep Karoma na żywo")
+  - „Napisz do mnie w sprawie projektu brandingu" (było „Napisz do Karola…")
+  - „Zobacz wersję archiwalną strony Power of Mind" (×2)
+  - „Zobacz aplikację na żywo – Raz Dwa Druk"
+
+Widoczny tekst (treść) niezmieniony. Po zmianie detektor zgłasza **0 niezgodności** we wszystkich 7 plikach; axe nadal 0 we wszystkich 14 kontekstach.
+
+### Zadanie 8 — weryfikacja końcowa i definicja done
+
+**axe-core (wcag2a/2aa/21a/21aa/best-practice) — stan końcowy:**
+
+| | color-contrast | heading-order | landmark-one-main | scrollable | label-mismatch | **Σ** |
+|---|---|---|---|---|---|---|
+| 7× viewer `/portfolio#slug` | 0 | 0 | 0 | 0 | 0 | **0** |
+| 7× standalone `projects/<slug>` | 0 | 0 | 0 | 0 | 0 | **0** |
+| bare `/portfolio` | 0 | 0 | 0 | 0 | 0 | **0** |
+
+**Lighthouse Accessibility = 100** na wszystkich testowanych celach: `/portfolio`, viewer (karoma, RazDwa), standalone (karoma, power-of-mind, cyfradruk).
+
+**Nawigacja poprzedni/następny:** działa. Viewer: `/portfolio#RazDwa` → „następny" → `#karoma` (hash + treść się zmieniają), „poprzedni" → `#RazDwa`. Standalone: linki `.kwcs-project-nav` wskazują `/portfolio#<slug>` (JS przepisuje je na sam hash w viewerze).
+
+**Brak zmian układu (zrzuty 390/1440, baza `origin/main` vs runda-c1, z pełnym doczytaniem obrazów):** różnice wysokości pełnej strony < 0,4% (karoma −19 px / 15269, power-of-mind 0 px, RazDwa −14 px, KW-Design −2 px, voucher 0 px). Porównanie wizualne pełnej strony karoma = identyczny układ (jedyna widoczna różnica to zamierzony ciemniejszy kolor akcentu kontrastu i mniejsze warianty WebP). *(Uwaga metodyczna: pierwszy zestaw zrzutów „przed" zaniżał wysokość, bo obrazy bez `width/height` i z `lazy` nie zdążyły się namalować w trybie fullPage — po dodaniu `width/height` obrazy rezerwują miejsce niezawodnie; porównanie apples-to-apples zrobiono na świeżym worktree `origin/main`.)*
+
+**Konsola:** jedyny komunikat to `net::ERR_TUNNEL_CONNECTION_FAILED` dla `googletagmanager.com` (GA4) — blokada proxy sandboxa, artefakt środowiska; w produkcji zasób się ładuje. Zero NOWYCH błędów wprowadzonych tą rundą.
+
+**Residual poza zakresem (do przyszłej rundy):** w viewerze przycisk zamykający wstrzykiwany przez `portfolio.js` — `<button class="close-button" aria-label="Zamknij case study">← Wróć do listy projektów</button>` — ma niezgodność WCAG 2.5.3 (widoczny tekst „← Wróć do listy projektów" ⊄ aria-label „Zamknij case study"). Element pochodzi z **`portfolio.js` (poza zakresem tej rundy)** i jest wcześniej istniejący; nie obniża wyniku Lighthouse a11y (100). Reguła ujawnia się tylko przy uruchomieniu axe po ID reguły (jak robi to wewnętrznie Lighthouse), nie w przebiegu po tagach. **Sugerowana poprawka (1 linia w `portfolio.js`):** `aria-label="Wróć do listy projektów"` (lub ujednolicić z widocznym tekstem).
+
+**`git status`:** tylko pliki z zakresu — `assets/css/projects.css`, `projects/{7 case studies}.html`, 45 nowych wariantów w `assets/images/**`, `docs/audyt-portfolio.md`. Zero plików spoza zakresu (portfolio.html, portfolio.js, index-styles.css nietknięte).
+
+**Definicja done:**
+- [x] axe 0 dla 7 slugów w viewerze i 7 samodzielnych podstron.
+- [x] Łączna waga obrazów każdego case study >1 MB spada ≥50% (voucher −86%, KW-Design −91%, power-of-mind −53%, karoma −68%).
+- [x] Nawigacja poprzedni/następny działa.
+- [x] Zrzuty przed/po (390/1440): brak zmian układu.
+- [x] `/portfolio` bez regresji: Accessibility 100, axe 0, zero NOWYCH błędów konsoli (GA4 = artefakt proxy).
+- [x] `git status`: tylko pliki z zakresu. Raport dopisany do `docs/audyt-portfolio.md`.
+- [ ] (poza zakresem) `portfolio.js` close-button WCAG 2.5.3 — rekomendacja do osobnej rundy.

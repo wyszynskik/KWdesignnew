@@ -70,7 +70,8 @@
     </div>
   </nav>
 
-  <section class="kwcs" id="case-razdwa-pelne" aria-label="Pełne Case Study: Raz Dwa Druk">
+  <main>
+    <section class="kwcs" id="case-razdwa-pelne" aria-label="Pełne Case Study: Raz Dwa Druk">
 
     <!-- ============================================================
          Chapter rail — sticky TOC z internal anchors
@@ -81,15 +82,15 @@
   <li><a class="razdwa-chapter-link" href="#razdwa-summary" data-rail-target="razdwa-summary" title="W skrócie" aria-label="W skrócie">W skrócie</a></li>
   <li><a class="razdwa-chapter-link" href="#razdwa-kontekst" data-rail-target="razdwa-kontekst" title="Problem: wolna wycena i ryzyko pomyłki" aria-label="Problem: wolna wycena i ryzyko pomyłki">Problem</a></li>
   <li><a class="razdwa-chapter-link" href="#razdwa-rola" data-rail-target="razdwa-rola" title="Moja rola" aria-label="Moja rola">Moja rola</a></li>
-  <li><a class="razdwa-chapter-link" href="#razdwa-przebieg" data-rail-target="razdwa-przebieg" title="Od diagnozy do przekazania — etapy projektu" aria-label="Od diagnozy do przekazania — etapy projektu">Przebieg projektu</a></li>
-  <li><a class="razdwa-chapter-link" href="#razdwa-zakres" data-rail-target="razdwa-zakres" title="Zakres, ryzyka i gotowość do startu" aria-label="Zakres, ryzyka i gotowość do startu">Zakres i ryzyka</a></li>
-  <li><a class="razdwa-chapter-link" href="#razdwa-decyzje" data-rail-target="razdwa-decyzje" title="Trzy decyzje: tanie utrzymanie i prosta obsługa" aria-label="Trzy decyzje: tanie utrzymanie i prosta obsługa">Kluczowe decyzje</a></li>
-  <li><a class="razdwa-chapter-link" href="#razdwa-ux" data-rail-target="razdwa-ux" title="Wycena w kilku krokach" aria-label="Wycena w kilku krokach">Szybka wycena</a></li>
-  <li><a class="razdwa-chapter-link" href="#razdwa-logika" data-rail-target="razdwa-logika" title="Najtrudniejsze wyceny liczą się same" aria-label="Najtrudniejsze wyceny liczą się same">Automatyzacja CAD</a></li>
-  <li><a class="razdwa-chapter-link" href="#razdwa-cennik" data-rail-target="razdwa-cennik" title="Właścicielka zmienia ceny sama" aria-label="Właścicielka zmienia ceny sama">Samodzielny cennik</a></li>
-  <li><a class="razdwa-chapter-link" href="#razdwa-architektura" data-rail-target="razdwa-architektura" title="Bez serwera i stałych opłat" aria-label="Bez serwera i stałych opłat">Lekka architektura</a></li>
-  <li><a class="razdwa-chapter-link" href="#razdwa-lessons" data-rail-target="razdwa-lessons" title="Czego nauczyło mnie to wdrożenie" aria-label="Czego nauczyło mnie to wdrożenie">Wnioski</a></li>
-  <li><a class="razdwa-chapter-link" href="#razdwa-rezultat" data-rail-target="razdwa-rezultat" title="Co zmieniło się w drukarni" aria-label="Co zmieniło się w drukarni">Rezultat</a></li>
+  <li><a class="razdwa-chapter-link" href="#razdwa-przebieg" data-rail-target="razdwa-przebieg" title="Od diagnozy do przekazania — etapy projektu" aria-label="Przebieg projektu">Przebieg projektu</a></li>
+  <li><a class="razdwa-chapter-link" href="#razdwa-zakres" data-rail-target="razdwa-zakres" title="Zakres, ryzyka i gotowość do startu" aria-label="Zakres i ryzyka">Zakres i ryzyka</a></li>
+  <li><a class="razdwa-chapter-link" href="#razdwa-decyzje" data-rail-target="razdwa-decyzje" title="Trzy decyzje: tanie utrzymanie i prosta obsługa" aria-label="Kluczowe decyzje">Kluczowe decyzje</a></li>
+  <li><a class="razdwa-chapter-link" href="#razdwa-ux" data-rail-target="razdwa-ux" title="Wycena w kilku krokach" aria-label="Szybka wycena">Szybka wycena</a></li>
+  <li><a class="razdwa-chapter-link" href="#razdwa-logika" data-rail-target="razdwa-logika" title="Najtrudniejsze wyceny liczą się same" aria-label="Automatyzacja CAD">Automatyzacja CAD</a></li>
+  <li><a class="razdwa-chapter-link" href="#razdwa-cennik" data-rail-target="razdwa-cennik" title="Właścicielka zmienia ceny sama" aria-label="Samodzielny cennik">Samodzielny cennik</a></li>
+  <li><a class="razdwa-chapter-link" href="#razdwa-architektura" data-rail-target="razdwa-architektura" title="Bez serwera i stałych opłat" aria-label="Lekka architektura">Lekka architektura</a></li>
+  <li><a class="razdwa-chapter-link" href="#razdwa-lessons" data-rail-target="razdwa-lessons" title="Czego nauczyło mnie to wdrożenie" aria-label="Wnioski">Wnioski</a></li>
+  <li><a class="razdwa-chapter-link" href="#razdwa-rezultat" data-rail-target="razdwa-rezultat" title="Co zmieniło się w drukarni" aria-label="Rezultat">Rezultat</a></li>
 </ul>
     </nav>
 
@@ -123,15 +124,7 @@
       <div class="wrap inner">
         <div class="hero-content-grid">
           <div class="hero-image">
-            <img
-              class="cover"
-              src="/assets/images/razdwa/Ekran_RAZDWA_KWdesign.webp"
-              alt="Raz Dwa Druk — system cyfrowy drukarni"
-              loading="lazy"
-              decoding="async"
-              width="1450"
-              height="1306"
-              data-caption="Raz Dwa Druk — kompletny kalkulator wycen B2B">
+            <img class="cover" src="/assets/images/razdwa/Ekran_RAZDWA_KWdesign.webp" fetchpriority="high" alt="Raz Dwa Druk — system cyfrowy drukarni" decoding="async" width="1450" height="1306" data-caption="Raz Dwa Druk — kompletny kalkulator wycen B2B">
           </div>
         </div>
    
@@ -187,11 +180,11 @@
 
     <div class="ux-decision-grid">
       <div class="ux-decision-box">
-        <h4>Co spowalniało i kosztowało</h4>
+        <h3>Co spowalniało i kosztowało</h3>
         <p>Najtrudniejsze były zlecenia CAD: wiele parametrów, presja czasu i wysoki koszt pomyłki przy obsłudze klienta na miejscu. Ręczna wycena potrafiła zajmować nawet godzinę.</p>
       </div>
       <div class="ux-decision-box">
-        <h4>Dwóch interesariuszy, dwie różne potrzeby</h4>
+        <h3>Dwóch interesariuszy, dwie różne potrzeby</h3>
         <p><strong>Operator (codzienny użytkownik):</strong> potrzebował prostego, szybkiego interfejsu odpornego na błędy. <strong>Właścicielka (decyzje o cenach i budżecie):</strong> potrzebowała kontroli nad cennikiem i możliwości samodzielnej edycji stawek. Pogodzenie tych dwóch perspektyw wyznaczyło zakres projektu.</p>
       </div>
     </div>
@@ -262,7 +255,7 @@
          width/height realnymi wymiarami (teraz responsywny bez sztywnych wymiarów). -->
     <div class="kwcs-gallery-grid kwcs-gallery-grid--single razdwa-miro">
       <div class="gallery-item">
-        <img class="lightbox-trigger" src="/assets/images/razdwa/Miro_RAZ DWA.webp" alt="Mapa procesu wyceny AS-IS → TO-BE zbudowana w Miro" loading="lazy" data-caption="Proces wyceny przed i po wdrożeniu narzędzia — bloki decyzyjne w Miro">
+        <img class="lightbox-trigger" src="/assets/images/razdwa/Miro_RAZ DWA.webp" height="590" width="304" alt="Mapa procesu wyceny AS-IS → TO-BE zbudowana w Miro" loading="lazy" data-caption="Proces wyceny przed i po wdrożeniu narzędzia — bloki decyzyjne w Miro">
         <p class="img-desc"><strong>Mapa procesu (Miro):</strong> etapy i bloki decyzyjne, na których oparłem zakres pierwszej wersji — od diagnozy pracy przy ladzie po docelowy przepływ wyceny.</p>
       </div>
     </div>
@@ -318,17 +311,17 @@
     <div class="ux-decision-grid ux-decision-grid--trio">
       <div class="ux-decision-box">
         <div class="ux-label">Krok 1 · Zbieranie sygnałów</div>
-        <h4>Potrzeby z realnej pracy</h4>
+        <h3>Potrzeby z realnej pracy</h3>
         <p>Zgłoszenia od właścicielki i obserwacje pracy przy ladzie zbierałem w jednym miejscu, zamiast gubić je w bieżącej obsłudze.</p>
       </div>
       <div class="ux-decision-box">
         <div class="ux-label">Krok 2 · Przełożenie na zakres</div>
-        <h4>Z życzenia w konkretny zakres</h4>
+        <h3>Z życzenia w konkretny zakres</h3>
         <p>Każdy sygnał zamieniałem na wykonalny element zakresu — z jasnym „po co", zamiast luźnej listy życzeń.</p>
       </div>
       <div class="ux-decision-box">
         <div class="ux-label">Krok 3 · Kolejność wdrożeń</div>
-        <h4>Iteracje przed startem</h4>
+        <h3>Iteracje przed startem</h3>
         <p>Ustalałem, co wchodzi najpierw, i wdrażałem jako kolejne iteracje — tak, aby dodatkowe potrzeby nie blokowały dostarczenia pierwszej wersji.</p>
       </div>
     </div>
@@ -344,7 +337,7 @@
     <div class="ux-decision-grid">
       <div class="ux-decision-box">
         <div class="ux-label">W zakresie</div>
-        <h4>Co objęła pierwsza wersja</h4>
+        <h3>Co objęła pierwsza wersja</h3>
         <ul>
           <li>Kalkulator wyceny usług z parametrami i wyceną na żywo</li>
           <li>Wycena plików CAD (rozpoznanie formatu, stawka per plik / per mb)</li>
@@ -356,7 +349,7 @@
       </div>
       <div class="ux-decision-box">
         <div class="ux-label">Poza zakresem</div>
-        <h4>Co świadomie zostało poza pierwszą wersją</h4>
+        <h3>Co świadomie zostało poza pierwszą wersją</h3>
         <ul>
           <li>Klasyczny backend i dedykowany serwer (świadomie odrzucone — patrz Decyzja 2)</li>
           <li>Gotowy system e-commerce / sklep online (świadomie odrzucone — patrz Decyzja 1)</li>
@@ -372,17 +365,17 @@
     <div class="ux-decision-grid ux-decision-grid--trio">
       <div class="ux-decision-box">
         <div class="ux-label">Ryzyko 1</div>
-        <h4>Błąd w logice cenowej</h4>
+        <h3>Błąd w logice cenowej</h3>
         <p><strong>Wpływ:</strong> zła cena to realny koszt finansowy i utrata zaufania klienta. <strong>Mitygacja:</strong> pakiet testów automatycznych logiki cenowej, uruchamiany przy każdej zmianie cennika.</p>
       </div>
       <div class="ux-decision-box">
         <div class="ux-label">Ryzyko 2</div>
-        <h4>Jakość wycen CAD</h4>
+        <h3>Jakość wycen CAD</h3>
         <p><strong>Wpływ:</strong> wiele parametrów i wyjątków formatowych przy ręcznym liczeniu dawało największe ryzyko pomyłki wymiarowej. <strong>Mitygacja:</strong> automatyczne rozpoznawanie parametrów pliku i obsługa wyjątków formatowych.</p>
       </div>
       <div class="ux-decision-box">
         <div class="ux-label">Ryzyko 3</div>
-        <h4>Adopcja przy ladzie</h4>
+        <h3>Adopcja przy ladzie</h3>
         <p><strong>Wpływ:</strong> narzędzie na starszym sprzęcie, pod presją czasu, mogło spowalniać zamiast pomagać. <strong>Mitygacja:</strong> prosty, jednoekranowy interfejs odporny na błędy, dopasowany do starszego sprzętu.</p>
       </div>
     </div>
@@ -391,7 +384,7 @@
     <div class="ux-decision-grid">
       <div class="ux-decision-box">
         <div class="ux-label">Zrobione przed startem</div>
-        <h4>Gotowe do Go-Live</h4>
+        <h3>Gotowe do Go-Live</h3>
         <ul>
           <li>Logika wyceny (usługi + CAD) zaimplementowana i pokryta testami automatycznymi</li>
           <li>Panel administracyjny cen gotowy (edycja stawek, warianty)</li>
@@ -402,7 +395,7 @@
       </div>
       <div class="ux-decision-box">
         <div class="ux-label">Pozostaje do startu</div>
-        <h4>Przed / na starcie produkcyjnym</h4>
+        <h3>Przed / na starcie produkcyjnym</h3>
         <ul>
           <li>Pełny start produkcyjny przy ladzie — planowany na <strong>01.08.2026</strong></li>
           <li>Narzędzie jest już częściowo wykorzystywane i realnie przyspiesza pracę</li>
@@ -433,19 +426,19 @@
     <div class="ux-decision-grid ux-decision-grid--trio">
       <div class="ux-decision-box">
         <div class="ux-label">Decyzja 1</div>
-        <h4>Dedykowana aplikacja zamiast gotowego sklepu</h4>
+        <h3>Dedykowana aplikacja zamiast gotowego sklepu</h3>
         <p>Zamiast skomplikowanego systemu zaprojektowałem prostą aplikację, dopasowaną do szybkiej obsługi pracy na starszym sprzęcie. Dzięki temu operator nie walczy z narzędziem, tylko szybko obsługuje klienta.</p>
         <p class="razdwa-tradeoff"><strong>Kompromis:</strong> mniej gotowych funkcji „z pudełka" w zamian za interfejs skrojony pod jeden, konkretny proces.</p>
       </div>
       <div class="ux-decision-box">
         <div class="ux-label">Decyzja 2</div>
-        <h4>Znane zaplecze zamiast ciężkiej infrastruktury</h4>
+        <h3>Znane zaplecze zamiast ciężkiej infrastruktury</h3>
         <p>Google Sheets i Apps Script pozwoliły oprzeć system na narzędziach, które klient już znał. Dzięki temu wdrożenie było tańsze, a firma nie płaci co miesiąc za serwer ani za specjalistyczne utrzymanie.</p>
         <p class="razdwa-tradeoff"><strong>Kompromis:</strong> świadoma rezygnacja z klasycznego backendu i skalowalności na rzecz zerowego kosztu utrzymania i braku uzależnienia od dostawcy.</p>
       </div>
       <div class="ux-decision-box">
         <div class="ux-label">Decyzja 3</div>
-        <h4>Panel cen zamiast zależności od programisty</h4>
+        <h3>Panel cen zamiast zależności od programisty</h3>
         <p>Właścicielka potrzebowała samodzielnie aktualizować stawki, dlatego stworzyłem panel administracyjny do zmiany cennika. Dzięki temu firma nie czeka na developera i nie płaci za każdą korektę ceny.</p>
         <p class="razdwa-tradeoff"><strong>Kompromis:</strong> dodatkowa praca nad panelem administracyjnym w zamian za samodzielność klienta po przekazaniu narzędzia.</p>
       </div>
@@ -506,7 +499,7 @@
         <p class="tab-description">Operator widzi kategorię, aktywną wycenę i koszyk w jednym widoku, bez przełączania kontekstu.</p>
         <div class="showcase-row showcase-row--single">
           <div class="showcase-item">
-            <img class="lightbox-trigger" src="/assets/images/razdwa/strona_3kolumny_RAZDWA.webp" alt="Trójkolumnowy układ aplikacji Raz Dwa Druk" loading="lazy" data-caption="Układ roboczy — nawigacja, kalkulator i koszyk w jednym widoku">
+            <img class="lightbox-trigger" src="/assets/images/razdwa/strona_3kolumny_RAZDWA.webp" height="1163" width="1373" alt="Trójkolumnowy układ aplikacji Raz Dwa Druk" loading="lazy" data-caption="Układ roboczy — nawigacja, kalkulator i koszyk w jednym widoku">
             <p>Podział ekranu pozwala szybciej przejść od wyboru usługi do wyceny i kontroli całego zamówienia.</p>
           </div>
         </div>
@@ -529,7 +522,7 @@
         <p class="img-desc"><strong>Dane klienta:</strong> Formularz porządkuje informacje i wspiera poprawne domknięcie zlecenia.</p>
       </div>
       <div class="gallery-item">
-        <img class="lightbox-trigger" src="/assets/images/razdwa/raport_PDF_RAZDWA.webp" width="773" height="1075" alt="Wygenerowany raport PDF zamówienia" loading="lazy" data-caption="Raport PDF — gotowe podsumowanie techniczne zamówienia">
+        <img class="lightbox-trigger" src="/assets/images/razdwa/raport-pdf-razdwa-652w.webp" width="652" height="907" alt="Wygenerowany raport PDF zamówienia" loading="lazy" data-caption="Raport PDF — gotowe podsumowanie techniczne zamówienia">
         <p class="img-desc"><strong>Gotowy dokument:</strong> Podsumowanie zamówienia powstaje bezpośrednio w aplikacji — klient dostaje czytelną wycenę od ręki, bez przepisywania danych.</p>
       </div>
     </div>
@@ -654,17 +647,17 @@
     <div class="ux-decision-grid ux-decision-grid--trio">
       <div class="ux-decision-box">
         <div class="ux-label">Wniosek 1</div>
-        <h4>Obserwacja przed projektem</h4>
+        <h3>Obserwacja przed projektem</h3>
         <p>Wyjątki w wycenie CAD — niestandardowe formaty, orientacja rolki, stawka per mb zamiast per plik — pojawiły się dopiero przy obserwacji pracy przy ladzie. Gdyby projekt oparł się wyłącznie na briefie, te przypadki zostałyby pominięte do pierwszej reklamacji.</p>
       </div>
       <div class="ux-decision-box">
         <div class="ux-label">Wniosek 2</div>
-        <h4>Architektura z warunków, nie z preferencji</h4>
+        <h3>Architektura z warunków, nie z preferencji</h3>
         <p>Google Sheets i Apps Script to nie był tańszy zamiennik serwera — to było jedyne rozwiązanie pasujące do środowiska klienta. <strong>Wybór wynikł z diagnozy, nie z nawyku.</strong></p>
       </div>
       <div class="ux-decision-box">
         <div class="ux-label">Wniosek 3</div>
-        <h4>Kluczowe funkcje po uruchomieniu</h4>
+        <h3>Kluczowe funkcje po uruchomieniu</h3>
         <p>Tryb EXPRESS, zarządzanie wariantami produktów i automatyczny eksport PDF nie były w pierwotnym zakresie. Pojawiły się na działającej wersji — jako odpowiedź na rzeczywisty przepływ pracy, którego nie było widać przed zbudowaniem narzędzia.</p>
       </div>
     </div>
@@ -754,7 +747,7 @@
               <polyline points="9 18 15 12 9 6"></polyline>
             </svg>
           </a>
-          <a class="kw-btn kw-btn--lg kwcs-cta kwcs-cta--ghost" href="https://wyszynskik.github.io/RAZDWA/" target="_blank" rel="noopener noreferrer" aria-label="Otwórz aplikację Raz Dwa Druk na żywo">
+          <a class="kw-btn kw-btn--lg kwcs-cta kwcs-cta--ghost" href="https://wyszynskik.github.io/RAZDWA/" target="_blank" rel="noopener noreferrer" aria-label="Zobacz aplikację na żywo – Raz Dwa Druk">
             Zobacz aplikację na żywo
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
               <polyline points="9 18 15 12 9 6"></polyline>
@@ -766,7 +759,8 @@
   </div>
 </div>
 
-  </section>
+    </section>
+  </main>
 
   <nav class="kwcs-project-nav" aria-label="Nawigacja między projektami">
     <div class="wrap">

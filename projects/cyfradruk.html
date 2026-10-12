@@ -76,7 +76,8 @@
        Narzędzie wewnętrzne (PolonisDruk). Bez people leadership.
   ================================================================ -->
 
-  <section class="kwcs" id="case-cyfradruk-pelne" aria-label="Pełne Case Study: CyfraDruk — automatyzacja kontroli pliku przed drukiem">
+  <main>
+    <section class="kwcs" id="case-cyfradruk-pelne" aria-label="Pełne Case Study: CyfraDruk — automatyzacja kontroli pliku przed drukiem">
 
     <!-- ============================================================
          Chapter rail — sticky TOC (klasa razdwa-chapter-rail wymagana
@@ -148,15 +149,7 @@
           </div>
 
           <div class="hero-image">
-            <img
-              class="cover"
-              src="/assets/images/cyfradruk/Automatyzacja_liniekolory.webp"
-              alt="CyfraDruk — panel kontroli grubości linii i kolorów w Adobe Illustrator"
-              loading="lazy"
-              decoding="async"
-              width="1254"
-              height="1254"
-              data-caption="CyfraDruk — kontrola grubości linii i kolorów w jednym panelu">
+            <img class="cover" src="/assets/images/cyfradruk/automatyzacja-liniekolory-1180w.webp" fetchpriority="high" alt="CyfraDruk — panel kontroli grubości linii i kolorów w Adobe Illustrator" decoding="async" width="1180" height="1180" data-caption="CyfraDruk — kontrola grubości linii i kolorów w jednym panelu">
           </div>
 
         </div>
@@ -223,11 +216,11 @@
 
         <div class="ux-decision-grid">
           <div class="ux-decision-box">
-            <h4>Co spowalniało i kosztowało</h4>
+            <h3>Co spowalniało i kosztowało</h3>
             <p>Kontrola polegała na ręcznym klikaniu we właściwości kolejnych obiektów i porównywaniu ich z progami grubości. Przy złożonych plikach to była żmudna, powtarzalna praca — 5–20 minut na plik, podatna na zmęczenie. Do tego dochodziły kolory w RGB zamiast CMYK i niezatwierdzone Pantone. Najdroższy scenariusz błędu to przedruk i ryzyko reklamacji.</p>
           </div>
           <div class="ux-decision-box">
-            <h4>Kto był zaangażowany</h4>
+            <h3>Kto był zaangażowany</h3>
             <p><strong>2 operatorów DTP</strong> — użytkownicy końcowi; na ich realnych plikach testowałem narzędzie. <strong>Sponsor wewnętrzny</strong> — zielone światło i priorytet na czas budowy. To wewnętrzne usprawnienie procesu, nie produkt komercyjny — i tyle właśnie obejmuje jego zasięg.</p>
           </div>
         </div>
@@ -253,17 +246,17 @@
         <div class="ux-decision-grid ux-decision-grid--trio">
           <div class="ux-decision-box">
             <div class="ux-label">Kryterium 1</div>
-            <h4>Krótszy czas inspekcji</h4>
+            <h3>Krótszy czas inspekcji</h3>
             <p>Z 5–20 minut do kilkudziesięciu sekund pełnej kontroli — mierzone w minutach na plik, przed i po.</p>
           </div>
           <div class="ux-decision-box">
             <div class="ux-label">Kryterium 2</div>
-            <h4>Mniej błędów i reklamacji</h4>
+            <h3>Mniej błędów i reklamacji</h3>
             <p>Zmniejszyć ryzyko wypuszczenia do druku pliku z błędem wykrywalnym przez narzędzie.</p>
           </div>
           <div class="ux-decision-box">
             <div class="ux-label">Kryterium 3</div>
-            <h4>Onboarding ≤ 30 minut</h4>
+            <h3>Onboarding ≤ 30 minut</h3>
             <p>Bez tygodniowego wdrażania — jeden przycisk „Skanuj" i czytelny raport.</p>
           </div>
         </div>
@@ -282,7 +275,7 @@
           Projekt prowadziłem etapami: od wywiadu i analizy procesu, przez reguły i progi grubości, budowę panelu ze skanerem, testy na plikach produkcyjnych, aż po szkolenie operatorów i wdrożenie. <strong>Scope stabilny</strong> — zakres zdefiniowany na starcie (skaner grubości + weryfikacja kolorów + klikalny raport) dostarczyłem bez scope creep.
         </p>
 
-        <div class="user-flow user-flow--6">
+        <div class="user-flow user-flow--6" tabindex="0">
           <div class="flow-step">
             <div class="flow-step-icon">01</div>
             <div class="flow-step-label">Wywiad i analiza</div>
@@ -340,19 +333,19 @@
         <div class="ux-decision-grid ux-decision-grid--trio">
           <div class="ux-decision-box">
             <div class="ux-label">Decyzja 1</div>
-            <h4>Panel wewnątrz Illustratora, nie osobna aplikacja</h4>
+            <h3>Panel wewnątrz Illustratora, nie osobna aplikacja</h3>
             <p>Kontrola dzieje się tam, gdzie jest praca — operator nie zmienia kontekstu ani nie eksportuje pliku.</p>
             <p class="razdwa-tradeoff"><strong>Kompromis:</strong> zależność od API Illustratora w zamian za zero zależności od internetu i narzędzi zewnętrznych.</p>
           </div>
           <div class="ux-decision-box">
             <div class="ux-label">Decyzja 2</div>
-            <h4>Jeden sztywny próg, zero ustawień</h4>
+            <h3>Jeden sztywny próg, zero ustawień</h3>
             <p>Próg 0,1 mm jest zaszyty w narzędziu. Operator nie podejmuje żadnej decyzji przed skanem — nie ma pola, które można wypełnić błędnie, i nie ma czego tłumaczyć na szkoleniu.</p>
             <p class="razdwa-tradeoff"><strong>Kompromis:</strong> zmiana progu pod inną technikę druku wymaga wejścia w kod — w zamian za brak ryzyka złego ustawienia i onboarding liczony w minutach.</p>
           </div>
           <div class="ux-decision-box">
             <div class="ux-label">Decyzja 3</div>
-            <h4>Klikalny raport, nie sam listing</h4>
+            <h3>Klikalny raport, nie sam listing</h3>
             <p>Kliknięcie wiersza zaznacza błędny obiekt w dokumencie („zaznacz w AI") — skraca czas naprawy, nie tylko wykrycia.</p>
             <p class="razdwa-tradeoff"><strong>Kompromis:</strong> dodatkowa praca nad mostem JS ↔ ExtendScript w zamian za realne skrócenie naprawy w codziennym użyciu.</p>
           </div>
@@ -372,12 +365,12 @@
         <div class="ux-decision-grid">
           <div class="ux-decision-box">
             <div class="ux-label">Ryzyko 1</div>
-            <h4>Skaner pomija zagnieżdżone obiekty</h4>
+            <h3>Skaner pomija zagnieżdżone obiekty</h3>
             <p><strong>Wpływ:</strong> obiekt ukryty w grupie, symbolu lub masce mógł „uciec" kontroli i przejść do druku. <strong>Mitigacja:</strong> rekurencyjne przejście całego drzewa dokumentu + testy na plikach o dużej liczbie obiektów, aż skan pokrywał się z kontrolą ręczną.</p>
           </div>
           <div class="ux-decision-box">
             <div class="ux-label">Ryzyko 2</div>
-            <h4>Operatorzy nie zaufają narzędziu</h4>
+            <h3>Operatorzy nie zaufają narzędziu</h3>
             <p><strong>Wpływ:</strong> nowe narzędzie łatwo zignorować i wrócić do ręcznego klikania. <strong>Mitigacja:</strong> na starcie równoległa kontrola ręczna i narzędziem; klikalny raport dawał natychmiastową weryfikację („kliknij → zobacz obiekt"). Zaufanie zbudowało się, gdy wyniki się zgadzały.</p>
           </div>
         </div>
@@ -479,12 +472,12 @@
         <div class="ux-decision-grid">
           <div class="ux-decision-box">
             <div class="ux-label">Adopcja</div>
-            <h4>W użyciu od 01.05.2026</h4>
+            <h3>W użyciu od 01.05.2026</h3>
             <p>Wdrożenie i szkolenie: 01.05.2026 (go-live), pierwszy miesiąc w użyciu i domknięcie iteracji do 01.06.2026. Narzędzie zastąpiło ręczną inspekcję jako standardowy krok kontroli pliku przed drukiem. To wewnętrzne usprawnienie procesu — zasięg dokładnie taki, jak opisano: 2 operatorów, jeden dział DTP.</p>
           </div>
           <div class="ux-decision-box">
             <div class="ux-label">Onboarding / Handover</div>
-            <h4>Wdrożenie poniżej 30 minut</h4>
+            <h3>Wdrożenie poniżej 30 minut</h3>
             <ul>
               <li>Instalacja bez IT — pakiet <code>.zxp</code>, bez uprawnień administratora.</li>
               <li>Szkolenie ≤ 30 min — jeden przycisk „Skanuj", czytelny raport, akcja naprawy.</li>
@@ -519,7 +512,7 @@
         <div class="ux-decision-grid">
           <div class="ux-decision-box">
             <div class="ux-label">Co powstało</div>
-            <h4>Dostarczone elementy</h4>
+            <h3>Dostarczone elementy</h3>
             <ul>
               <li>Panel CEP z dwoma modułami: skaner obiektów/grubości i weryfikacja kolorów.</li>
               <li>Rekurencyjny skrypt skanujący w ExtendScript (.jsx).</li>
@@ -529,7 +522,7 @@
           </div>
           <div class="ux-decision-box">
             <div class="ux-label">Materiał wizualny</div>
-            <h4>Dowody do wstawienia</h4>
+            <h3>Dowody do wstawienia</h3>
             <p>Zrzuty panelu są wstawione: skaner obiektów i obrysów oraz oba widoki kolorów (wypełnienia i obrysy). Do przygotowania został jeden artefakt, oznaczony w treści jako „Zrzut do wstawienia": <strong>checklista kontroli pliku / GoLive</strong>. Zdjęcie przeglądowe panelu jest w hero.</p>
           </div>
         </div>
@@ -625,7 +618,8 @@
       </div>
     </div>
 
-  </section>
+    </section>
+  </main>
 
 
   <nav class="kwcs-project-nav" aria-label="Nawigacja między projektami">
