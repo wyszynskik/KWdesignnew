@@ -2347,7 +2347,7 @@ section {
   margin-bottom: var(--space-8);
 }
 .footer-info h3 {
-  color: var(--color-text-accent);
+  color: var(--color-text-accent-on-dark);
   margin-bottom: var(--space-3);
   font-size: 1.25rem;
   font-weight: var(--font-weight-bold);
