@@ -567,3 +567,97 @@ Widoczny tekst (treść) niezmieniony. Po zmianie detektor zgłasza **0 niezgodn
 - [x] `/portfolio` bez regresji: Accessibility 100, axe 0, zero NOWYCH błędów konsoli (GA4 = artefakt proxy).
 - [x] `git status`: tylko pliki z zakresu. Raport dopisany do `docs/audyt-portfolio.md`.
 - [ ] (poza zakresem) `portfolio.js` close-button WCAG 2.5.3 — rekomendacja do osobnej rundy.
+
+---
+
+## Runda KOLORY — jeden system kolorów tekstu (gałąź `runda-kolory` od `origin/main` po scaleniu #131)
+
+**Cel:** jeden system kolorów tekstu na całej witrynie, kontrast ≥ 4.5:1 wszędzie, bez zmiany identyfikacji marki.
+
+### Krok 1 — inwentaryzacja (stan PRZED)
+
+**Arkusze → strony (brak uniwersalnego arkusza):** `index-styles.css` (/, /uslugi, /portfolio, /narzedzie, /polityka), `projects.css` (/portfolio + 7 case studies), `style.css` (tylko /kontakt), inline (polityka, 404). `projects.css` w portfolio.html NIE jest podwójny — to wzorzec `preload` + `<noscript>` (nieblokujący), nie duplikat.
+
+**Kolory tekstu:** 51 różnych wartości hex. Niezdające kontrastu na jasnym tle: cyjan/niebieski akcent (#06b6d4 2.43, #0292aa 3.69, #0284c7 4.10, #0ea5e9 2.77, #0891b2 3.68, #0aa, #2c8cde, #23d6d3), szary muted (#94a3b8 2.56, #64748b 4.46 na #f8fafc, #999, #888, #777, #bbb, #ccc), zieleń #10b981 (2.54), czerwień #ef4444 (3.76).
+
+**axe baseline (color-contrast / strona):** / = 9, /uslugi = 52, /portfolio = 0, /narzedzie = 15, /polityka = 3, /kontakt = 1, /404 = 4. **Σ = 84.** Case studies (7) = 0 (naprawione w runda-c1). Inne naruszenia (do zaraportowania, nie naprawiamy): heading-order, landmark-one-main, region, aria-prohibited-attr, link-in-text-block. Konsola: tylko `ERR_TUNNEL_CONNECTION_FAILED` (GA4/fonty — proxy sandboxa) + brakujący zasób na /404.
+
+**Punkt 3 (biały tekst na tłach marki) — do decyzji:** #fff na #06b6d4 = 2.43 ❌, na #0284c7 = 4.10 ❌, na #0891b2 = 3.68 ❌, na #0ea5e9 = 2.77 ❌, na #10b981 = 2.54 ❌. (na #2563eb/#1d4ed8/#0e7490 ✅).
+
+**Decyzje (Krok 1 → OK):** tokeny w nowym `tokens.css` (jedno źródło, pierwszy arkusz, +1 małe żądanie/stronę — weryfikacja PageSpeed); pełna skala tokenów; linki ujednolicone z accent #0e7490 **z obowiązkowym podkreśleniem** (WCAG 1.4.1), hover ciemniejszy/grubsze podkreślenie, przyciski bez zmian.
+
+### Krok 2 pkt 1 — tokeny :root — ZROBIONE
+
+Utworzono `assets/css/tokens.css` i podłączono jako pierwszy arkusz na 14 stronach. Tokeny (kontrast w komentarzach): primary #0f172a, body #475569, subtle #52606d, accent #0e7490, accent-hover #0c6076, footer #9ca3af, inverse #fff, success #047857, error #b91c1c, brand #06b6d4 (nie-tekst).
+
+### Krok 2 pkt 2 — zastąpienie twardych kolorów tekstu tokenami (część) — ZROBIONE do checkpointu
+
+306 literalnych wartości hex w `color:` zamienionych na tokeny; 137 pośrednich zmiennych marki używanych jako tekst (`--color-primary`, `--color-muted`, `--color-text`, `--ui-primary`, `--kwcs-ink/mute`) przepięte na tokeny; wewnętrzne zmienne `index-styles.css` (`--color-text-light/muted/text`) zaaliasowane do tokenów. Kontekst CIEMNY (stopka, nagłówek uslugi): dodano `--color-text-accent-on-dark: #06b6d4` (8.73:1) i zastosowano do `.footer-info a`/`.footer-email`, `.lm-teaser-badge`, `.nav-list a.active`; stopka — usunięto podwójne przyciemnienie (color solid + opacity). **Linki w treści:** accent + obowiązkowe podkreślenie (WCAG 1.4.1), hover accent-hover + grubsze podkreślenie; naprawia też `link-in-text-block` na /narzedzie, /polityka.
+
+**axe color-contrast po tym kroku:** / = 0, /portfolio = 0, /polityka = 0, /kontakt = 0, /narzedzie = 1, /404 = 1, /uslugi = 15. 7 case studies (viewer+standalone) = 0 (bez regresji). Pozostałe naruszenia = **biały tekst na tłach marki (#06b6d4)** — punkt 3, decyzja — oraz **dekoracyjne numery-znaki wodne** (.service-num, aria-hidden).
+
+### Krok 2 pkt 3 — biały tekst na tle marki + dekoracyjne znaki wodne — ZROBIONE
+
+- **Decyzja: przyciemnić tło do #0e7490.** Dodano tokeny marki `--color-brand-strong: #0e7490` (biały 5.36:1) i `--color-brand-strong-hover: #0c6076` (7.12:1). Zastosowano do `.sn` (krążki kroków /uslugi), `.lm-btn` (/narzedzie), przycisku na /404. Tekst pozostaje biały.
+- **Decyzja: znaki wodne prezentacyjne.** `.service-num` („01/02/03" /uslugi) — numer przeniesiony do `::before { content: attr(data-num) }` (atrybut `data-num`, element pusty, `aria-hidden`). axe nie liczy go już jako tekstu treści; wygląd (opacity 0.12) bez zmian.
+
+**axe color-contrast = 0 na WSZYSTKICH 7 stronach Kroku 1** (/, /uslugi, /portfolio, /narzedzie, /polityka, /kontakt, /404) oraz 7 case studies (viewer+standalone). Pozostałe naruszenia (inne niż kolory, do zaraportowania): index — aria-prohibited-attr(2), heading-order(1); uslugi — heading-order(3), landmark-one-main(1), region(15); kontakt — landmark-one-main(1), region(13); 404 — landmark-one-main(1), region(1).
+
+### Krok 2 pkt 2 (dok.) — 8 wyróżnionych kolorów: podział A/B/C — ZROBIONE
+
+- **Grupa A (UI witryny → tokeny semantyczne):** `#d52b1e`→`--color-text-error` (#b91c1c); `#f59e0b`, `#ffd700`, `#78350f`→`--color-text-warning` (#b45309, 4.95:1). Złoto gwiazdek i brąz placeholdera zmieniły odcień na bursztyn (warunek kontrastu). `success` = #047857 (zieleń #10b981 złożona wcześniej).
+- **Grupa B (marka klienta w case study → twarde, scoped, komentarz):** `#10473f` zostaje w `projects/voucher-salon-magdy.html` („100 zł", marka voucher Salon Magdy), kontrast 10.53:1, z komentarzem HTML „kolor marki klienta, poza systemem tokenów". **Jedyna twarda wartość koloru tekstu w całym repo.**
+- **Grupa C (granat własny KW → token):** `#133b7b`, `#19356d`, `#194c92`→`--color-text-navy` (#133b7b, 10.83:1). Zachowany granatowy charakter viewera /portfolio i motywu /kontakt.
+
+**Grep twardych kolorów tekstu:** czysty we wszystkich arkuszach i HTML — **jedyny wynik to wyjątek Grupy B** (`projects/voucher-salon-magdy.html` #10473f). axe color-contrast = 0 na 7 stronach + 15 kontekstach case studies (viewer+standalone).
+
+### Krok 2 pkt 4 — stany hover / focus / visited — ZROBIONE
+
+- **hover linków:** bazowe `a:hover` używało `--color-primary-dark` (#0292AA, 3.69:1 ❌). Przepięto 6 tekstowych użyć `color: var(--color-primary-dark)` → `--color-text-accent-hover` (#0c6076, 7.12:1). Linki w treści: hover = accent-hover + grubsze podkreślenie (pkt 2). Tła/gradienty z `--color-primary-dark` nietknięte.
+- **focus:** wskaźnik focus (outline) na jasnym tle używał `--color-primary` (#06b6d4, 2.43:1 < 3:1 — niewidoczny wg WCAG 1.4.11). Zmieniono `a:focus-visible`, `.btn:focus-visible` (index) i `.filter-btn:focus-visible` (kontakt) na `--color-text-accent` (#0e7490, 5.36:1 ✅). Focus nawigacji (`.nav-list a:focus-visible`) na ciemnym nagłówku pozostaje `--color-primary` (#06b6d4, 8.7:1 na ciemnym ✅). Focus przycisków (`--kw-btn-focus-ring` #0891b2) = 3.68:1 na białym ✅.
+- **visited:** nie stylowany osobno — dziedziczy accent (bez problemu kontrastu; brak wymogu WCAG na odróżnienie visited).
+
+### Krok 2 pkt 5 — usunięcie nadpisań color scope body.portfolio-page + runda-c1 w projects.css — ZROBIONE
+
+- **portfolio.css:** usunięto lokalne zmienne `--portfolio-text-accent/subtle/footer` (duplikowały tokeny) oraz nadpisania redundantne wobec globalnych tokenów: `.kwcs-hero-head .eyebrow`, `.razdwa-summary-cell .label` (pokrywa projects.css), `.footer-bottom p` (pokrywa index-styles.css). Wszystkie pozostałe użycia `var(--portfolio-text-*)` przepięto na `var(--color-text-*)`. Zachowano reguły będące jedynym źródłem koloru (`.adg-label`, `.section-subtitle`) — teraz na globalnych tokenach.
+- **projects.css:** usunięto cały blok „RUNDA C1 — KONTRAST TEKSTU" z końca pliku (redundantny — reguły źródłowe .eyebrow/.ux-label/.razdwa-chapter-rail-label/… niosą już te same tokeny po tej rundzie).
+
+**Weryfikacja:** axe color-contrast = 0 na /portfolio oraz 15 kontekstach case studies (viewer+standalone) — brak regresji po usunięciu nadpisań.
+
+### Krok 2 pkt 6 — aria-label przycisku zamykającego (portfolio.js) — ZROBIONE
+
+`portfolio.js`: przycisk zamykający case study miał `aria-label="Zamknij case study"` przy widocznym tekście „← Wróć do listy projektów" (niezgodność WCAG 2.5.3). Zmieniono na `aria-label="Wróć do listy projektów"` (zgodne z widocznym tekstem). Detektor label-content-name-mismatch w viewerze: **0 naruszeń**.
+
+### Krok 2 pkt 7 — meta theme-color — ZROBIONE
+
+Przed: tylko `uslugi.html` i `404.html` miały `theme-color` (#06b6d4), 13 stron bez. Ujednolicono: `<meta name="theme-color" content="#06b6d4">` (kolor marki) na **wszystkich 15 stronach**, jednolity format.
+
+### Krok 2 — weryfikacja końcowa i definicja done
+
+**axe color-contrast (desktop 1440 + mobile 390):** **0** na wszystkich 7 stronach Kroku 1 (/, /uslugi, /portfolio, /narzedzie, /polityka, /kontakt, /404) oraz **0/15** kontekstów case studies (viewer+standalone). Mobile ujawnił 1 dodatkowe naruszenie (`.footer-info h3` accent na ciemnym — zdawał jako large text na desktopie, ale nie na mobile) → naprawione tokenem `--color-text-accent-on-dark`.
+
+**Lighthouse Accessibility:** `/portfolio = 100` ✅. `/uslugi = 99`, `/ = 94` — **pozostałe braki to problemy INNE NIŻ kolory** (poza zakresem rundy, zaraportowane bez naprawiania):
+- `/` : `aria-prohibited-attr` (2), `heading-order` (1).
+- `/uslugi` : `heading-order` (3), `landmark-one-main` (1), `region` (15).
+- (`/kontakt`, `/404` : `landmark-one-main`, `region` — też poza zakresem.)
+
+**Grep twardych kolorów tekstu (CSS + inline HTML):** jedyny wynik to udokumentowany wyjątek Grupy B — `projects/voucher-salon-magdy.html` `#10473f` (marka klienta voucher, kontrast 10.53:1). Zero twardych kolorów tekstu w arkuszach.
+
+**Wydajność /portfolio (Lighthouse desktop, provided throttling):** **100** — identycznie jak baza `origin/main` (100). Dodanie `tokens.css` (+1 małe żądanie render-blocking ~0.5 KB) **nie regresuje** wydajności (FCP 0.2s, LCP 0.2s, TBT 0ms, CLS 0.001 lokalnie). Rzeczywisty PageSpeed komputer do potwierdzenia po deployu, ale brak regresji względem bazy.
+
+**Zrzuty przed/po (390 + 1440) dla /, /uslugi, /portfolio, karoma:** układ identyczny; zmienia się wyłącznie kolor tekstu (ciemniejsze akcenty/muted dla kontrastu) oraz podkreślenie linków w treści (WCAG 1.4.1).
+
+**Konsola:** wyłącznie `net::ERR_TUNNEL_CONNECTION_FAILED` (GA4/fonty blokowane przez proxy sandboxa — artefakt środowiska; w produkcji OK) + brakujący zasób na /404. Zero NOWYCH błędów wprowadzonych tą rundą.
+
+**Definicja done:**
+- [x] axe color-contrast = 0 na wszystkich stronach Kroku 1 (+ case studies, desktop i mobile).
+- [x] Lighthouse Accessibility = 100 na /portfolio; na /, /uslugi pozostają tylko problemy inne niż kolory (zaraportowane).
+- [x] Poza blokiem tokenów brak twardych kolorów tekstu (grep czysty; wyjątek: Grupa B voucher #10473f).
+- [x] Zrzuty przed/po (390, 1440): zmienia się wyłącznie kolor tekstu.
+- [x] /portfolio bez regresji wydajności (desktop Lighthouse 100 = baza).
+- [x] Raport w docs/audyt-portfolio.md. Push + draft PR.
+
+**Grupa B (marki klientów w case studies, twarde wartości poza tokenami):**
+| case study | kolor | kontrast | element |
+|---|---|---|---|
+| voucher-salon-magdy | `#10473f` | 10.53:1 | cena „100 zł" (marka Salon Magdy) |

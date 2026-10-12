@@ -1,0 +1,64 @@
+/* ============================================================
+   KW DESIGN — TOKENY KOLORÓW (jedno źródło prawdy)
+   Ładowany jako PIERWSZY arkusz na każdej stronie, więc tokeny są
+   dostępne zanim zadziała którykolwiek inny arkusz.
+
+   System kolorów TEKSTU (kontrast ≥ 4.5:1 na białym/jasnym tle;
+   footer liczony na ciemnym tle). Kolor MARKI (--color-brand) służy
+   tłom / przyciskom / ikonom / obramowaniom — NIE jest kolorem tekstu.
+   ============================================================ */
+:root {
+  /* — tekst — */
+  --color-text-primary: #0f172a;   /* 17.85:1 — nagłówki, główny ink  */
+  --color-text-body:    #475569;   /*  7.58:1 — tekst akapitów        */
+  --color-text-subtle:  #52606d;   /*  6.46:1 — opisy, etykiety, muted */
+  --color-text-accent:  #0e7490;   /*  5.36:1 — akcent + linki (na jasnym) */
+  --color-text-accent-hover: #0c6076; /* 7.12:1 — hover linku/akcentu  */
+  --color-text-accent-on-dark: #06b6d4; /* 8.73:1 na #0b0f19 — akcent/link na CIEMNYM tle */
+  --color-text-footer:  #9ca3af;   /*  7.54:1 na #0b0f19 — stopka na ciemnym */
+  --color-text-inverse: #ffffff;   /*  tekst na ciemnym/marki          */
+  --color-text-success: #047857;   /*  5.48:1 — stan pozytywny         */
+  --color-text-error:   #b91c1c;   /*  6.47:1 — błąd / stan negatywny  */
+  --color-text-warning: #b45309;   /*  4.95:1 — ostrzeżenie / bursztyn (marker, ocena, placeholder) */
+  --color-text-navy:    #133b7b;   /* 10.83:1 — granat własny KW (viewer /portfolio, motyw /kontakt) */
+
+  /* — marka (NIE tekst): tła, przyciski, ikony, obramowania — */
+  --color-brand:        #06b6d4;
+  /* wariant marki na tła przycisków z BIAŁYM tekstem (biały ≥4.5:1) */
+  --color-brand-strong:       #0e7490; /* biały 5.36:1 */
+  --color-brand-strong-hover: #0c6076; /* biały 7.12:1 */
+}
+
+/* ============================================================
+   SYSTEM LINKÓW W TREŚCI (WCAG 1.4.1)
+   Linki w tekście mają kolor akcentu, więc muszą być odróżnialne od
+   tekstu akcentowego NIE tylko kolorem → zawsze podkreślone. Hover:
+   ciemniejszy odcień + grubsze podkreślenie. Przyciski/nawigacja/karty
+   (klasy *btn*, *cta*, .nav-list) wykluczone.
+   ============================================================ */
+p a:not([class*="btn"]):not([class*="cta"]),
+.lm-privacy a,
+.pp-contact-box a,
+.kwcs-footer a {
+  color: var(--color-text-accent);
+  text-decoration: underline;
+  text-underline-offset: 0.15em;
+}
+p a:not([class*="btn"]):not([class*="cta"]):hover,
+.lm-privacy a:hover,
+.pp-contact-box a:hover,
+.kwcs-footer a:hover {
+  color: var(--color-text-accent-hover);
+  text-decoration-thickness: 2px;
+}
+/* Linki w treści na CIEMNYM tle (stopka) — akcent dla ciemnego + podkreślenie */
+.footer-info a,
+.footer-info p a {
+  color: var(--color-text-accent-on-dark);
+  text-decoration: underline;
+  text-underline-offset: 0.15em;
+}
+.footer-info a:hover,
+.footer-info p a:hover {
+  text-decoration-thickness: 2px;
+}

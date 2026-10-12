@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#06b6d4">
     <title>Polityka prywatności – Karol Wyszyński</title>
     <meta name="description" content="Polityka prywatności serwisu kwyszynski.pl — jakie dane są zbierane, w jakim celu i jak je chronię." />
     <meta name="robots" content="index, follow" />
@@ -20,6 +21,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet" />
 
     <!-- CSS -->
+    <link rel="stylesheet" href="assets/css/tokens.css">
     <link rel="stylesheet" href="assets/css/index-styles.css" />
 
     <!-- Cloudflare Web Analytics -->
@@ -42,24 +44,24 @@
             font-family: 'Playfair Display', serif;
             font-size: clamp(1.75rem, 4vw, 2.5rem);
             margin-bottom: .5rem;
-            color: var(--color-text, #0f172a);
+            color: var(--color-text-primary);
         }
         .pp-meta {
             font-size: .875rem;
-            color: #64748b;
+            color: var(--color-text-subtle);
             margin-bottom: 2.5rem;
         }
         .pp-content h2 {
             font-size: 1.1rem;
             font-weight: 700;
             margin: 2rem 0 .5rem;
-            color: var(--color-text, #0f172a);
+            color: var(--color-text-primary);
         }
         .pp-content p,
         .pp-content li {
             font-size: .9375rem;
             line-height: 1.7;
-            color: #334155;
+            color: var(--color-text-body);
         }
         .pp-content ul {
             padding-left: 1.25rem;

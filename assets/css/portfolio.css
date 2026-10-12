@@ -21,7 +21,7 @@
     cursor: pointer;
     font-weight: 600;
     font-size: 0.95rem;
-    color: var(--portfolio-text-accent);
+    color: var(--color-text-accent);
     padding: 12px 0;
     width: fit-content;
 }
@@ -71,39 +71,19 @@ html,body{overflow-x:hidden;scroll-behavior:smooth;}
 body.portfolio-page .hamburger{background:none;border:none;font:inherit;color:inherit;}
 body.portfolio-page .hamburger:hover{background:var(--color-dark-light);}
 
-/* === KONTRAST TEKSTU (axe + Lighthouse na realnym renderze, scope tylko
-   /portfolio) === Zmienne nizej zastepuja --color-primary (#06b6d4),
-   #64748b i efektywny #63656c (compounding opacity w stopce) WYLACZNIE
-   jako kolor tekstu na /portfolio - tla, obramowania i ikony w tych samych
-   klasach (np. border-left na .razdwa-summary-cell) zostaja nietkniete.
-   Brak stanow :hover/:focus do synchronizacji - zadna z selektorow nizej
-   nie ma zdefiniowanego hover/focus gdzies w kodzie (sprawdzone grepem).
-   Selektory #id .class (nie .class .class) zeby wygrac z kaskada
-   index-styles.css/projects.css bez zgadywania - zmierzone realnym
-   Lighthouse, nie reczna kalkulacja (patrz audyt-portfolio.md).
-   TODO sprint 2: przeniesc do index-styles.css jako nowa wartosc
-   --color-primary / zmienna globalna, zamiast nadpisywac per-strona. */
-body.portfolio-page {
-  --portfolio-text-accent: #0e7490;  /* 5.12:1 na #f8fafc, 5.36:1 na #fff (bylo #06b6d4: 2.32-2.43:1) */
-  --portfolio-text-subtle: #52606d;  /* 6.06:1 na #f6f8f8 (bylo #64748b: 4.46:1) */
-  --portfolio-text-footer: #9ca3af;  /* 7.54:1 na #0b0f19 (bylo efektywne #63656c: 3.29:1) */
-}
-
-body.portfolio-page .adg-label,
-body.portfolio-page .kwcs-hero-head .eyebrow,
-body.portfolio-page .razdwa-summary-cell .label {
-  color: var(--portfolio-text-accent);
+/* Kolory tekstu specyficzne dla /portfolio używają globalnych tokenów
+   (tokens.css). Lokalne zmienne --portfolio-text-* oraz nadpisania
+   redundantne wobec projects.css/index-styles.css (.eyebrow, .razdwa-summary-cell
+   .label, .footer-bottom p) usunięte w rundzie KOLORY. Poniżej pozostają
+   reguły, dla których to jedyne źródło koloru (.adg-label, .section-subtitle). */
+body.portfolio-page .adg-label {
+  color: var(--color-text-accent);
 }
 
 body.portfolio-page #portfolio-section .section-subtitle,
 body.portfolio-page #experience-section .section-subtitle,
 body.portfolio-page #design-archive .section-subtitle {
-  color: var(--portfolio-text-subtle);
-}
-
-body.portfolio-page .footer-bottom p {
-  color: var(--portfolio-text-footer);
-  opacity: 1;
+  color: var(--color-text-subtle);
 }
 
 /* === PREMIUM ABOUT SECTION === */
@@ -180,7 +160,7 @@ body.portfolio-page .footer-bottom p {
 .about-me-text .subtitle{
   margin-bottom:0;
   font-size:clamp(1.1rem,2.6vw,1.5rem);
-  color:#0ea5e9;
+  color:var(--color-text-accent);
   font-weight:600;
   line-height:1.4;
   overflow:visible;
@@ -189,7 +169,7 @@ body.portfolio-page .footer-bottom p {
 
 .about-me-text>p{
   margin-bottom:clamp(45px,7vh,70px);
-  color:#475569;
+  color:var(--color-text-body);
   line-height:1.75;
   font-size:clamp(1rem,2vw,1.15rem);
   overflow:visible;
@@ -207,7 +187,7 @@ body.portfolio-page .footer-bottom p {
   -webkit-text-fill-color:transparent;
   overflow:visible;
 }
-.skills-section p{margin-bottom:clamp(20px,4vh,40px);color:#64748b;line-height:1.55;overflow:visible;font-weight:400;}
+.skills-section p{margin-bottom:clamp(20px,4vh,40px);color:var(--color-text-subtle);line-height:1.55;overflow:visible;font-weight:400;}
 
 .interests-section h3{
   margin:clamp(50px,8vh,80px) 0 clamp(25px,4vh,40px) 0;
@@ -217,7 +197,7 @@ body.portfolio-page .footer-bottom p {
   -webkit-background-clip:text;
   -webkit-text-fill-color:transparent;
 }
-.interests-section p{margin-bottom:clamp(40px,6vh,60px);color:#64748b;line-height:1.65;font-weight:400;}
+.interests-section p{margin-bottom:clamp(40px,6vh,60px);color:var(--color-text-subtle);line-height:1.65;font-weight:400;}
 
 /* === PREMIUM SUPERPOWERS === */
 .superpowers-grid{
@@ -265,7 +245,7 @@ body.portfolio-page .footer-bottom p {
 
 .logo-carousel-section h6{
   margin-bottom:clamp(20px,3vh,30px);
-  color:#64748b;
+  color:var(--color-text-subtle);
   font-size:0.9rem;
   text-transform:uppercase;
   letter-spacing:0.12em;
@@ -448,7 +428,7 @@ body.portfolio-page .footer-bottom p {
   max-width:none;
   width:auto;
   background:linear-gradient(135deg,#0ea5e9 0%,#3b82f6 50%,#2563eb 100%);
-  color:#fff;
+  color:var(--color-text-inverse);
   text-decoration:none;
   border-radius:60px;
   font-weight:600;
@@ -510,14 +490,14 @@ body.portfolio-page .footer-bottom p {
   font-weight: 700;
   text-align: center;
   margin-bottom: 16px;
-  color: #1e293b;
+  color: var(--color-text-primary);
   font-family: 'Poppins', sans-serif;
 }
 
 .portfolio-section .section-subtitle {
   font-size: clamp(1rem, 2.2vw, 1.2rem);
   text-align: center;
-  color: #64748b;
+  color: var(--color-text-subtle);
   max-width: 700px;
   margin: 0 auto 60px;
   line-height: 1.6;
@@ -652,7 +632,7 @@ body.portfolio-page .footer-bottom p {
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.08em;
-  color: #0ea5e9;
+  color: var(--color-text-accent);
   display: inline-block;
   margin-bottom: 6px;
 }
@@ -661,7 +641,7 @@ body.portfolio-page .footer-bottom p {
 .card-title {
   font-size: 1.5rem;
   font-weight: 600;
-  color: #1e293b;
+  color: var(--color-text-primary);
   margin: 0 0 10px 0;
   line-height: 1.3;
 }
@@ -669,7 +649,7 @@ body.portfolio-page .footer-bottom p {
 /* Opis */
 .card-description {
   font-size: 1.05rem;
-  color: #64748b;
+  color: var(--color-text-subtle);
   line-height: 1.6;
   margin-bottom: 18px;
   flex: 1;
@@ -688,7 +668,7 @@ body.portfolio-page .footer-bottom p {
   align-items: center;
   gap: 6px;
   font-size: 0.93rem;
-  color: #475569;
+  color: var(--color-text-body);
   font-weight: 500;
   background: rgba(241, 245, 249, 0.8);
   padding: 7px 14px;
@@ -705,7 +685,7 @@ body.portfolio-page .footer-bottom p {
 
 .portfolio-new-card:hover .feature-item {
   background: rgba(224, 242, 254, 0.9);
-  color: #0c4a6e;
+  color: var(--color-text-accent-hover);
 }
 
 /* CTA — <button> stretched-link: ::after z inset:0 pokrywa cala karte
@@ -717,7 +697,7 @@ body.portfolio-page .footer-bottom p {
   gap: 8px;
   font-size: 0.95rem;
   font-weight: 600;
-  color: #2563eb;
+  color: var(--color-text-accent);
   margin-top: auto;
   transition: gap 0.3s ease;
   background: none;
@@ -832,17 +812,17 @@ body.portfolio-page .footer-bottom p {
 .project-viewer{margin:0 auto 80px auto;padding:0;max-width:none;position:relative;background:none;}
 .project-viewer.hidden{display:none}
 .project-content{background:rgba(255,255,255,0.95);border-radius:28px;box-shadow:0 12px 60px rgba(25,61,154,.12);padding:50px 35px 40px;animation:fadeIn .5s ease;border:1px solid rgba(255,255,255,0.3);}
-.close-button{background:rgba(244,247,250,0.9);backdrop-filter:blur(15px);border:none;border-radius:28px;font-size:1rem;color:#133b7b;margin:0 0 28px auto;display:block;padding:10px 28px;cursor:pointer;box-shadow:0 2px 12px rgba(23,91,247,.08);transition:all .25s;font-family:'Poppins',sans-serif;font-weight:500;}
+.close-button{background:rgba(244,247,250,0.9);backdrop-filter:blur(15px);border:none;border-radius:28px;font-size:1rem;color:var(--color-text-navy);margin:0 0 28px auto;display:block;padding:10px 28px;cursor:pointer;box-shadow:0 2px 12px rgba(23,91,247,.08);transition:all .25s;font-family:'Poppins',sans-serif;font-weight:500;}
 .close-button:hover,.close-button:focus-visible{background:#e3ecff;outline:none;transform:translateY(-2px);}
 @keyframes fadeInUp{from{opacity:0;transform:translateY(60px) scale(.94);}to{opacity:1;transform:none;}}
-.error-msg{color:#d52b1e;background:rgba(255,237,237,0.9);backdrop-filter:blur(15px);border-radius:16px;padding:28px 18px;margin:40px auto;text-align:center;font-weight:600;font-size:1.1rem;font-family:'Poppins',sans-serif;border:1px solid rgba(213,43,30,0.2);}
+.error-msg{color:var(--color-text-error);background:rgba(255,237,237,0.9);backdrop-filter:blur(15px);border-radius:16px;padding:28px 18px;margin:40px auto;text-align:center;font-weight:600;font-size:1.1rem;font-family:'Poppins',sans-serif;border:1px solid rgba(213,43,30,0.2);}
 
 /* === CASE STUDIES === */
 .case-study{background:rgba(255,255,255,0.95);backdrop-filter:blur(20px);padding:60px 45px;margin:60px auto;border-radius:20px;box-shadow:0 8px 32px rgba(0,0,0,.1);max-width:1150px;line-height:1.65;font-family:'Lato',sans-serif;border:1px solid rgba(255,255,255,0.3);}
 .case-grid{display:grid;grid-template-columns:1fr 1fr;gap:50px;align-items:center;margin-bottom:4rem;}
-.case-text h2{font-size:2.2rem;margin-bottom:.6em;font-family:'Playfair Display',serif;color:#1e293b;}
-.case-text .subtitle{font-size:1.15rem;color:#64748b;margin-bottom:2em;font-weight:400;}
-.btn-case{display:inline-block;background:linear-gradient(135deg,#175bf7,#1d4ed8);color:#fff;text-decoration:none;padding:14px 32px;border-radius:12px;font-weight:600;transition:all .3s ease;box-shadow:0 6px 20px rgba(23,91,247,0.25);}
+.case-text h2{font-size:2.2rem;margin-bottom:.6em;font-family:'Playfair Display',serif;color:var(--color-text-primary);}
+.case-text .subtitle{font-size:1.15rem;color:var(--color-text-subtle);margin-bottom:2em;font-weight:400;}
+.btn-case{display:inline-block;background:linear-gradient(135deg,#175bf7,#1d4ed8);color:var(--color-text-inverse);text-decoration:none;padding:14px 32px;border-radius:12px;font-weight:600;transition:all .3s ease;box-shadow:0 6px 20px rgba(23,91,247,0.25);}
 .btn-case:hover{background:linear-gradient(135deg,#0f44b7,#1e3a8a);transform:translateY(-3px);box-shadow:0 10px 30px rgba(23,91,247,0.35);}
 .case-image img{display:block;width:100%;max-width:480px;border-radius:16px;box-shadow:0 6px 28px rgba(0,0,0,.15);margin:0 auto;height:auto;}
 
@@ -855,11 +835,11 @@ body.portfolio-page .footer-bottom p {
 
 /* === VOUCHER SALON === */
 body.portfolio-page.page-voucher-magdy .breadcrumbs{max-width:1150px;margin:18px auto 0;padding:0 28px;font:500 14px/1.4 Poppins,system-ui,sans-serif;opacity:.9;}
-body.portfolio-page.page-voucher-magdy .breadcrumbs a{color:#175bf7;text-decoration:none;transition:color .2s;}
-body.portfolio-page.page-voucher-magdy .breadcrumbs a:hover{color:#0f44b7;}
+body.portfolio-page.page-voucher-magdy .breadcrumbs a{color:var(--color-text-accent);text-decoration:none;transition:color .2s;}
+body.portfolio-page.page-voucher-magdy .breadcrumbs a:hover{color:var(--color-text-accent);}
 .meta-list{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px 24px;margin:.8rem 0 0;padding:0;}
-.meta-list li{list-style:none;color:#334155;font-weight:400;}
-.badge{display:inline-block;background:rgba(238,243,255,0.9);color:#133b7b;border:1px solid rgba(207,224,255,0.6);padding:.35rem .8rem;border-radius:999px;font-size:.9rem;font-weight:600;backdrop-filter:blur(10px);}
+.meta-list li{list-style:none;color:var(--color-text-body);font-weight:400;}
+.badge{display:inline-block;background:rgba(238,243,255,0.9);color:var(--color-text-navy);border:1px solid rgba(207,224,255,0.6);padding:.35rem .8rem;border-radius:999px;font-size:.9rem;font-weight:600;backdrop-filter:blur(10px);}
 .two-col{display:grid;grid-template-columns:1.3fr .7fr;gap:40px;align-items:center;}
 .gallery{display:grid;grid-template-columns:1fr 1fr;gap:28px;margin:12px 0 0;}
 .gallery img{cursor:zoom-in;border-radius:12px;transition:transform .3s;}
@@ -879,15 +859,15 @@ body.portfolio-page.page-voucher-magdy .breadcrumbs a:hover{color:#0f44b7;}
 
 /* === KWCS CASE STUDY === */
 :root{--kwcs-accent:#2563eb;--kwcs-ink:#0f172a;--kwcs-mute:#64748b;--kwcs-bg:#fff;--kwcs-wrap:1220px;--kwcs-padX:clamp(20px,4.5vw,36px);}
-.kwcs{color:var(--kwcs-ink);font-family:system-ui,-apple-system,Segoe UI,Inter,Roboto,sans-serif;}
+.kwcs{color:var(--color-text-primary);font-family:system-ui,-apple-system,Segoe UI,Inter,Roboto,sans-serif;}
 .kwcs .wrap{max-width:var(--kwcs-wrap);margin:0 auto;padding:0 var(--kwcs-padX);}
 .kwcs-hero-head{text-align:center;padding:clamp(35px,7vw,65px) var(--kwcs-padX) 0;}
-.kwcs-hero-head h1{font-size:clamp(32px,4.5vw,48px);margin:.5em 0 .4em;color:var(--kwcs-ink);font-weight:700;}
-.kwcs-hero-head .sub{max-width:760px;margin:0 auto;font-size:clamp(17px,2.2vw,20px);color:var(--kwcs-mute);line-height:1.6;}
+.kwcs-hero-head h1{font-size:clamp(32px,4.5vw,48px);margin:.5em 0 .4em;color:var(--color-text-primary);font-weight:700;}
+.kwcs-hero-head .sub{max-width:760px;margin:0 auto;font-size:clamp(17px,2.2vw,20px);color:var(--color-text-subtle);line-height:1.6;}
 .kwcs-hero-body{padding:clamp(35px,7vw,65px) var(--kwcs-padX);}
 .kwcs-hero-body .inner{display:grid;grid-template-columns:1fr 1fr;gap:2.5rem;align-items:center;max-width:var(--kwcs-wrap);margin:0 auto;}
 .hero-buttons{display:flex;flex-direction:column;gap:1.2rem;}
-.kwcs-chip{display:inline-block;font-size:.95rem;padding:.85rem 1.4rem;border-radius:14px;font-weight:600;color:#fff;text-decoration:none;box-shadow:0 4px 16px rgba(0,0,0,.15);transition:all .25s ease;backdrop-filter:blur(10px);}
+.kwcs-chip{display:inline-block;font-size:.95rem;padding:.85rem 1.4rem;border-radius:14px;font-weight:600;color:var(--color-text-inverse);text-decoration:none;box-shadow:0 4px 16px rgba(0,0,0,.15);transition:all .25s ease;backdrop-filter:blur(10px);}
 .kwcs-chip:hover{transform:translateY(-3px);box-shadow:0 8px 28px rgba(0,0,0,.2);}
 .chip-zakres{background:linear-gradient(135deg,#87CEEB,#5DADE2);}
 .chip-stack{background:linear-gradient(135deg,#4682B4,#2E86AB);}
@@ -900,7 +880,7 @@ body.portfolio-page.page-voucher-magdy .breadcrumbs a:hover{color:#0f44b7;}
 .kwcs-card{background:rgba(255,255,255,0.95);backdrop-filter:blur(15px);border:1px solid rgba(230,233,239,0.6);border-radius:20px;padding:25px;box-shadow:0 8px 35px rgba(2,6,23,.06);}
 .kwcs-card h3{margin:0 0 .5rem;font-size:1.1rem;font-weight:600;}
 .kwcs-card ul{margin:.4rem 0 0 1.2rem;}
-.kwcs-card li{margin:.3rem 0;color:var(--kwcs-mute);}
+.kwcs-card li{margin:.3rem 0;color:var(--color-text-subtle);}
 .kwcs-result{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:22px;background:linear-gradient(180deg,rgba(255,255,255,0.95),rgba(244,247,251,0.9));backdrop-filter:blur(15px);border:1px solid rgba(230,233,239,0.6);border-radius:20px;padding:22px;}
 .kwcs-result p{margin:0;font-weight:600;}
 
@@ -913,12 +893,12 @@ body.portfolio-page.page-voucher-magdy .breadcrumbs a:hover{color:#0f44b7;}
 .kwcs-item.active{box-shadow:0 8px 28px rgba(0,0,0,0.12);border-color:rgba(37,99,235,0.3);}
 .kwcs-header{width:100%;background:rgba(247,247,247,0.9);backdrop-filter:blur(10px);border:none;text-align:left;padding:18px 24px;font-size:1.1rem;font-weight:600;cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:.9rem;user-select:none;transition:background .3s;}
 .kwcs-header:hover{background:rgba(241,245,249,0.9);}
-.kwcs-header .num{font-weight:700;margin-right:12px;color:#0077cc;}
-.kwcs-header .icon{font-weight:700;font-size:1.3rem;transition:transform .35s;margin-left:auto;pointer-events:none;color:#64748b;}
+.kwcs-header .num{font-weight:700;margin-right:12px;color:var(--color-text-accent);}
+.kwcs-header .icon{font-weight:700;font-size:1.3rem;transition:transform .35s;margin-left:auto;pointer-events:none;color:var(--color-text-subtle);}
 .kwcs-content{max-height:0;overflow:hidden;transition:max-height .4s ease, padding .4s ease;padding:0 24px;background:rgba(255,255,255,0.95);backdrop-filter:blur(15px);}
 .kwcs-content ul{padding:20px 0;margin:0;list-style:disc;}
 .kwcs-item.active .kwcs-content{padding:20px 24px;}
-.kwcs-item.active .kwcs-header .icon{transform:rotate(45deg);color:#2563eb;}
+.kwcs-item.active .kwcs-header .icon{transform:rotate(45deg);color:var(--color-text-accent);}
 
 @media (max-width:700px){
   .project-content{padding:25px 5vw 20px}
@@ -1362,7 +1342,7 @@ body.portfolio-page.page-voucher-magdy .breadcrumbs a:hover{color:#0f44b7;}
 .cta-section h2 {
   font-size: clamp(1.6rem, 3.5vw, 2.4rem);
   font-weight: 700;
-  color: #f8fafc;
+  color: var(--color-text-inverse);
   margin-bottom: 20px;
   font-family: 'Poppins', sans-serif;
   line-height: 1.2;
@@ -1370,7 +1350,7 @@ body.portfolio-page.page-voucher-magdy .breadcrumbs a:hover{color:#0f44b7;}
 
 .cta-section p {
   font-size: clamp(1rem, 2vw, 1.15rem);
-  color: #94a3b8;
+  color: var(--color-text-subtle);
   line-height: 1.7;
   margin-bottom: 40px;
 }
@@ -1381,7 +1361,7 @@ body.portfolio-page.page-voucher-magdy .breadcrumbs a:hover{color:#0f44b7;}
   gap: 10px;
   padding: 18px 40px;
   background: #fff;
-  color: #0f172a;
+  color: var(--color-text-primary);
   text-decoration: none;
   border-radius: 60px;
   font-weight: 700;
@@ -1408,11 +1388,11 @@ body.portfolio-page.page-voucher-magdy .breadcrumbs a:hover{color:#0f44b7;}
 .cta-secondary {
   margin: 0;
   font-size: 0.9rem;
-  color: var(--portfolio-text-footer);
+  color: var(--color-text-footer);
 }
 
 .cta-secondary a {
-  color: var(--portfolio-text-footer);
+  color: var(--color-text-footer);
   text-decoration: underline;
 }
 
@@ -1464,10 +1444,10 @@ body.portfolio-page.page-voucher-magdy .breadcrumbs a:hover{color:#0f44b7;}
 
 .testimonial-caption {
   font-size: 0.9rem;
-  color: var(--portfolio-text-subtle);
+  color: var(--color-text-subtle);
 }
 
 .testimonial-project {
-  color: var(--portfolio-text-accent);
+  color: var(--color-text-accent);
 }
 

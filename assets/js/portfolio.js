@@ -254,7 +254,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const closeBtn = document.createElement('button');
         closeBtn.className = 'close-button';
         closeBtn.textContent = '← Wróć do listy projektów';
-        closeBtn.setAttribute('aria-label', 'Zamknij case study');
+        closeBtn.setAttribute('aria-label', 'Wróć do listy projektów');
         closeBtn.addEventListener('click', closeViewer);
 
         wrapper.appendChild(closeBtn);
