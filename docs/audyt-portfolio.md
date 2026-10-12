@@ -567,3 +567,25 @@ Widoczny tekst (treść) niezmieniony. Po zmianie detektor zgłasza **0 niezgodn
 - [x] `/portfolio` bez regresji: Accessibility 100, axe 0, zero NOWYCH błędów konsoli (GA4 = artefakt proxy).
 - [x] `git status`: tylko pliki z zakresu. Raport dopisany do `docs/audyt-portfolio.md`.
 - [ ] (poza zakresem) `portfolio.js` close-button WCAG 2.5.3 — rekomendacja do osobnej rundy.
+
+---
+
+## Runda KOLORY — jeden system kolorów tekstu (gałąź `runda-kolory` od `origin/main` po scaleniu #131)
+
+**Cel:** jeden system kolorów tekstu na całej witrynie, kontrast ≥ 4.5:1 wszędzie, bez zmiany identyfikacji marki.
+
+### Krok 1 — inwentaryzacja (stan PRZED)
+
+**Arkusze → strony (brak uniwersalnego arkusza):** `index-styles.css` (/, /uslugi, /portfolio, /narzedzie, /polityka), `projects.css` (/portfolio + 7 case studies), `style.css` (tylko /kontakt), inline (polityka, 404). `projects.css` w portfolio.html NIE jest podwójny — to wzorzec `preload` + `<noscript>` (nieblokujący), nie duplikat.
+
+**Kolory tekstu:** 51 różnych wartości hex. Niezdające kontrastu na jasnym tle: cyjan/niebieski akcent (#06b6d4 2.43, #0292aa 3.69, #0284c7 4.10, #0ea5e9 2.77, #0891b2 3.68, #0aa, #2c8cde, #23d6d3), szary muted (#94a3b8 2.56, #64748b 4.46 na #f8fafc, #999, #888, #777, #bbb, #ccc), zieleń #10b981 (2.54), czerwień #ef4444 (3.76).
+
+**axe baseline (color-contrast / strona):** / = 9, /uslugi = 52, /portfolio = 0, /narzedzie = 15, /polityka = 3, /kontakt = 1, /404 = 4. **Σ = 84.** Case studies (7) = 0 (naprawione w runda-c1). Inne naruszenia (do zaraportowania, nie naprawiamy): heading-order, landmark-one-main, region, aria-prohibited-attr, link-in-text-block. Konsola: tylko `ERR_TUNNEL_CONNECTION_FAILED` (GA4/fonty — proxy sandboxa) + brakujący zasób na /404.
+
+**Punkt 3 (biały tekst na tłach marki) — do decyzji:** #fff na #06b6d4 = 2.43 ❌, na #0284c7 = 4.10 ❌, na #0891b2 = 3.68 ❌, na #0ea5e9 = 2.77 ❌, na #10b981 = 2.54 ❌. (na #2563eb/#1d4ed8/#0e7490 ✅).
+
+**Decyzje (Krok 1 → OK):** tokeny w nowym `tokens.css` (jedno źródło, pierwszy arkusz, +1 małe żądanie/stronę — weryfikacja PageSpeed); pełna skala tokenów; linki ujednolicone z accent #0e7490 **z obowiązkowym podkreśleniem** (WCAG 1.4.1), hover ciemniejszy/grubsze podkreślenie, przyciski bez zmian.
+
+### Krok 2 pkt 1 — tokeny :root — ZROBIONE
+
+Utworzono `assets/css/tokens.css` i podłączono jako pierwszy arkusz na 14 stronach. Tokeny (kontrast w komentarzach): primary #0f172a, body #475569, subtle #52606d, accent #0e7490, accent-hover #0c6076, footer #9ca3af, inverse #fff, success #047857, error #b91c1c, brand #06b6d4 (nie-tekst).

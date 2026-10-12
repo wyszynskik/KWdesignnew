@@ -1,0 +1,24 @@
+/* ============================================================
+   KW DESIGN — TOKENY KOLORÓW (jedno źródło prawdy)
+   Ładowany jako PIERWSZY arkusz na każdej stronie, więc tokeny są
+   dostępne zanim zadziała którykolwiek inny arkusz.
+
+   System kolorów TEKSTU (kontrast ≥ 4.5:1 na białym/jasnym tle;
+   footer liczony na ciemnym tle). Kolor MARKI (--color-brand) służy
+   tłom / przyciskom / ikonom / obramowaniom — NIE jest kolorem tekstu.
+   ============================================================ */
+:root {
+  /* — tekst — */
+  --color-text-primary: #0f172a;   /* 17.85:1 — nagłówki, główny ink  */
+  --color-text-body:    #475569;   /*  7.58:1 — tekst akapitów        */
+  --color-text-subtle:  #52606d;   /*  6.46:1 — opisy, etykiety, muted */
+  --color-text-accent:  #0e7490;   /*  5.36:1 — akcent + linki         */
+  --color-text-accent-hover: #0c6076; /* 7.12:1 — hover linku/akcentu  */
+  --color-text-footer:  #9ca3af;   /*  7.54:1 na #0b0f19 — stopka na ciemnym */
+  --color-text-inverse: #ffffff;   /*  tekst na ciemnym/marki          */
+  --color-text-success: #047857;   /*  5.48:1 — stan pozytywny         */
+  --color-text-error:   #b91c1c;   /*  6.47:1 — błąd / stan negatywny  */
+
+  /* — marka (NIE tekst): tła, przyciski, ikony, obramowania — */
+  --color-brand:        #06b6d4;
+}
