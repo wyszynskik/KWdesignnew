@@ -616,3 +616,10 @@ Utworzono `assets/css/tokens.css` i podłączono jako pierwszy arkusz na 14 stro
 - **hover linków:** bazowe `a:hover` używało `--color-primary-dark` (#0292AA, 3.69:1 ❌). Przepięto 6 tekstowych użyć `color: var(--color-primary-dark)` → `--color-text-accent-hover` (#0c6076, 7.12:1). Linki w treści: hover = accent-hover + grubsze podkreślenie (pkt 2). Tła/gradienty z `--color-primary-dark` nietknięte.
 - **focus:** wskaźnik focus (outline) na jasnym tle używał `--color-primary` (#06b6d4, 2.43:1 < 3:1 — niewidoczny wg WCAG 1.4.11). Zmieniono `a:focus-visible`, `.btn:focus-visible` (index) i `.filter-btn:focus-visible` (kontakt) na `--color-text-accent` (#0e7490, 5.36:1 ✅). Focus nawigacji (`.nav-list a:focus-visible`) na ciemnym nagłówku pozostaje `--color-primary` (#06b6d4, 8.7:1 na ciemnym ✅). Focus przycisków (`--kw-btn-focus-ring` #0891b2) = 3.68:1 na białym ✅.
 - **visited:** nie stylowany osobno — dziedziczy accent (bez problemu kontrastu; brak wymogu WCAG na odróżnienie visited).
+
+### Krok 2 pkt 5 — usunięcie nadpisań color scope body.portfolio-page + runda-c1 w projects.css — ZROBIONE
+
+- **portfolio.css:** usunięto lokalne zmienne `--portfolio-text-accent/subtle/footer` (duplikowały tokeny) oraz nadpisania redundantne wobec globalnych tokenów: `.kwcs-hero-head .eyebrow`, `.razdwa-summary-cell .label` (pokrywa projects.css), `.footer-bottom p` (pokrywa index-styles.css). Wszystkie pozostałe użycia `var(--portfolio-text-*)` przepięto na `var(--color-text-*)`. Zachowano reguły będące jedynym źródłem koloru (`.adg-label`, `.section-subtitle`) — teraz na globalnych tokenach.
+- **projects.css:** usunięto cały blok „RUNDA C1 — KONTRAST TEKSTU" z końca pliku (redundantny — reguły źródłowe .eyebrow/.ux-label/.razdwa-chapter-rail-label/… niosą już te same tokeny po tej rundzie).
+
+**Weryfikacja:** axe color-contrast = 0 na /portfolio oraz 15 kontekstach case studies (viewer+standalone) — brak regresji po usunięciu nadpisań.

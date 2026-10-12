@@ -21,7 +21,7 @@
     cursor: pointer;
     font-weight: 600;
     font-size: 0.95rem;
-    color: var(--portfolio-text-accent);
+    color: var(--color-text-accent);
     padding: 12px 0;
     width: fit-content;
 }
@@ -71,39 +71,19 @@ html,body{overflow-x:hidden;scroll-behavior:smooth;}
 body.portfolio-page .hamburger{background:none;border:none;font:inherit;color:inherit;}
 body.portfolio-page .hamburger:hover{background:var(--color-dark-light);}
 
-/* === KONTRAST TEKSTU (axe + Lighthouse na realnym renderze, scope tylko
-   /portfolio) === Zmienne nizej zastepuja --color-primary (#06b6d4),
-   #64748b i efektywny #63656c (compounding opacity w stopce) WYLACZNIE
-   jako kolor tekstu na /portfolio - tla, obramowania i ikony w tych samych
-   klasach (np. border-left na .razdwa-summary-cell) zostaja nietkniete.
-   Brak stanow :hover/:focus do synchronizacji - zadna z selektorow nizej
-   nie ma zdefiniowanego hover/focus gdzies w kodzie (sprawdzone grepem).
-   Selektory #id .class (nie .class .class) zeby wygrac z kaskada
-   index-styles.css/projects.css bez zgadywania - zmierzone realnym
-   Lighthouse, nie reczna kalkulacja (patrz audyt-portfolio.md).
-   TODO sprint 2: przeniesc do index-styles.css jako nowa wartosc
-   --color-primary / zmienna globalna, zamiast nadpisywac per-strona. */
-body.portfolio-page {
-  --portfolio-text-accent: #0e7490;  /* 5.12:1 na #f8fafc, 5.36:1 na #fff (bylo #06b6d4: 2.32-2.43:1) */
-  --portfolio-text-subtle: #52606d;  /* 6.06:1 na #f6f8f8 (bylo #64748b: 4.46:1) */
-  --portfolio-text-footer: #9ca3af;  /* 7.54:1 na #0b0f19 (bylo efektywne #63656c: 3.29:1) */
-}
-
-body.portfolio-page .adg-label,
-body.portfolio-page .kwcs-hero-head .eyebrow,
-body.portfolio-page .razdwa-summary-cell .label {
-  color: var(--portfolio-text-accent);
+/* Kolory tekstu specyficzne dla /portfolio używają globalnych tokenów
+   (tokens.css). Lokalne zmienne --portfolio-text-* oraz nadpisania
+   redundantne wobec projects.css/index-styles.css (.eyebrow, .razdwa-summary-cell
+   .label, .footer-bottom p) usunięte w rundzie KOLORY. Poniżej pozostają
+   reguły, dla których to jedyne źródło koloru (.adg-label, .section-subtitle). */
+body.portfolio-page .adg-label {
+  color: var(--color-text-accent);
 }
 
 body.portfolio-page #portfolio-section .section-subtitle,
 body.portfolio-page #experience-section .section-subtitle,
 body.portfolio-page #design-archive .section-subtitle {
-  color: var(--portfolio-text-subtle);
-}
-
-body.portfolio-page .footer-bottom p {
-  color: var(--portfolio-text-footer);
-  opacity: 1;
+  color: var(--color-text-subtle);
 }
 
 /* === PREMIUM ABOUT SECTION === */
@@ -1408,11 +1388,11 @@ body.portfolio-page.page-voucher-magdy .breadcrumbs a:hover{color:var(--color-te
 .cta-secondary {
   margin: 0;
   font-size: 0.9rem;
-  color: var(--portfolio-text-footer);
+  color: var(--color-text-footer);
 }
 
 .cta-secondary a {
-  color: var(--portfolio-text-footer);
+  color: var(--color-text-footer);
   text-decoration: underline;
 }
 
@@ -1464,10 +1444,10 @@ body.portfolio-page.page-voucher-magdy .breadcrumbs a:hover{color:var(--color-te
 
 .testimonial-caption {
   font-size: 0.9rem;
-  color: var(--portfolio-text-subtle);
+  color: var(--color-text-subtle);
 }
 
 .testimonial-project {
-  color: var(--portfolio-text-accent);
+  color: var(--color-text-accent);
 }
 
