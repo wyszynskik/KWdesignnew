@@ -661,3 +661,18 @@ Przed: tylko `uslugi.html` i `404.html` miały `theme-color` (#06b6d4), 13 stron
 | case study | kolor | kontrast | element |
 |---|---|---|---|
 | voucher-salon-magdy | `#10473f` | 10.53:1 | cena „100 zł" (marka Salon Magdy) |
+
+---
+
+## Runda A11Y — Lighthouse Accessibility 100 na / i /uslugi (gałąź `runda-a11y` od `origin/main` po #132)
+
+**Cel:** Lighthouse Accessibility 100 na `/` i `/uslugi`. **Zakres:** index.html, uslugi.html, index-styles.css, services-page.css, index-scripts.js. **Poza:** treść, kolory, tokens.css, portfolio.html, projects/*.html.
+
+### Zadanie 1 — heading-order — ZROBIONE
+
+Grep selektorów elementowych (h3/h4) w index-styles.css, services-page.css, tokens.css przed zmianą tagów. Poziomy nagłówków dziedziczą `letter-spacing`/`line-height` z reguł per-poziom (`h2` ma line-height 1.2 i -0.03em; `h3` -0.025em; `h4` -0.01em), więc przypięto te właściwości do klas, by wygląd był identyczny.
+
+- **/** : `.portfolio-new-title` h3→**h2** (po h1; +`line-height:1.25`+`letter-spacing:-0.025em`); `.card-title` h4→**h3** (×3 karty; +`letter-spacing:-0.01em`).
+- **/uslugi** : wszystkie `<h4>` (15: `.block` + `.timeline`) → **h3** (po h2 sekcji). Selektory CSS `.block h4`/`.block.muted h4`/`.timeline h4` → `.block h3`/`.block.muted h3`/`.timeline h3`; `+letter-spacing:-0.01em` na `.block h3` i `.timeline h3` (pin do dawnego h4).
+
+**axe heading-order = 0** na / i /uslugi (bez nowych przeskoków). Wygląd nagłówków identyczny (font-size z klas, letter-spacing/line-height przypięte).
