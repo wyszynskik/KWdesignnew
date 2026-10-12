@@ -629,7 +629,7 @@
 .scope-column h3 {
     font-size: 1.375rem;
     font-weight: 700;
-    color: var(--color-primary-dark);
+    color: var(--color-text-accent-hover);
     margin-bottom: 20px;
 }
 
@@ -866,7 +866,7 @@
 }
 
 .option-answer strong {
-    color: var(--color-primary-dark);
+    color: var(--color-text-accent-hover);
     font-weight: 700;
 }
 

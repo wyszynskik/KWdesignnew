@@ -610,3 +610,9 @@ Utworzono `assets/css/tokens.css` i podłączono jako pierwszy arkusz na 14 stro
 - **Grupa C (granat własny KW → token):** `#133b7b`, `#19356d`, `#194c92`→`--color-text-navy` (#133b7b, 10.83:1). Zachowany granatowy charakter viewera /portfolio i motywu /kontakt.
 
 **Grep twardych kolorów tekstu:** czysty we wszystkich arkuszach i HTML — **jedyny wynik to wyjątek Grupy B** (`projects/voucher-salon-magdy.html` #10473f). axe color-contrast = 0 na 7 stronach + 15 kontekstach case studies (viewer+standalone).
+
+### Krok 2 pkt 4 — stany hover / focus / visited — ZROBIONE
+
+- **hover linków:** bazowe `a:hover` używało `--color-primary-dark` (#0292AA, 3.69:1 ❌). Przepięto 6 tekstowych użyć `color: var(--color-primary-dark)` → `--color-text-accent-hover` (#0c6076, 7.12:1). Linki w treści: hover = accent-hover + grubsze podkreślenie (pkt 2). Tła/gradienty z `--color-primary-dark` nietknięte.
+- **focus:** wskaźnik focus (outline) na jasnym tle używał `--color-primary` (#06b6d4, 2.43:1 < 3:1 — niewidoczny wg WCAG 1.4.11). Zmieniono `a:focus-visible`, `.btn:focus-visible` (index) i `.filter-btn:focus-visible` (kontakt) na `--color-text-accent` (#0e7490, 5.36:1 ✅). Focus nawigacji (`.nav-list a:focus-visible`) na ciemnym nagłówku pozostaje `--color-primary` (#06b6d4, 8.7:1 na ciemnym ✅). Focus przycisków (`--kw-btn-focus-ring` #0891b2) = 3.68:1 na białym ✅.
+- **visited:** nie stylowany osobno — dziedziczy accent (bez problemu kontrastu; brak wymogu WCAG na odróżnienie visited).
