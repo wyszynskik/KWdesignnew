@@ -4759,3 +4759,37 @@ body { overflow-x: hidden; }
     grid-template-columns: minmax(0, 362px);
   }
 }
+
+/* ============================================================
+   RUNDA C1 — KONTRAST TEKSTU (WCAG AA)
+   Nadpisuje WYŁĄCZNIE kolor TEKSTU dla selektorów zgłoszonych przez
+   axe (color-contrast) w 7 case studies — w viewerze /portfolio oraz na
+   podstronach projects/<slug>. Tła, obramowania, ikony i gradienty w tych
+   samych klasach (np. border-left #0ea5e9 na .ux-decision-box, border
+   #0284c7 na .kwcs-cta--ghost, linie gradientu #06b6d4→#0284c7) ZOSTAJĄ
+   nietknięte. Wartości identyczne jak zmienne kontrastu w portfolio.css:
+     accent #0e7490  → 5.36:1 na #fff (było #06b6d4 2.42, #0284c7 4.09, #0292AA 3.68)
+     subtle #52606d  → 6.06:1 na #fff (było #94a3b8 2.56)
+   Blok na końcu pliku → ta sama/wyższa specyficzność + późniejsza
+   kolejność źródła wygrywa z regułami bazowymi bez ich usuwania.
+   ============================================================ */
+.kwcs-hero-head .eyebrow,
+.contribution-step,
+.kwcs-card h3, .kwcs-card h4,
+.ux-decision-box .ux-label,
+.razdwa-summary-cell .label,
+.razdwa-chapter-rail-label,
+.contribution-cell--solo h3, .contribution-cell--solo h4,
+.kwcs-back-btn,
+.kwcs-footer a {
+  color: #0e7490;
+}
+
+.ui-swatch-hex,
+.ui-type-label,
+.ui-type-sample.is-caption,
+#karoma-chapter-rail .razdwa-chapter-rail-label,
+#pom-chapter-rail .razdwa-chapter-rail-label,
+#cyfra-chapter-rail .razdwa-chapter-rail-label {
+  color: #52606d;
+}

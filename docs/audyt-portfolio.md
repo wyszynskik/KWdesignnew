@@ -456,3 +456,15 @@ Przed pushem: `git merge-base --is-ancestor <hash> origin/main` dla commitów Ru
 - `scrollable-region-focusable` — cyfradruk standalone, `.user-flow--6` (region przewijalny bez fokusu klawiaturą) → `tabindex="0"`.
 
 **Błędy konsoli:** jedyny błąd na KAŻDEJ stronie (łącznie z bare `/portfolio`) to `net::ERR_TUNNEL_CONNECTION_FAILED` dla `https://www.googletagmanager.com/gtag/js?id=G-TG0HE09DE7` — GA4 blokowany przez proxy sandboxa. Artefakt środowiska testowego; w produkcji zasób ładuje się poprawnie (zweryfikowane w Rundzie 3). Nie jest powodowany zmianami tej rundy; cel „zero błędów konsoli" dotyczy braku NOWYCH błędów wprowadzonych kodem.
+
+### Zadanie 2 — kontrast (color-contrast) — ZROBIONE
+
+Dodano blok na końcu `projects.css` nadpisujący **tylko kolor tekstu** (property `color`) dla selektorów zgłoszonych przez axe. Wartości jak w `portfolio.css`:
+- **#0e7490** (accent, 5.36:1 na #fff): `.kwcs-hero-head .eyebrow`, `.contribution-step`, `.kwcs-card h3/h4`, `.ux-decision-box .ux-label`, `.razdwa-summary-cell .label`, `.razdwa-chapter-rail-label`, `.contribution-cell--solo h3/h4`, `.kwcs-back-btn`, `.kwcs-footer a` (link Polityka prywatności). Zastępuje `#06b6d4` (2.42), `#0284c7` (4.09), `#0292AA` (3.68).
+- **#52606d** (subtle, 6.06:1 na #fff): `.ui-swatch-hex`, `.ui-type-label`, `.ui-type-sample.is-caption`, rail-label dla karoma/pom/cyfra. Zastępuje `#94a3b8` (2.56).
+
+Tła/obramowania/ikony/gradienty z tymi hexami **nietknięte** (border-left `#0ea5e9` na `.ux-decision-box`, border `#0284c7` na `.kwcs-cta--ghost`, gradienty `#06b6d4→#0284c7`, duże `.razdwa-stat-num` które przechodziły próg 3:1). Zmiana jest czysto kolorystyczna → zero wpływu na układ.
+
+**Strony spoza zakresu ładujące `projects.css`:** `portfolio.html` (viewer — objęty testami) oraz `projects/wizualizacje.html`. Zrzuty przed/po potwierdzają brak regresji (patrz zadanie 8).
+
+**Wynik axe po zadaniu 2:** `color-contrast` = **0** we wszystkich 14 kontekstach (7 viewer + 7 standalone) oraz bare `/portfolio`. Pozostają: `heading-order` (5 slugów), `landmark-one-main` (7 podstron), `scrollable-region-focusable` (cyfradruk) — kolejne zadania.
