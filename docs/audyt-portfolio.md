@@ -468,3 +468,11 @@ Tła/obramowania/ikony/gradienty z tymi hexami **nietknięte** (border-left `#0e
 **Strony spoza zakresu ładujące `projects.css`:** `portfolio.html` (viewer — objęty testami) oraz `projects/wizualizacje.html`. Zrzuty przed/po potwierdzają brak regresji (patrz zadanie 8).
 
 **Wynik axe po zadaniu 2:** `color-contrast` = **0** we wszystkich 14 kontekstach (7 viewer + 7 standalone) oraz bare `/portfolio`. Pozostają: `heading-order` (5 slugów), `landmark-one-main` (7 podstron), `scrollable-region-focusable` (cyfradruk) — kolejne zadania.
+
+### Zadanie 3 — heading-order — ZROBIONE
+
+Wszystkie naruszenia `heading-order` dotyczyły tytułów kart `.ux-decision-box`, które jako `<h4>` następowały bezpośrednio po `<h2>` sekcji (przeskok h2→h4 z pominięciem h3). Zamieniono `<h4>`→`<h3>` **wyłącznie wewnątrz `.ux-decision-box`** (skrypt z kontrolą zagnieżdżenia `<div>`), w 5 plikach: karoma (14), power-of-mind (11), KW-Design (4), razdwa_aplikacja (18), cyfradruk (14). Nagłówki `.features-box h4` i inne (poprzedzone h3) pozostały bez zmian.
+
+**Wygląd bez zmian:** reguła `.ux-decision-box h3, .ux-decision-box h4 { ... }` jest wspólna dla obu poziomów (ta sama specyficzność nadpisuje bazowe reguły elementów), więc font/rozmiar/kolor identyczne.
+
+**Wynik axe po zadaniu 3:** `heading-order` = **0**. Wszystkie 7 kontekstów **viewer = 0 naruszeń**. W standalone pozostają tylko `landmark-one-main` (7 podstron) i `scrollable-region-focusable` (cyfradruk) — naprawa w ramach dopełnienia definicji done.
