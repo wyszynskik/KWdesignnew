@@ -623,3 +623,11 @@ Utworzono `assets/css/tokens.css` i podłączono jako pierwszy arkusz na 14 stro
 - **projects.css:** usunięto cały blok „RUNDA C1 — KONTRAST TEKSTU" z końca pliku (redundantny — reguły źródłowe .eyebrow/.ux-label/.razdwa-chapter-rail-label/… niosą już te same tokeny po tej rundzie).
 
 **Weryfikacja:** axe color-contrast = 0 na /portfolio oraz 15 kontekstach case studies (viewer+standalone) — brak regresji po usunięciu nadpisań.
+
+### Krok 2 pkt 6 — aria-label przycisku zamykającego (portfolio.js) — ZROBIONE
+
+`portfolio.js`: przycisk zamykający case study miał `aria-label="Zamknij case study"` przy widocznym tekście „← Wróć do listy projektów" (niezgodność WCAG 2.5.3). Zmieniono na `aria-label="Wróć do listy projektów"` (zgodne z widocznym tekstem). Detektor label-content-name-mismatch w viewerze: **0 naruszeń**.
+
+### Krok 2 pkt 7 — meta theme-color — ZROBIONE
+
+Przed: tylko `uslugi.html` i `404.html` miały `theme-color` (#06b6d4), 13 stron bez. Ujednolicono: `<meta name="theme-color" content="#06b6d4">` (kolor marki) na **wszystkich 15 stronach**, jednolity format.
