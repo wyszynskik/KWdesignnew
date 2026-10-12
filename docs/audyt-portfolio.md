@@ -521,3 +521,18 @@ Weryfikacja na bazie `origin/main`: oba pliki mają **dokładnie jeden** element
 - `razdwa_aplikacja.html`: linia 51 (jedyny `<link>`). Drugie trafienie to komentarz (linia 732).
 
 `portfolio.css`/`kw-buttons.css`/Google Fonts ładowane po jednym razie; brak `@import` ani `rel="preload"` do projects.css. Podwójnego dołączenia nie ma (prawdopodobnie naprawione we wcześniejszej rundzie przed `1cccc53`). **Zgodnie z ustaleniem: zaraportowano i pominięto — bez zmian w kodzie.**
+
+### Zadanie 7 — label-content-name-mismatch — ZROBIONE
+
+WCAG 2.5.3 (Label in Name): nazwa dostępna (`aria-label`) musi zawierać widoczny tekst elementu. axe klasyfikuje tę regułę jako *incomplete/needs-review* (nie „violation"), dlatego nie pojawiała się w licznikach naruszeń — wykryta własnym detektorem (widoczny tekst ⊄ aria-label). Znaleziono i uzgodniono **27** elementów:
+
+- **Linki rail (spis treści, `.razdwa-chapter-link`):** `aria-label` ustawiony na **widoczny tekst** (np. `aria-label="Problem"`), a pełny opis został w atrybucie `title` (tooltip). Dotyczy pom (8), razdwa (9), voucher (1 — „Koncepcja"), sir-roger (1 — „Identyfikacja"). Linki już zgodne (np. karoma, gdzie aria-label zawierał widoczny tekst) pozostawiono bez zmian. Tekst linków nie jest ukrywany CSS-em, więc nazwa jest stabilna na każdym breakpoincie.
+- **Przyciski CTA:** `aria-label` przepisany tak, by **zaczynał się od dokładnego widocznego tekstu**, z zachowaniem kontekstu:
+  - „Zapytaj o projekt vouchera" (×2, było „Skontaktuj się w sprawie projektu vouchera")
+  - „Obejrzyj stronę sklepu Karoma" (było „Zobacz sklep Karoma")
+  - „Zobacz sklep na żywo – Karoma" (było „Otwórz sklep Karoma na żywo")
+  - „Napisz do mnie w sprawie projektu brandingu" (było „Napisz do Karola…")
+  - „Zobacz wersję archiwalną strony Power of Mind" (×2)
+  - „Zobacz aplikację na żywo – Raz Dwa Druk"
+
+Widoczny tekst (treść) niezmieniony. Po zmianie detektor zgłasza **0 niezgodności** we wszystkich 7 plikach; axe nadal 0 we wszystkich 14 kontekstach.
