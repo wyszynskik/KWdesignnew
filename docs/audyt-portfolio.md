@@ -418,3 +418,41 @@ Przed pushem: `git merge-base --is-ancestor <hash> origin/main` dla commitów Ru
 **Deploy po pushu**: build GitHub Pages przeszedł `building`→`built` w ok. 10-20s (`gh api repos/.../pages/builds/latest`). Po zbudowaniu: `Last-Modified` na `/portfolio` zmienił się na czas tuż po pushu, HTML zawiera nowy H1 "Prowadzę projekty cyfrowe od zakresu do działającego wdrożenia" (stary "Wybrane realizacje" zniknął).
 
 **`https://kwyszynski.pl/portfolio#RazDwa`**: zweryfikowane Puppeteer na produkcji — `#case-viewer` wypełniony (39729 znaków HTML), zawiera węzeł `.kwcs-*` (treść case study RazDwa), zero błędów konsoli. ✓ działa.
+
+---
+
+## Runda C1 — dostępność i waga case studies (gałąź `runda-c1` od `origin/main`)
+
+**Cel:** poprawić dostępność i wagę 7 case studies ładowanych do `/portfolio`, bez zmiany treści i układu.
+**Zakres plików:** `projects/{razdwa_aplikacja,cyfradruk,power-of-mind,karoma,KW-Design,sir-roger,voucher-salon-magdy}.html`, `assets/css/projects.css`, `assets/images/` (tylko nowe warianty).
+**Poza zakresem:** `portfolio.html`, `portfolio.js`, `index-styles.css`, teksty, slugi, kolejność sekcji.
+
+**Metodyka:** statyczny serwer repo + Playwright/Chromium (DPR=1), `axe-core` 4.10.2 (tagi `wcag2a/2aa/21a/21aa/best-practice`). Każdy slug testowany w dwóch kontekstach: viewer `/portfolio#<slug>` (po wstrzyknięciu `section.kwcs`) oraz samodzielna podstrona `projects/<slug>`. Narzędzia poza repozytorium (scratchpad).
+
+### Zadanie 1 — baseline axe (stan PRZED zmianami)
+
+| Kontekst | Slug | Naruszenia axe (węzły) |
+|---|---|---|
+| viewer | voucher-magdy | color-contrast(19) |
+| standalone | voucher-magdy | color-contrast(22), landmark-one-main(1) |
+| viewer | karoma | color-contrast(14), heading-order(4) |
+| standalone | karoma | color-contrast(25), heading-order(4), landmark-one-main(1) |
+| viewer | power-of-mind | color-contrast(17), heading-order(4) |
+| standalone | power-of-mind | color-contrast(28), heading-order(4), landmark-one-main(1) |
+| viewer | KW-Design | color-contrast(9), heading-order(1) |
+| standalone | KW-Design | color-contrast(16), heading-order(1), landmark-one-main(1) |
+| viewer | sir-roger | color-contrast(4) |
+| standalone | sir-roger | color-contrast(7), landmark-one-main(1) |
+| viewer | RazDwa | color-contrast(18), heading-order(4) |
+| standalone | RazDwa | color-contrast(29), heading-order(4), landmark-one-main(1) |
+| viewer | cyfradruk | color-contrast(13), heading-order(5) |
+| standalone | cyfradruk | color-contrast(24), heading-order(5), landmark-one-main(1), scrollable-region-focusable(1) |
+| **portfolio (bare)** | — | **0** |
+
+**Typy naruszeń do naprawy:**
+- `color-contrast` — wszędzie (zadanie 2, w `projects.css`).
+- `heading-order` — karoma, power-of-mind, KW-Design, RazDwa, cyfradruk (zadanie 3).
+- `landmark-one-main` — wszystkie 7 podstron standalone (brak `<main>`); nie występuje w viewerze (tam `<main>` daje `portfolio.html`). Objęte definicją done (axe 0 dla podstron) → naprawa strukturalna bez zmiany wyglądu.
+- `scrollable-region-focusable` — cyfradruk standalone, `.user-flow--6` (region przewijalny bez fokusu klawiaturą) → `tabindex="0"`.
+
+**Błędy konsoli:** jedyny błąd na KAŻDEJ stronie (łącznie z bare `/portfolio`) to `net::ERR_TUNNEL_CONNECTION_FAILED` dla `https://www.googletagmanager.com/gtag/js?id=G-TG0HE09DE7` — GA4 blokowany przez proxy sandboxa. Artefakt środowiska testowego; w produkcji zasób ładuje się poprawnie (zweryfikowane w Rundzie 3). Nie jest powodowany zmianami tej rundy; cel „zero błędów konsoli" dotyczy braku NOWYCH błędów wprowadzonych kodem.
