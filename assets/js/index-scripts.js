@@ -236,22 +236,32 @@ function initNavigation() {
     const header = document.querySelector('.header');
     
     if (hamburger && navList) {
+        const setMenu = (open) => {
+            navList.classList.toggle('open', open);
+            hamburger.classList.toggle('active', open);
+            hamburger.setAttribute('aria-expanded', open ? 'true' : 'false');
+            hamburger.setAttribute('aria-label', open ? 'Zamknij menu' : 'Otwórz menu');
+        };
+
         hamburger.addEventListener('click', () => {
-            navList.classList.toggle('open');
-            hamburger.classList.toggle('active');
+            setMenu(!navList.classList.contains('open'));
         });
-        
+
         navLinks.forEach(link => {
-            link.addEventListener('click', () => {
-                navList.classList.remove('open');
-                hamburger.classList.remove('active');
-            });
+            link.addEventListener('click', () => setMenu(false));
         });
-        
+
         document.addEventListener('click', (e) => {
             if (!hamburger.contains(e.target) && !navList.contains(e.target)) {
-                navList.classList.remove('open');
-                hamburger.classList.remove('active');
+                setMenu(false);
+            }
+        });
+
+        // Escape zamyka menu i oddaje fokus na przycisk
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && navList.classList.contains('open')) {
+                setMenu(false);
+                hamburger.focus();
             }
         });
     }
@@ -312,9 +322,15 @@ function initHeroTextAnimation() {
 
     if (!reduceMotion) {
         let i = 0;
-        heroTitle.querySelectorAll('.ht-line1, .ht-line2').forEach(function(line) {
+        const lines = heroTitle.querySelectorAll('.ht-line1, .ht-line2');
+        // Nazwa dostępna H1: złożona z tekstu linii przed rozbiciem na litery.
+        // aria-label trafia na <h1> (dozwolone), nie na generyczne <span> (aria-prohibited-attr).
+        const accessibleName = Array.prototype.map.call(lines, function(line) {
+            return line.textContent;
+        }).join('');
+        heroTitle.setAttribute('aria-label', accessibleName);
+        lines.forEach(function(line) {
             const text = line.textContent;
-            line.setAttribute('aria-label', text);
             line.textContent = '';
             [...text].forEach(function(char) {
                 const span = document.createElement('span');

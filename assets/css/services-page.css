@@ -1372,12 +1372,13 @@ span.card-btn {
     padding: 24px 28px;
 }
 
-.block h4 {
+.block h3 {
     display: flex;
     align-items: center;
     gap: 8px;
     font-size: 0.9375rem;
     font-weight: 700;
+    letter-spacing: -0.01em; /* pin do dawnego poziomu h4 — wyglad bez zmian */
     color: var(--color-text-primary);
     margin-bottom: 14px;
 }
@@ -1422,7 +1423,7 @@ span.card-btn {
     border-color: #e0e0e0;
 }
 
-.block.muted h4 {
+.block.muted h3 {
     color: var(--color-text-subtle);
 }
 
@@ -1446,12 +1447,13 @@ span.card-btn {
     margin-bottom: 40px;
 }
 
-.timeline h4 {
+.timeline h3 {
     display: flex;
     align-items: center;
     gap: 8px;
     font-size: 0.9375rem;
     font-weight: 700;
+    letter-spacing: -0.01em; /* pin do dawnego poziomu h4 — wyglad bez zmian */
     color: var(--color-text-primary);
     margin-bottom: 24px;
 }
