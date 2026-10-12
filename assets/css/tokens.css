@@ -12,8 +12,9 @@
   --color-text-primary: #0f172a;   /* 17.85:1 — nagłówki, główny ink  */
   --color-text-body:    #475569;   /*  7.58:1 — tekst akapitów        */
   --color-text-subtle:  #52606d;   /*  6.46:1 — opisy, etykiety, muted */
-  --color-text-accent:  #0e7490;   /*  5.36:1 — akcent + linki         */
+  --color-text-accent:  #0e7490;   /*  5.36:1 — akcent + linki (na jasnym) */
   --color-text-accent-hover: #0c6076; /* 7.12:1 — hover linku/akcentu  */
+  --color-text-accent-on-dark: #06b6d4; /* 8.73:1 na #0b0f19 — akcent/link na CIEMNYM tle */
   --color-text-footer:  #9ca3af;   /*  7.54:1 na #0b0f19 — stopka na ciemnym */
   --color-text-inverse: #ffffff;   /*  tekst na ciemnym/marki          */
   --color-text-success: #047857;   /*  5.48:1 — stan pozytywny         */
@@ -21,4 +22,38 @@
 
   /* — marka (NIE tekst): tła, przyciski, ikony, obramowania — */
   --color-brand:        #06b6d4;
+}
+
+/* ============================================================
+   SYSTEM LINKÓW W TREŚCI (WCAG 1.4.1)
+   Linki w tekście mają kolor akcentu, więc muszą być odróżnialne od
+   tekstu akcentowego NIE tylko kolorem → zawsze podkreślone. Hover:
+   ciemniejszy odcień + grubsze podkreślenie. Przyciski/nawigacja/karty
+   (klasy *btn*, *cta*, .nav-list) wykluczone.
+   ============================================================ */
+p a:not([class*="btn"]):not([class*="cta"]),
+.lm-privacy a,
+.pp-contact-box a,
+.kwcs-footer a {
+  color: var(--color-text-accent);
+  text-decoration: underline;
+  text-underline-offset: 0.15em;
+}
+p a:not([class*="btn"]):not([class*="cta"]):hover,
+.lm-privacy a:hover,
+.pp-contact-box a:hover,
+.kwcs-footer a:hover {
+  color: var(--color-text-accent-hover);
+  text-decoration-thickness: 2px;
+}
+/* Linki w treści na CIEMNYM tle (stopka) — akcent dla ciemnego + podkreślenie */
+.footer-info a,
+.footer-info p a {
+  color: var(--color-text-accent-on-dark);
+  text-decoration: underline;
+  text-underline-offset: 0.15em;
+}
+.footer-info a:hover,
+.footer-info p a:hover {
+  text-decoration-thickness: 2px;
 }

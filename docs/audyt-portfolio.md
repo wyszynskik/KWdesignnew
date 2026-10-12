@@ -589,3 +589,9 @@ Widoczny tekst (treść) niezmieniony. Po zmianie detektor zgłasza **0 niezgodn
 ### Krok 2 pkt 1 — tokeny :root — ZROBIONE
 
 Utworzono `assets/css/tokens.css` i podłączono jako pierwszy arkusz na 14 stronach. Tokeny (kontrast w komentarzach): primary #0f172a, body #475569, subtle #52606d, accent #0e7490, accent-hover #0c6076, footer #9ca3af, inverse #fff, success #047857, error #b91c1c, brand #06b6d4 (nie-tekst).
+
+### Krok 2 pkt 2 — zastąpienie twardych kolorów tekstu tokenami (część) — ZROBIONE do checkpointu
+
+306 literalnych wartości hex w `color:` zamienionych na tokeny; 137 pośrednich zmiennych marki używanych jako tekst (`--color-primary`, `--color-muted`, `--color-text`, `--ui-primary`, `--kwcs-ink/mute`) przepięte na tokeny; wewnętrzne zmienne `index-styles.css` (`--color-text-light/muted/text`) zaaliasowane do tokenów. Kontekst CIEMNY (stopka, nagłówek uslugi): dodano `--color-text-accent-on-dark: #06b6d4` (8.73:1) i zastosowano do `.footer-info a`/`.footer-email`, `.lm-teaser-badge`, `.nav-list a.active`; stopka — usunięto podwójne przyciemnienie (color solid + opacity). **Linki w treści:** accent + obowiązkowe podkreślenie (WCAG 1.4.1), hover accent-hover + grubsze podkreślenie; naprawia też `link-in-text-block` na /narzedzie, /polityka.
+
+**axe color-contrast po tym kroku:** / = 0, /portfolio = 0, /polityka = 0, /kontakt = 0, /narzedzie = 1, /404 = 1, /uslugi = 15. 7 case studies (viewer+standalone) = 0 (bez regresji). Pozostałe naruszenia = **biały tekst na tłach marki (#06b6d4)** — punkt 3, decyzja — oraz **dekoracyjne numery-znaki wodne** (.service-num, aria-hidden).

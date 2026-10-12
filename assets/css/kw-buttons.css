@@ -223,7 +223,7 @@
 .kw-btn.submit-btn,
 .kw-btn.lm-btn {
   background: linear-gradient(180deg, var(--kw-btn-primary-from) 0%, var(--kw-btn-primary-to) 100%);
-  color: #ffffff;
+  color: var(--color-text-inverse);
   border-color: transparent;
   box-shadow: var(--kw-btn-shadow), var(--kw-btn-primary-highlight);
 }
@@ -238,7 +238,7 @@
 .kw-btn.submit-btn:hover:not(:disabled),
 .kw-btn.lm-btn:hover:not(:disabled) {
   background: linear-gradient(180deg, var(--kw-btn-primary-from-hover) 0%, var(--kw-btn-primary-to-hover) 100%);
-  color: #ffffff;
+  color: var(--color-text-inverse);
   transform: translateY(var(--kw-btn-hover-lift));
   box-shadow: var(--kw-btn-shadow-hover), var(--kw-btn-primary-highlight);
   text-shadow: var(--kw-btn-text-glow);
@@ -275,7 +275,7 @@
 .kw-btn.kwcs-cta--ghost:hover:not(:disabled),
 .kw-btn.btn-large:hover:not(:disabled) {
   background: var(--kw-btn-accent);
-  color: #ffffff;
+  color: var(--color-text-inverse);
   transform: translateY(var(--kw-btn-hover-lift));
   box-shadow: var(--kw-btn-shadow);
   text-shadow: var(--kw-btn-text-glow);
