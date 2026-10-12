@@ -509,3 +509,7 @@ Definicja done wymaga axe=0 także dla 7 samodzielnych podstron, gdzie oprócz c
 | sir-roger | 27 KB | 3 KB | −87% | <1 MB (n/d) |
 
 **Wynik axe po zadaniu 4:** 0 naruszeń we wszystkich 14 kontekstach (alt-teksty zachowane). Wszystkie referencje obrazów rozwiązują się do istniejących plików (jedyne „brakujące" to 4 obrazy w zakomentowanym bloku power-of-mind — usuwane w zadaniu 5).
+
+### Zadanie 5 — power-of-mind.html: usunięcie zakomentowanego bloku — ZROBIONE
+
+Usunięto zakomentowany blok „SLOT GALERII BRANDINGU" (`<!-- … -->`) z 4 obrazami, których pliki nie istnieją w repo (`power-of-mind-logo/paleta/wizytowki/social.webp`). Blok był niewidoczny w renderze (komentarz HTML), więc zero zmian wizualnych. Po usunięciu wszystkie referencje `<img>` w power-of-mind.html rozwiązują się do istniejących plików (0 brakujących).
