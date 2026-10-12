@@ -631,3 +631,33 @@ Utworzono `assets/css/tokens.css` i podłączono jako pierwszy arkusz na 14 stro
 ### Krok 2 pkt 7 — meta theme-color — ZROBIONE
 
 Przed: tylko `uslugi.html` i `404.html` miały `theme-color` (#06b6d4), 13 stron bez. Ujednolicono: `<meta name="theme-color" content="#06b6d4">` (kolor marki) na **wszystkich 15 stronach**, jednolity format.
+
+### Krok 2 — weryfikacja końcowa i definicja done
+
+**axe color-contrast (desktop 1440 + mobile 390):** **0** na wszystkich 7 stronach Kroku 1 (/, /uslugi, /portfolio, /narzedzie, /polityka, /kontakt, /404) oraz **0/15** kontekstów case studies (viewer+standalone). Mobile ujawnił 1 dodatkowe naruszenie (`.footer-info h3` accent na ciemnym — zdawał jako large text na desktopie, ale nie na mobile) → naprawione tokenem `--color-text-accent-on-dark`.
+
+**Lighthouse Accessibility:** `/portfolio = 100` ✅. `/uslugi = 99`, `/ = 94` — **pozostałe braki to problemy INNE NIŻ kolory** (poza zakresem rundy, zaraportowane bez naprawiania):
+- `/` : `aria-prohibited-attr` (2), `heading-order` (1).
+- `/uslugi` : `heading-order` (3), `landmark-one-main` (1), `region` (15).
+- (`/kontakt`, `/404` : `landmark-one-main`, `region` — też poza zakresem.)
+
+**Grep twardych kolorów tekstu (CSS + inline HTML):** jedyny wynik to udokumentowany wyjątek Grupy B — `projects/voucher-salon-magdy.html` `#10473f` (marka klienta voucher, kontrast 10.53:1). Zero twardych kolorów tekstu w arkuszach.
+
+**Wydajność /portfolio (Lighthouse desktop, provided throttling):** **100** — identycznie jak baza `origin/main` (100). Dodanie `tokens.css` (+1 małe żądanie render-blocking ~0.5 KB) **nie regresuje** wydajności (FCP 0.2s, LCP 0.2s, TBT 0ms, CLS 0.001 lokalnie). Rzeczywisty PageSpeed komputer do potwierdzenia po deployu, ale brak regresji względem bazy.
+
+**Zrzuty przed/po (390 + 1440) dla /, /uslugi, /portfolio, karoma:** układ identyczny; zmienia się wyłącznie kolor tekstu (ciemniejsze akcenty/muted dla kontrastu) oraz podkreślenie linków w treści (WCAG 1.4.1).
+
+**Konsola:** wyłącznie `net::ERR_TUNNEL_CONNECTION_FAILED` (GA4/fonty blokowane przez proxy sandboxa — artefakt środowiska; w produkcji OK) + brakujący zasób na /404. Zero NOWYCH błędów wprowadzonych tą rundą.
+
+**Definicja done:**
+- [x] axe color-contrast = 0 na wszystkich stronach Kroku 1 (+ case studies, desktop i mobile).
+- [x] Lighthouse Accessibility = 100 na /portfolio; na /, /uslugi pozostają tylko problemy inne niż kolory (zaraportowane).
+- [x] Poza blokiem tokenów brak twardych kolorów tekstu (grep czysty; wyjątek: Grupa B voucher #10473f).
+- [x] Zrzuty przed/po (390, 1440): zmienia się wyłącznie kolor tekstu.
+- [x] /portfolio bez regresji wydajności (desktop Lighthouse 100 = baza).
+- [x] Raport w docs/audyt-portfolio.md. Push + draft PR.
+
+**Grupa B (marki klientów w case studies, twarde wartości poza tokenami):**
+| case study | kolor | kontrast | element |
+|---|---|---|---|
+| voucher-salon-magdy | `#10473f` | 10.53:1 | cena „100 zł" (marka Salon Magdy) |
