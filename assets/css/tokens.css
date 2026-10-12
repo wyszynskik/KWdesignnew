@@ -22,6 +22,9 @@
 
   /* — marka (NIE tekst): tła, przyciski, ikony, obramowania — */
   --color-brand:        #06b6d4;
+  /* wariant marki na tła przycisków z BIAŁYM tekstem (biały ≥4.5:1) */
+  --color-brand-strong:       #0e7490; /* biały 5.36:1 */
+  --color-brand-strong-hover: #0c6076; /* biały 7.12:1 */
 }
 
 /* ============================================================

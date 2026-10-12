@@ -4323,7 +4323,7 @@ header * {
 .lm-btn {
     flex-shrink: 0;
     padding: 13px 24px;
-    background: var(--color-primary);
+    background: var(--color-brand-strong);
     color: var(--color-text-inverse);
     font-size: 0.95rem;
     font-weight: 700;
@@ -4336,7 +4336,7 @@ header * {
 }
 
 .lm-btn:hover:not(:disabled) {
-    background: #0891b2;
+    background: var(--color-brand-strong-hover);
 }
 
 .lm-btn:disabled {
