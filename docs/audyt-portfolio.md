@@ -676,3 +676,7 @@ Grep selektorów elementowych (h3/h4) w index-styles.css, services-page.css, tok
 - **/uslugi** : wszystkie `<h4>` (15: `.block` + `.timeline`) → **h3** (po h2 sekcji). Selektory CSS `.block h4`/`.block.muted h4`/`.timeline h4` → `.block h3`/`.block.muted h3`/`.timeline h3`; `+letter-spacing:-0.01em` na `.block h3` i `.timeline h3` (pin do dawnego h4).
 
 **axe heading-order = 0** na / i /uslugi (bez nowych przeskoków). Wygląd nagłówków identyczny (font-size z klas, letter-spacing/line-height przypięte).
+
+### Zadanie 2 — landmark-one-main + region (/uslugi) — ZROBIONE
+
+`/uslugi` nie miała `<main>`, a 3 sekcje usług (#produkty/#automatyzacje/#usprawnienia) bez nazwy dostępnej nie były landmarkami → `region` (15). Owinięto całą treść (9 sekcji) w `<main id="main">` między `</header>` a `<footer>`. Teraz cała treść jest w landmarkach (header/nav + main + footer). `<main>` to blok bez marginesów → bez wpływu na układ. axe: landmark-one-main = 0, region = 0 na /uslugi.
