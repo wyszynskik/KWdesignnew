@@ -680,3 +680,50 @@ Grep selektorów elementowych (h3/h4) w index-styles.css, services-page.css, tok
 ### Zadanie 2 — landmark-one-main + region (/uslugi) — ZROBIONE
 
 `/uslugi` nie miała `<main>`, a 3 sekcje usług (#produkty/#automatyzacje/#usprawnienia) bez nazwy dostępnej nie były landmarkami → `region` (15). Owinięto całą treść (9 sekcji) w `<main id="main">` między `</header>` a `<footer>`. Teraz cała treść jest w landmarkach (header/nav + main + footer). `<main>` to blok bez marginesów → bez wpływu na układ. axe: landmark-one-main = 0, region = 0 na /uslugi.
+
+### Zadanie 3 — aria-prohibited-attr (H1 na /) — ZROBIONE
+
+**Diagnoza (pokazana przed zmianą — warunek 2):** naruszenie nie pochodziło ze statycznego HTML (`<span class="ht-line1/2">` były czyste), lecz z animacji blur-in w `index-scripts.js`. Skrypt rozbija obie linie H1 na ~34 `<span class="char" aria-hidden="true">` (po literze); ponieważ każda litera jest `aria-hidden`, nazwę dostępną nagłówka przywracano przez `aria-label` na obu generycznych `<span>` linii — a `<span>` bez roli nie dopuszcza `aria-label` → `aria-prohibited-attr`. Ścieżka `prefers-reduced-motion` pomija całe rozbicie i była czysta.
+
+**Zmiana:** nazwa dostępna trafia na element, który ją dopuszcza — `<h1>` (`heroTitle.setAttribute('aria-label', …)` złożony z tekstu obu linii **przed** rozbiciem), a `aria-label` z linii `<span>` usunięto. Litery `.char` pozostają `aria-hidden`.
+
+**Weryfikacja drzewa dostępności** (Playwright `accessibility.snapshot()`): nazwa dostępna H1 = **„Uporządkuj procesy, odzyskaj czas."** (dokładnie, ze spacją między liniami); `line1/line2 aria-label = null`. axe aria-prohibited-attr = 0.
+
+### Zadanie 4 — menu mobilne (/, /uslugi) — ZROBIONE
+
+Ujednolicenie z wzorcem `/portfolio` (jeden wzorzec na całej witrynie):
+
+- **index.html:** `<div class="hamburger">` → `<button type="button" …>` z `aria-expanded="false"`, `aria-controls="nav-list"`, `aria-label="Otwórz menu"`; `<ul class="nav-list">` dostaje `id="nav-list"`.
+- **uslugi.html:** `id="nav-list"` na liście; `aria-controls="nav-menu"` → `"nav-list"` (był wiszący — brak elementu o id `nav-menu`); `aria-label` ujednolicony „Otwórz menu nawigacji" → „Otwórz menu". `type="button"` dodany.
+- **index-styles.css:** reset tła/obramowania natywnego `<button>` na `.hamburger` (`background:transparent; border:0; appearance:none`) — wygląd identyczny jak dawny `<div>` (na desktopie `.hamburger` i tak `display:none`).
+- **index-scripts.js** (`initNavigation`, używany przez obie strony): `setMenu(open)` synchronizuje klasy `open`/`active` **oraz** `aria-expanded` i `aria-label` („Zamknij menu" po otwarciu / „Otwórz menu" po zamknięciu); `Escape` zamyka menu i oddaje fokus na przycisk; klik w link menu zamyka menu i ustawia `aria-expanded="false"`; klik poza menu zamyka.
+
+**Test klawiaturą 390 px (Playwright, obie strony):** fokus na hamburgerze → `Enter` → `aria-expanded=true`, `aria-label="Zamknij menu"`, menu otwarte; `Tab` przechodzi po elementach; `Escape` → `aria-expanded=false`, `aria-label="Otwórz menu"`, menu zamknięte, **fokus wraca na przycisk**. `aria-controls`/`id` = `nav-list` na obu stronach (zgodne z /portfolio). Wzorzec jest nadzbiorem /portfolio (portfolio.js nie ma Escape/zamykania po kliknięciu/powrotu fokusa — tu dodane zgodnie z wymaganiami).
+
+### Zadanie 5 — scrollable-region-focusable (/uslugi, dopełnienie DoD axe = 0) — ZROBIONE
+
+axe na mobile (390 px) flagował `.comparison-table-wrapper` (kontener tabeli porównawczej przewijany poziomo) jako `scrollable-region-focusable` — niedostępny z klawiatury. Widoczne **tylko na mobile** (na desktopie tabela się mieści, więc nie wyszło w bazowym audycie desktopowym). Dodano `tabindex="0"` + `role="region"` + `aria-label="Etapy współpracy nad projektem"` (z treści `<caption>`). Bez zmian treści i wyglądu.
+
+### Zadanie 6 — weryfikacja końcowa i definicja done
+
+**Lighthouse Accessibility** (headless Chromium): **/ = 100**, **/uslugi = 100** (dla kontroli /portfolio = 100). ✔ cel rundy.
+
+**axe-core** (wszystkie reguły wcag2a/aa + wcag21a/aa + best-practice), oba widoki:
+
+| widok | / | /uslugi |
+|---|---|---|
+| desktop 1440 | 0 | 0 |
+| mobile 390 | 0 | 0 |
+
+**Formularz kontaktowy** (`#contactForm` na / i /uslugi) — bez zmian, działa:
+- puste pola → walidacja JS oznacza `name`, `email`, `message` klasą `.error`; atrybut `required` wymusza je też natywnie;
+- niepoprawny e-mail → `#email` dostaje `.error`;
+- **0 faktycznych wywołań API** w obu ścieżkach (walidacja zwraca `false` przed `fetch`) → brak realnej wysyłki zgłoszenia;
+- brak błędów konsoli pochodzących ze zmian (edytowano tylko `initNavigation` i `initHeroTextAnimation`).
+
+**Brak zmian układu** (worktree `origin/main` vs `runda-a11y`, `prefers-reduced-motion`, czcionki domalowane — `networkidle` + `document.fonts.ready`):
+- `/` : region nagłówek + hero, 390 i 1440, **menu zamknięte i otwarte = 0.000 %** różnicy.
+- `/uslugi` : wysokość strony i kontener hero identyczne (`top=0`, `h=907`); pozycje `h1` (top=247) i podtytułu (top=511/512) **identyczne** przed/po; różnica regionu 0.32 % (desktop) / ~1.7 % (mobile) to wyłącznie antyaliasing dużych szeryfów Playfair + dekoracyjne „kropki" w hero (żadna reguła CSS tej rundy nie dotyka hero — zmiany `index-styles.css` to `.hamburger`/`.portfolio-new-title`/`.card-title`, a `services-page.css` to `.block`/`.timeline`).
+  - *Uwaga metodyczna:* pierwszy pomiar bez `fonts.ready` dawał na /uslugi 4–11 % i pozorne przesunięcie podtytułu o 20 px — artefakt czasu ładowania web-fontu (hero jest wyśrodkowany flexem; H1 w Playfair domalowywał się po zrzucie i redystrybuował treść). Po dociągnięciu czcionek pozycje są identyczne.
+
+**Zakres utrzymany:** zmiany tylko w index.html, uslugi.html, assets/css/index-styles.css, assets/css/services-page.css, assets/js/index-scripts.js. Bez zmian treści, kolorów, tokens.css, portfolio.html, projects/*.html.
