@@ -486,3 +486,26 @@ Definicja done wymaga axe=0 także dla 7 samodzielnych podstron, gdzie oprócz c
 - **scrollable-region-focusable** (cyfradruk, `.user-flow--6`): dodano `tabindex="0"` — region przewijalny dostępny z klawiatury. W viewerze element nie przepełnia kontenera (brak scrolla), `tabindex` nieszkodliwy.
 
 **Wynik axe po zadaniu 3b:** **0 naruszeń** we wszystkich 14 kontekstach (7 viewer + 7 standalone) oraz bare `/portfolio`. Jedyny komunikat konsoli to GA4 blokowany przez proxy (artefakt środowiska).
+
+### Zadanie 4 — obrazy (width/height/lazy, WebP, przeskalowanie >2×) — ZROBIONE
+
+**Atrybuty:** każdy `<img>` ma teraz `width`, `height` (intrynsyczne wymiary serwowanego pliku → zero CLS; CSS kontenerów ma `height:auto`/`max-width:100%`) i `loading="lazy"`. Wyjątek: **pierwszy obraz hero** na każdej podstronie — bez `lazy`, z `fetchpriority="high"` (tylko standalone; w viewerze case study ładuje się po kliknięciu). Reużywany `POWEROFMIND_HERO_1` traktowany per-tag: wystąpienie hero = eager, wystąpienie w galerii = lazy.
+
+**Nowe warianty WebP (45 plików, narzędzie ImageMagick poza repo, jakość 82):**
+- **Przeskalowanie** obrazów >2× rozmiaru wyświetlanego do `min(natural, 2×wyświetlany)` — docelowa szerokość dla retiny.
+- **PNG/JPG → WebP** (KWDESIGN_HERO.png, KAROMA_v1-3/FINALL/BUILD .png, FLY_BASKET_KAROMA.jpg, Roger.png, index-about/footer/portfolio-footer .png).
+- Nazwy ASCII, kebab-case, sufiks `-<W>w.webp`. **Oryginały pozostają** na dysku (grep repo potwierdził współdzielenie: `Roger.png` używany też w `wizualizacje.html`/`portfolio.html`, obrazy `index-*`/`portfolio-*` w `docs/case-study/kwdesign-screens.html` — te odwołania spoza zakresu dalej wskazują oryginały).
+
+**Łączna waga obrazów na case study (przed → po):**
+
+| Case study | przed | po | zmiana | >1 MB → −50%? |
+|---|---|---|---|---|
+| voucher-magdy | 2298 KB | 322 KB | −86% | ✅ |
+| KW-Design | 2578 KB | 229 KB | −91% | ✅ |
+| power-of-mind | 1024 KB | 480 KB | −53% | ✅ |
+| karoma | 1013 KB | 326 KB | −68% | ✅ (granica 1 MB) |
+| RazDwa | 787 KB | 663 KB | −16% | <1 MB (n/d) |
+| cyfradruk | 148 KB | 57 KB | −61% | <1 MB (n/d) |
+| sir-roger | 27 KB | 3 KB | −87% | <1 MB (n/d) |
+
+**Wynik axe po zadaniu 4:** 0 naruszeń we wszystkich 14 kontekstach (alt-teksty zachowane). Wszystkie referencje obrazów rozwiązują się do istniejących plików (jedyne „brakujące" to 4 obrazy w zakomentowanym bloku power-of-mind — usuwane w zadaniu 5).
