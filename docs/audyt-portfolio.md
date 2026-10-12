@@ -476,3 +476,13 @@ Wszystkie naruszenia `heading-order` dotyczyły tytułów kart `.ux-decision-box
 **Wygląd bez zmian:** reguła `.ux-decision-box h3, .ux-decision-box h4 { ... }` jest wspólna dla obu poziomów (ta sama specyficzność nadpisuje bazowe reguły elementów), więc font/rozmiar/kolor identyczne.
 
 **Wynik axe po zadaniu 3:** `heading-order` = **0**. Wszystkie 7 kontekstów **viewer = 0 naruszeń**. W standalone pozostają tylko `landmark-one-main` (7 podstron) i `scrollable-region-focusable` (cyfradruk) — naprawa w ramach dopełnienia definicji done.
+
+### Zadanie 3b — landmark-one-main + scrollable-region-focusable (dopełnienie DoD) — ZROBIONE
+
+Definicja done wymaga axe=0 także dla 7 samodzielnych podstron, gdzie oprócz color-contrast/heading-order axe zgłaszał:
+- **landmark-one-main** (7 podstron): brak znacznika `<main>`. Każda podstrona ma układ `<nav breadcrumb>` + `<section class="kwcs">` + `<nav project-nav>` + `<footer>`. Owinięto **`<section class="kwcs">` w `<main>`** (dokładnie jeden `<main>` na stronę).
+  - **Bez wpływu na viewer:** `portfolio.js` wyciąga do viewera tylko `section.kwcs` (`querySelector`), więc opakowujący `<main>` nie trafia do `/portfolio` — nie powstaje drugi `<main>` obok istniejącego `<main>` w `portfolio.html` (linia 114). Dlatego użyto opakowania, nie `role="main"` na sekcji.
+  - **Bez wpływu na układ:** `body` nie jest flex/grid, brak selektorów `body > .kwcs`; reguły pozycjonujące to `#case-… > .child` (dzieci sekcji, niezmienione), a rail chapter jest przenoszony JS-em do `<body>`.
+- **scrollable-region-focusable** (cyfradruk, `.user-flow--6`): dodano `tabindex="0"` — region przewijalny dostępny z klawiatury. W viewerze element nie przepełnia kontenera (brak scrolla), `tabindex` nieszkodliwy.
+
+**Wynik axe po zadaniu 3b:** **0 naruszeń** we wszystkich 14 kontekstach (7 viewer + 7 standalone) oraz bare `/portfolio`. Jedyny komunikat konsoli to GA4 blokowany przez proxy (artefakt środowiska).
