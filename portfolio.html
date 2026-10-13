@@ -49,7 +49,8 @@
     <link rel="icon" type="image/png" sizes="192x192" href="assets/images/android-chrome-192x192.png">
     <link rel="icon" type="image/png" sizes="512x512" href="assets/images/android-chrome-512x512.png">
 
-    <!-- Kroje lokalne (zero Google Fonts); preload nagłówkowego Playfair z 1. ekranu -->
+    <!-- Kroje lokalne (zero Google Fonts); preload fontów z 1. ekranu: Inter (element LCP: CTA) + Playfair (nagłówki, stabilność CLS) -->
+    <link rel="preload" href="assets/fonts/Inter-latin.woff2" as="font" type="font/woff2" crossorigin>
     <link rel="preload" href="assets/fonts/Playfair-latin.woff2" as="font" type="font/woff2" crossorigin>
     <link rel="preload" href="assets/fonts/Playfair-latinext.woff2" as="font" type="font/woff2" crossorigin>
 
