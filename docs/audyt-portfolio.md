@@ -830,3 +830,37 @@ Na życzenie: zawężenie krojów do faktycznie używanych grubości i docięcie
 | /portfolio | 100 → **99** | 0,71 → 0,83 s | 0,65 → 0,61 | 0,001 → 0,000 |
 
 **Podsumowanie:** mobile / 68→88 i /uslugi 87 (cel ≥85 ✓); desktop wszędzie ≥99 (bez regresji). **CLS ≤ 0,02 wszędzie** (/portfolio 0,024→0,020 — na granicy, bo limit 2 preloadów każe pominąć Playfair-latin-ext; z 3 preloadami było 0,000). **/portfolio mobile 79 < 85** — mimo redukcji fontów 499→152 KB element LCP (tekstowy CTA Inter) nadal podmienia krój w oknie LCP przy throttlingu slow-4G na localhost HTTP/1.1; na produkcji HTTP/2 + cache różnica będzie mniejsza. Dalej: można by przyjąć `font-display: optional` dla /portfolio (LCP = fallback, ale pierwsze malowanie bez web-fontu) — do decyzji; łamie to „swap" z założeń.
+
+---
+
+## ZAMKNIĘCIE ETAPU TECHNICZNEGO — stan wyjściowy vs końcowy
+
+Etap objął rundy: **C1** (dostępność i waga case studies), **KOLORY** (jeden system kolorów tekstu, kontrast ≥4.5:1), **A11Y** (Lighthouse Accessibility 100 na / i /uslugi), **PERF** (wydajność mobilna, fonty lokalne, dwie rodziny krojów). Każda runda: osobna gałąź od `origin/main`, draft PR, scalenie po akcepcie (PR #131, #132, #133, #134).
+
+**„Stan wyjściowy"** = wejście do rundy PERF (czyli stan skumulowany po C1 + KOLORY + A11Y, mierzony na `origin/main`). **„Stan końcowy"** = po scaleniu PERF.
+
+| strona | metryka | stan wyjściowy | stan końcowy |
+|---|---|---|---|
+| **/** | Performance mobile / desktop | 68 / 96 | **88 / 100** |
+| | LCP mobile | 6,76 s | **3,45 s** |
+| | CLS mobile | 0,000 | 0,000 |
+| | Accessibility / axe | 100 / 0 | 100 / 0 |
+| | waga fontów | 242 KB (6 plików, +Albert Sans) | **152 KB (4)** |
+| **/uslugi** | Performance mobile / desktop | 86 / 98 | **87 / 100** |
+| | LCP mobile | 3,87 s | 3,63 s |
+| | CLS mobile | 0,003 | 0,003 |
+| | Accessibility / axe | 100 / 0 | 100 / 0 |
+| | waga fontów | 188 KB (4) | **152 KB (4)** |
+| **/portfolio** | Performance mobile / desktop | 84 / 100 | 79 / **99** |
+| | LCP mobile | 3,53 s | 4,28 s |
+| | CLS mobile | 0,024 | **0,020** |
+| | Accessibility / axe | 100 / 0 | 100 / 0 |
+| | waga fontów | 499 KB (9, +Poppins +Google) | **152 KB (4)** |
+
+**Cała witryna (stan końcowy):**
+- **Zero żądań do Google Fonts** — Inter + Playfair Display hostowane lokalnie (zmienne woff2 400–700, latin + latin-ext, `font-display: swap`, fallbacki z metrykami). Dwie rodziny krojów: Playfair (nagłówki) + Inter (tekst/UI). Poppins, Albert Sans i Montserrat usunięte.
+- **Dostępność:** Accessibility 100 i axe 0 na stronach objętych audytem; nagłówki, landmarki, menu mobilne jako `<button>` z aria, kontrast ≥4.5:1 w jednym systemie kolorów (`tokens.css`).
+- **Obrazy:** hero / 512 KB → 30 KB (srcset), PNG /uslugi 476 KB → 24 KB, logo → WebP; warianty responsywne, width/height, lazy poniżej 1. ekranu.
+- **Polskie znaki i symbole** (— – „ ” … · − ~ % → ← × ™ €) renderują się właściwym krojem (podzbiór zweryfikowany).
+
+**Nota o /portfolio:** mobile 79 < 85 — element LCP to tekstowy CTA (Inter) podmieniający krój w oknie LCP przy throttlingu slow-4G na teście localhost HTTP/1.1; na produkcji (GitHub Pages HTTP/2 + cache, bez 3rd-party DNS/TLS) różnica jest mniejsza. W zamian waga fontów 499→152 KB, CLS 0,024→0,020 i zero zewnętrznych zależności. Dalsza poprawa wymagałaby `font-display: optional` (świadomie odrzucone — łamie „swap").
