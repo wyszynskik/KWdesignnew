@@ -4446,6 +4446,8 @@ header * {
 /* Eyebrow: pozwól zawijać dłuższy zestaw kategorii oferty */
 .hero-text .hero-eyebrow {
     white-space: normal;
+    /* oddech pod wydłużeniami dolnymi H1 (np. „j" w „odzyskaj"); wartość ze skali */
+    margin-top: var(--space-3);
 }
 
 /* H1 hero — na kroju nagłówkowym (Playfair), grubość 700; rozmiar/akcent bez zmian */
@@ -4622,7 +4624,7 @@ ul.hero-info-icons {
     /* Kolejność: tytuł → eyebrow → zdjęcie → subtitle → statystyki → CTA.
        Zdjęcie wysoko przerywa ścianę tekstu, dalej idzie krótki opis. */
     .hero-text .hero-title   { order: 1 !important; margin-bottom: 0 !important; }
-    .hero-text .hero-eyebrow { order: 2 !important; margin-top: var(--space-2) !important; }
+    .hero-text .hero-eyebrow { order: 2 !important; margin-top: var(--space-3) !important; }
     .hero-image              { order: 3 !important; }
     .hero-text .hero-subtitle {
         order: 4 !important;
