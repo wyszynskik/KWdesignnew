@@ -1295,13 +1295,13 @@ section {
     font-size: 1.4rem;
     font-weight: var(--font-weight-bold);
     margin-bottom: var(--space-4);
-    color: var(--color-text-inverse);
+    color: var(--color-text-primary);
     letter-spacing: -0.01em;
 }
 
 .benefit-card p {
     font-size: 1.05rem;
-    color: var(--color-text-footer);
+    color: var(--color-text-body);
     line-height: 1.7;
     letter-spacing: 0.01em;
     margin: 0;
