@@ -73,7 +73,9 @@
     <link rel="stylesheet" href="assets/css/tokens.css">
     <link rel="stylesheet" href="assets/css/index-styles.css" />
     <!-- About Me — reużywane klasy (about-details-grid) dla sekcji About na stronie głównej -->
-    <link rel="stylesheet" href="assets/css/about-me.css" />
+    <!-- about-me.css styluje tylko sekcję „O mnie" (poniżej 1. ekranu) — ładowany nieblokująco (wzorzec jak projects.css na /portfolio) -->
+    <link rel="preload" href="assets/css/about-me.css" as="style" onload="this.onload=null;this.rel='stylesheet';">
+    <noscript><link rel="stylesheet" href="assets/css/about-me.css"></noscript>
     <!-- KW Buttons — system przycisków v1.0 (po index-styles.css, żeby aliasy .kw-btn wygrywały w kaskadzie) -->
     <link rel="stylesheet" href="assets/css/kw-buttons.css" />
 
