@@ -4448,10 +4448,10 @@ header * {
     white-space: normal;
 }
 
-/* H1 hero — Albert Sans zamiast Playfair (2026-07-21), tylko ta sekcja */
+/* H1 hero — na kroju nagłówkowym (Playfair), grubość 700; rozmiar/akcent bez zmian */
 .hero-text .hero-title {
-    font-family: 'Albert Sans', var(--font-heading);
-    font-weight: 800;
+    font-family: var(--font-heading);
+    font-weight: 700;
 }
 .hero-title .ht-line1,
 .hero-title .ht-line2 {
