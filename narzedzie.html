@@ -18,6 +18,23 @@
     <!-- CSS -->
     <link rel="stylesheet" href="assets/css/tokens.css">
     <link rel="stylesheet" href="assets/css/index-styles.css" />
+    <!-- Druk/PDF — style tylko dla tej strony (checklista ma zmieścić się czytelnie na 1-2 stronach A4) -->
+    <style>
+        @media print {
+            .header,
+            .footer,
+            .lm-form-wrap,
+            .lm-back {
+                display: none !important;
+            }
+            .lm-landing {
+                padding: 0;
+            }
+            .lm-point {
+                break-inside: avoid;
+            }
+        }
+    </style>
 
     <!-- Cloudflare Web Analytics -->
     <script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "TWOJ_TOKEN"}'></script>
@@ -115,38 +132,20 @@
                         </li>
                     </ul>
 
-                    <!-- Form block -->
+                    <!-- Print block -->
                     <div class="lm-form-wrap">
                         <div class="lm-form-header">
-                            <h2 class="lm-form-title">Wyślij mi tę checklistę</h2>
-                            <p class="lm-form-desc">Podaj email — prześlę Ci materiał w formie PDF, żebyś mógł do niego wrócić kiedy trzeba.</p>
+                            <h2 class="lm-form-title">Zapisz tę checklistę</h2>
+                            <p class="lm-form-desc">Zapisz jako PDF bezpośrednio z przeglądarki — bez podawania e-maila.</p>
                         </div>
-                        <form id="leadMagnetForm" class="lm-form" novalidate>
-                            <div class="lm-input-row">
-                                <input
-                                    type="email"
-                                    name="email"
-                                    id="lm_email"
-                                    placeholder="twoj@email.pl"
-                                    required
-                                    autocomplete="email"
-                                    aria-label="Adres email"
-                                />
-                                <button type="submit" class="lm-btn">
-                                    <span class="lm-btn-text">Wyślij mi PDF</span>
-                                    <span class="lm-btn-loader" aria-hidden="true">Wysyłam…</span>
-                                </button>
-                            </div>
-                            <p class="lm-privacy">Podając email zgadzasz się na kontakt w tej sprawie. Nie zapisuję Cię na żaden newsletter i nie sprzedam Twoich danych. <a href="/polityka-prywatnosci">Polityka prywatności</a>.</p>
-                        </form>
+                        <button type="button" class="lm-btn lm-print-btn" onclick="window.print()">Zapisz jako PDF</button>
                     </div>
 
                 </div>
 
                 <!-- Back link -->
                 <p class="lm-back">
-                    Wolisz omówić projekt bezpośrednio?
-                    <a href="/uslugi">Przejdź do usług →</a>
+                    Wolisz omówić to od razu? <a href="/uslugi#contact">Opisz swój proces</a>
                 </p>
 
             </div>
