@@ -792,3 +792,41 @@ Usunięty link Google Montserrat; `--ui-font-heading/body` i próbki inline w se
 Różnice wyłącznie w zatwierdzonych elementach: **H1 na /** (Albert Sans→Playfair + oddech), **„Wybrane projekty" i nagłówek CTA na /portfolio** (Poppins→Playfair; CTA zawija do 2 linii, bo Playfair szerszy), **próbki „System UI" na voucher** (Montserrat→Inter) oraz drobne elementy przemapowane z Poppins (CTA/close/error/breadcrumbs → Inter). Reszta układu, treści i kolorów bez zmian; wysokości stron zgodne.
 
 **Zakres utrzymany:** HTML, assets/css/, assets/fonts/, assets/images/ (nowe warianty). Bez zmian treści, kolorów i `tokens.css` w części kolorów (dodano tylko sekcję `@font-face`). Logika JS case studies nietknięta.
+
+### Zadanie 7 — dociśnięcie fontów (podzbiór + grubości) — ZROBIONE
+
+Na życzenie: zawężenie krojów do faktycznie używanych grubości i docięcie podzbioru.
+
+- **Grubości:** z pomiaru — Inter 400/500/600/700; Playfair 400 (kontakt), 600 (/portfolio ×6), 700 (dominant), 900 (/uslugi ×1, i w baseline clamp→700 bo Google dawał 400;700). Wybrano **instancję zmienną wght 400–700** (zachowuje 600; 900→700 jak w baseline). Porównanie wagi łącznej (4 pliki, latin+latin-ext): **zmienna = 151 KB** vs **statyczne 4×Inter + 2×Playfair = 291 KB** → wybrana zmienna.
+- **Podzbiór:** latin + latin-ext z zachowaniem symboli treści. Grep po HTML potwierdził użycie: — (488×), – (95×), „ ” (36×), … (1×), · (108×), − (5×), ~ (31×), % (36×), → (96×), ← (1×), × (3×). Wszystkie + polskie znaki obecne w cmap obu krojów (weryfikacja fontTools). Źródło: pełne warianty zmienne (google/fonts, `raw.githubusercontent`), bo strzałki → ← nie ma w „latin" Google — teraz renderują się w Inter zamiast fallbacku.
+- **Preload:** maks. 2 pliki/stronę — / i /uslugi: Playfair latin+latin-ext (H1); /portfolio: Inter-latin (element LCP: CTA) + Playfair-latin (H1).
+
+**Łączna waga fontów na stronę (faktycznie pobrana, mobile):**
+
+| strona | PRZED rundą | PO |
+|---|---|---|
+| / | 242 KB (6 plików: Inter+Playfair+Albert Sans) | **152 KB** (4) |
+| /uslugi | 188 KB (4) | **152 KB** (4) |
+| /portfolio | 499 KB (9: +Poppins +Google) | **152 KB** (4) |
+
+**Zrzut polskie znaki + symbole (H1 Playfair + akapit Inter) przed/po — identyczne.** Weryfikacja: 0 żądań Google Fonts.
+
+### Tabela końcowa — Lighthouse (mediana: mobile z 5, desktop z 3), PRZED rundą vs PO
+
+**Mobile**
+
+| strona | Performance | LCP | FCP | CLS |
+|---|---|---|---|---|
+| / | 68 → **88** | 6,76 → **3,45 s** | 3,71 → 2,40 | 0,000 → 0,000 |
+| /uslugi | 86 → **87** | 3,87 → 3,63 s | 2,10 → 2,40 | 0,003 → 0,003 |
+| /portfolio | 84 → **79** | 3,53 → 4,28 s | 3,16 → 3,15 | 0,024 → **0,020** |
+
+**Desktop**
+
+| strona | Performance | LCP | FCP | CLS |
+|---|---|---|---|---|
+| / | 96 → **100** | 1,27 → 0,68 s | 0,95 → 0,52 | 0,000 |
+| /uslugi | 98 → **100** | 0,92 → 0,81 s | 0,80 → 0,53 | 0,004 |
+| /portfolio | 100 → **99** | 0,71 → 0,83 s | 0,65 → 0,61 | 0,001 → 0,000 |
+
+**Podsumowanie:** mobile / 68→88 i /uslugi 87 (cel ≥85 ✓); desktop wszędzie ≥99 (bez regresji). **CLS ≤ 0,02 wszędzie** (/portfolio 0,024→0,020 — na granicy, bo limit 2 preloadów każe pominąć Playfair-latin-ext; z 3 preloadami było 0,000). **/portfolio mobile 79 < 85** — mimo redukcji fontów 499→152 KB element LCP (tekstowy CTA Inter) nadal podmienia krój w oknie LCP przy throttlingu slow-4G na localhost HTTP/1.1; na produkcji HTTP/2 + cache różnica będzie mniejsza. Dalej: można by przyjąć `font-display: optional` dla /portfolio (LCP = fallback, ale pierwsze malowanie bez web-fontu) — do decyzji; łamie to „swap" z założeń.
