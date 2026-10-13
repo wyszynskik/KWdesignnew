@@ -891,3 +891,41 @@ Etap objął rundy: **C1** (dostępność i waga case studies), **KOLORY** (jede
 - **Pętla strzałek** sprawdzona w viewerze (klik NEXT: RazDwa→CyfraDruk→Karoma→Power of Mind→RazDwa; klik PREV: odwrotnie) oraz hrefy na podstronach — w obie strony. ✔
 - **axe = 0** (/, /uslugi, /portfolio + 4 case studies, desktop i mobile); **Lighthouse Accessibility = 100** (/, /uslugi, /portfolio) — bez regresji. ✔
 - Zrzuty przed/po (390 i 1440): hero /, blok Karoma /uslugi, siatka /portfolio — zmiany tylko w treści objętej zadaniami.
+
+---
+
+## Runda TREŚĆ-2 — spójność faktów w case studies (punkty 9–17 audytu treści)
+
+Gałąź `runda-tresc-2` od `origin/main` (po scaleniu PR #135). Zakres plików: 4 case studies (`razdwa_aplikacja.html`, `cyfradruk.html`, `karoma.html`, `power-of-mind.html`), `index.html`, `uslugi.html`, `portfolio.html`. Poza zakresem: style, układ graficzny sekcji, zrzuty, slugi, `KW-Design.html`.
+
+**Zmiana zakresu po przeglądzie Kroku 1 (propozycji cięć):** cięcia strukturalne dawały zbyt mały zysk względem ryzyka, więc struktura case studies została zachowana. **Nie wykonano:** punktu 9 (sekcja „Skrót w formacie STAR" zostaje we wszystkich 4 case studies), punktu 10 (oś czasu + blok backlogu w Raz Dwa Druk bez zmian), opcji z pytań 1–3 (bez dopisywania do „W skrócie"; callout „Wynik biznesowy" w CyfraDruk zostaje; lista i diagram flow w Power of Mind zostają). Z definicji done usunięto kryterium grep „Skrót w formacie STAR".
+
+**Wykonano (commit + diff po każdym punkcie):**
+
+1. **Karoma 3B — daty projektu.** „luty 2025 → czerwiec 2026 / ~17 mies." tylko w pasku meta (`Czas`) i jednym wskaźniku liczbowym (`~17 mies.`). Pozostałe 7 wystąpień przeredagowane bez dat (eyebrow, „W skrócie", Problem, nagłówek Przebieg, Rezultat sub + lead, STAR).
+2. **3C — frazy roli tylko w pasku meta.** „od początku do końca" i „freelance, równolegle do etatu" zostają wyłącznie w pasku meta (`Rola`/`Model`); pozostałe widoczne wystąpienia przeredagowane bez utraty treści zdania (razdwa, cyfradruk, karoma, power-of-mind). SEO `<meta>`/`og:` pozostawione (to snippet wyszukiwarki, nie „pasek meta"). W Power of Mind jedno „od początku do końca" w checklistcie GoLive miało inne znaczenie („przetestowana w całości") i zostało przeredagowane.
+3. **Pkt 11 — Power of Mind.** Pasek meta „Współpraca 02/2025 – 02/2026" → „Czas ~10 tyg. do wdrożenia produkcyjnego". Daty „02/2025–02/2026" nie padają nigdzie indziej (sprawdzone grepem; daty w Raz Dwa to inne kamienie milowe w formacie dd.mm.rrrr).
+4. **Pkt 12 — CyfraDruk, jedna wersja liczb.** Callout „Wynik biznesowy" i karta na /portfolio: „z 5–20 min do ok. 1 min (sam skan ok. 1 s)". Kryterium 1 w „Cel": „Z 5–20 minut do około minuty pełnej kontroli". „~15 min" usunięte (grep = 0). Pozostałe miejsca były już numerycznie spójne (5–20 / ~1 s / ~1 min).
+5. **Pkt 13 — zakończenia case studies.** Przycisk `mailto:` „Napisz do mnie" zastąpiony dwoma linkami: „Opisz swój proces" → `/uslugi#contact` oraz „LinkedIn" (adres ze stopki: `https://www.linkedin.com/in/karol-wyszy%C5%84ski-62a844162/`). Nagłówek i akapit zachęty bez zmian; przycisk „zobacz aplikację/sklep/wersję archiwalną" zachowany (CyfraDruk nie ma drugiego przycisku — kończy dwoma nowymi linkami). Grep `mailto:` w 4 case studies = 0. Kotwica `#contact` istnieje w `uslugi.html`.
+6. **Pkt 14 — pisownia.** „cennik- aplikacją", „miesięcznie- aplikacja", „UX- użytecznego" → poprawny łącznik/spacja; „launchcie" → „launchu"; „mitigacje/mitigacja" → „mitygacje/mitygacja" (CyfraDruk: tytuł rozdziału, aria-label, tekst + komentarz). Grep wzorca `[litera]- [litera]` oraz „mitigac"/„launchcie" w całym zakresie = 0.
+7. **Pkt 16 — Raz Dwa Druk, jedna wersja wyniku.** Ujednolicone do „wycena z ok. 60 do ok. 5 minut, przy zleceniach CAD do 90% krócej": H1, meta Efekt, „W skrócie", Rezultat, STAR oraz SEO `<title>`/description/og/twitter/JSON-LD (wcześniej „z godziny do 5 minut"/„z około godziny…"). Wartość wyjściowa „godzina" → „ok. 60 minut" także w narracji problemu i etykiecie statu; na / i w statach zostają krótkie formy „−90% czasu wyceny", „~5 min", „~60 → 5 min". Wystąpienia „24 godzin", „zjada godziny", teaser „to godziny" — niezwiązane z wynikiem, zostają. Warianty „godzina/60 min/kilka minut/−90%" ujednolicone na index, portfolio, uslugi.
+8. **Pkt 17 — nazwa usługi „Analiza procesów".** Karta na / („Usprawnienia procesów" → „Analiza procesów", w tym komentarz sekcji) i opcja w formularzu na / („Analiza i usprawnienie procesu" → „Analiza procesów"). `/uslugi` używało już „Analiza procesów". Kotwica/`id` `#usprawnienia` bez zmian. Wystąpienia „Analiza procesu" (l.p.) i „usprawnienie procesu" to opisy czynności/typu projektu (kroki, bullet-y, CTA CyfraDruk), nie nazwa usługi — zostają. Grep „Usprawnienia procesów"/„Analiza i usprawnienie procesu" = 0.
+
+**Formularz kontaktowy (test bez wysyłki):** opcja pozostaje `value="usprawnienie"`; front-end (`assets/js/index-scripts.js`) czyta `FormData.get('projectType')` = wartość `value`, nie etykietę; `gas/contact-form.gs` używa `params.projectType` i wstawia ją do maila (`Projekt: ${data.projectType}`) — **nie rozróżnia opcji po tekście etykiety**. Zmiana widocznej etykiety jest więc bezpieczna, a wysyłana wartość („usprawnienie") identyczna jak przed rundą. ✔
+
+**Liczba słów case studies (licznik tekstu widocznego w `<body>`, przed → po):**
+
+| Case study | przed | po | Δ |
+|---|---|---|---|
+| Raz Dwa Druk | 2193 | 2205 | +12 |
+| CyfraDruk | 1889 | 1883 | −6 |
+| Karoma | 1796 | 1752 | −44 |
+| Power of Mind | 1885 | 1884 | −1 |
+
+Niewielkie zmiany są oczekiwane po zawężeniu zakresu (bez cięć strukturalnych); „ok. 60 minut" jest dłuższe niż „godzinę" (razdwa +), redukcja powtórzonych dat/fraz skraca Karomę.
+
+**Definicja done — weryfikacja:**
+- **Grepy = 0:** „~15 min", „Usprawnienia procesów", „mitigac", „launchcie", „mailto:" w zakończeniach 4 case studies. ✔
+- **Spisy rozdziałów:** wszystkie linki rozdziałów (`razdwa-chapter-link`) rozwiązują się do istniejących `id` — razdwa 12, cyfradruk 9, karoma 9, power-of-mind 11; brakujących kotwic brak (struktura sekcji niezmieniona). ✔
+- **Formularz** wysyła poprawną, niezmienioną wartość usługi (`usprawnienie`) — test przez inspekcję kodu front-end + gas, bez faktycznej wysyłki. ✔
+- **axe = 0** (/, /uslugi, /portfolio desktop+mobile oraz 4 case studies). **Lighthouse Accessibility = 100** (/, /uslugi, /portfolio + 4 case studies). Desktop-perf 100/100/99 — bez regresji. ✔
