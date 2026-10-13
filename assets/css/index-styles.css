@@ -66,8 +66,8 @@ body {
     --color-primary-900: #012B32;
     
     /* Premium Typography Stack */
-    --font-primary: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-    --font-heading: 'Playfair Display', Georgia, 'Times New Roman', serif;
+    --font-primary: 'Inter', 'Inter Fallback', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    --font-heading: 'Playfair Display', 'Playfair Display Fallback', Georgia, 'Times New Roman', serif;
     
     /* Font Weights */
     --font-weight-light: 300;
