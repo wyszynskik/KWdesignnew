@@ -72,10 +72,6 @@
     <!-- Main CSS -->
     <link rel="stylesheet" href="assets/css/tokens.css">
     <link rel="stylesheet" href="assets/css/index-styles.css" />
-    <!-- About Me — reużywane klasy (about-details-grid) dla sekcji About na stronie głównej -->
-    <!-- about-me.css styluje tylko sekcję „O mnie" (poniżej 1. ekranu) — ładowany nieblokująco (wzorzec jak projects.css na /portfolio) -->
-    <link rel="preload" href="assets/css/about-me.css" as="style" onload="this.onload=null;this.rel='stylesheet';">
-    <noscript><link rel="stylesheet" href="assets/css/about-me.css"></noscript>
     <!-- KW Buttons — system przycisków v1.0 (po index-styles.css, żeby aliasy .kw-btn wygrywały w kaskadzie) -->
     <link rel="stylesheet" href="assets/css/kw-buttons.css" />
 
@@ -420,64 +416,37 @@
     <!-- About -->
     <section id="about" class="about-section">
         <div class="container">
-            <h2 class="section-title">Kim jestem</h2>
+            <h2 class="section-title">O mnie</h2>
             <p class="section-subtitle">
-                Projektuję i wdrażam rozwiązania cyfrowe od analizy procesu po działające narzędzie — aplikacje, automatyzacje i strony dla firm. Pracuję jako jeden odpowiedzialny wykonawca, bez przekazywania projektu między rękami.
+                Projektuję i wdrażam narzędzia, które zdejmują z zespołu ręczną robotę: automatyzacje, aplikacje i strony. Prowadzę projekt sam od analizy do wdrożenia, więc zakres, termin i efekt mają jednego właściciela.
             </p>
-            <div class="about-details-grid">
-                <div class="adg-item">
-                    <span class="adg-label">Jak pracuję</span>
-                    <p>Zaczynam od diagnozy procesu, projektuję rozwiązanie dopasowane do zespołu, wdrażam je i przekazuję z instrukcją — gotowe do samodzielnego użycia.</p>
+            <div class="benefits-grid">
+                <div class="benefit-card">
+                    <div class="benefit-icon">
+                        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+                    </div>
+                    <h3>Jedna osoba, zero zgadywania</h3>
+                    <p>Nie ganiasz kilku wykonawców i nie sprawdzasz, kto za co odpowiada. Piszesz do mnie i sprawa idzie dalej.</p>
                 </div>
-                <div class="adg-item">
-                    <span class="adg-label">W jaką stronę idę</span>
-                    <p>Naturalnie rozwijam się w stronę zarządzania projektami i dostarczaniem rozwiązań (Project &amp; Delivery Management) — to już dziś robię przy każdym wdrożeniu: planuję zakres, adresuję ryzyko i odpowiadam za efekt końcowy.</p>
+
+                <div class="benefit-card">
+                    <div class="benefit-icon">
+                        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3h18v18H3z"/><path d="M3 9h18"/><path d="M9 21V9"/></svg>
+                    </div>
+                    <h3>Decyzje zamiast kolejnych rund</h3>
+                    <p>Ustalamy priorytety na początku i przechodzimy do działania. Wiesz, co dzieje się teraz i co będzie następne.</p>
+                </div>
+
+                <div class="benefit-card">
+                    <div class="benefit-icon">
+                        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+                    </div>
+                    <h3>Wdrożenie, nie tylko koncepcja</h3>
+                    <p>Dostajesz działające narzędzie z instrukcją, dopasowane do tego, jak naprawdę pracuje Twój zespół.</p>
                 </div>
             </div>
         </div>
     </section>
-
-
-   <!-- PM Competencies -->
-   <section id="social-proof" class="social-proof-section">
-    <div class="container">
-        <h2 class="section-title">Co zyskujesz we współpracy</h2>
-        <p class="section-subtitle">Nie tylko projekt, ale prosty proces, mniej niejasności i pewność, że rozwiązanie naprawdę zadziała.</p>
-        <div class="benefits-grid">
-            <div class="benefit-card">
-                <div class="benefit-icon">
-                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
-                </div>
-                <h3>Jeden numer, zero zgadywania</h3>
-                <p>Nie ganiasz kilku osób i nie sprawdzasz, kto teraz za co odpowiada. Dzwonisz do mnie i sprawa idzie dalej.</p>
-            </div>
-
-            <div class="benefit-card">
-                <div class="benefit-icon">
-                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3h18v18H3z"/><path d="M3 9h18"/><path d="M9 21V9"/></svg>
-                </div>
-                <h3>Mniej chaosu, szybsze decyzje</h3>
-                <p>Ustalamy priorytety, porządkujemy proces i przechodzimy do działania bez zbędnych rund.</p>
-            </div>
-
-            <div class="benefit-card">
-                <div class="benefit-icon">
-                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
-                </div>
-                <h3>Projekt i wdrożenie w jednym procesie</h3>
-                <p>Nie kończysz z samą koncepcją. Otrzymujesz rozwiązanie, które da się realnie wdrożyć.</p>
-            </div>
-
-            <div class="benefit-card">
-                <div class="benefit-icon">
-                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>
-                </div>
-                <h3>Rozwiązania dopasowane do pracy zespołu</h3>
-                <p>Proces ma działać w praktyce, nie tylko dobrze wyglądać na diagramie.</p>
-            </div>
-        </div>
-    </div>
-</section>
 
    <section id="faq" class="faq-section">
     <div class="container">
