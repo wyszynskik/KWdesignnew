@@ -864,3 +864,30 @@ Etap objął rundy: **C1** (dostępność i waga case studies), **KOLORY** (jede
 - **Polskie znaki i symbole** (— – „ ” … · − ~ % → ← × ™ €) renderują się właściwym krojem (podzbiór zweryfikowany).
 
 **Nota o /portfolio:** mobile 79 < 85 — element LCP to tekstowy CTA (Inter) podmieniający krój w oknie LCP przy throttlingu slow-4G na teście localhost HTTP/1.1; na produkcji (GitHub Pages HTTP/2 + cache, bez 3rd-party DNS/TLS) różnica jest mniejsza. W zamian waga fontów 499→152 KB, CLS 0,024→0,020 i zero zewnętrznych zależności. Dalsza poprawa wymagałaby `font-display: optional` (świadomie odrzucone — łamie „swap").
+
+---
+
+## Runda TREŚĆ-1 — błędy treści i sprzeczne fakty (gałąź `runda-tresc-1` od `origin/main` po #134)
+
+**Cel:** usunięcie widocznych błędów treści i sprzecznych faktów (punkty 1–9 audytu treści). **Zakres:** HTML stron głównych i case studies + `portfolio.js` (tylko kolejność). **Poza:** style, kolory, fonty, układ sekcji, pozostałe teksty.
+
+1. **CyfraDruk — placeholdery:** usunięty kontener `.showcase-row--single` z `.asset-missing` (📁 „Zrzut do wstawienia" + `cyfradruk-checklista-golive.webp`) oraz box „Materiał wizualny / Dowody do wstawienia" (+ nieaktualny komentarz). Tekstowa checklista GoLive i box „Co powstało" zostają.
+2. **Myślniki w H1 — przyczyna ustalona:** surowe bajty (`od -c`) pokazały, że H1 to `Nazwa<br>podtytuł` — **nie ma literalnej podwójnej spacji ani uszkodzonego znaku**; separatorem jest `<br>` (dwie linie), a `<title>` miały już „ — ". Zgodnie z decyzją: **wygląd dwuliniowy zostaje**, dodany separator tylko dla czytników `<span class="visually-hidden"> — </span>` przed każdym `<br>` (razdwa, cyfradruk, power-of-mind, karoma). Nowa klasa narzędziowa w `tokens.css`:
+   ```css
+   .visually-hidden{position:absolute!important;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+   ```
+   Nazwy dostępne H1 (drzewo dostępności): „Raz Dwa Druk — aplikacja…", „CyfraDruk — automatyzacja…", „Karoma — nowa marka i sklep B2B od zera", „Power of Mind — brand, sklep i automatyzacje…". Span 1×1 (clip), układ identyczny we wszystkich 4.
+3. **Raz Dwa Druk — status:** start 01.08.2026 się odbył → „w pełnym użyciu produkcyjnym od 01.08.2026". Box „Pozostaje do startu" → „Start produkcyjny: 01.08.2026 / W użyciu produkcyjnym". Usunięte „planowany na 01.08.2026", „częściowo wykorzystywane", „przygotowane do startu". Zastrzeżenie o pochodzeniu wartości czasowych zachowane.
+4. **Hero /:** „~10 tyg. od startu do wdrożenia" → „~4 mies. od diagnozy do przekazania narzędzia — w tym konkretnym projekcie." (styl liczby bez zmian).
+5. **/uslugi, Karoma:** „~8 tygodni od briefu do launchu" → „7 nośników / marka od zera, spójna na wszystkich materiałach". „Samodzielna obsługa" zostaje. Usunięte „bez podwykonawców" (kolizja z FAQ).
+6. **Karoma:** nowy H1 „Karoma — nowa marka i sklep B2B od zera"; usunięty etap 7 „Prowadzenie długofalowe"; „prowadzone długofalowo / budowane i prowadzone / Dostarczone i prowadzone / długofalowe prowadzenie" → wersje o poprowadzeniu od briefu do uruchomienia; wskaźnik „~17 mies. prowadzenia delivery" → „~17 mies. od briefu do uruchomienia sklepu (równolegle do etatu)"; meta/og description o poprowadzeniu projektu nowej marki i sklepu B2B.
+7. **Kolejność:** siatka /portfolio → Raz Dwa Druk, CyfraDruk, **Karoma, Power of Mind**; pętla strzałek w 4 case studies RazDwa→CyfraDruk→Karoma→Power of Mind→RazDwa (href + widoczna nazwa, prev wstecz); archiwum: voucher-magdy ↔ sir-roger; KW-Design i slugi bez zmian. **`portfolio.js`: kolejność NIE jest tam zdefiniowana** (tylko mapa `slug→ścieżka`), więc bez zmian w JS.
+8. **Linki `/index#` → `/#`:** 7 wystąpień (cyfradruk, sir-roger ×2, voucher ×2 — oraz **KW-Design.html i wizualizacje.html spoza pierwotnej listy, poprawione zgodnie z „cały repo"**). Grep `/index#` = 0.
+9. **Anonimizacja:** „PolonisDruk" → „drukarnia cyfrowa" / „w drukarni cyfrowej" (9 wystąpień w cyfradruk.html, z odmianą). Grep „Polonis" = 0 (też nazwy plików). Imię/nazwisko klientki Power of Mind bez zmian.
+
+**Definicja done — weryfikacja:**
+- **Grepy = 0:** „Zrzut do wstawienia", „Dowody do wstawienia", „planowany na 01.08", „~10 tyg." na /, „~8 tygodni", „długofalow", „/index#", „Polonis". ✔
+- **4 H1:** identyczny układ (`<br>` + `.visually-hidden` 1×1) i poprawna nazwa dostępna z separatorem „ — ". ✔
+- **Pętla strzałek** sprawdzona w viewerze (klik NEXT: RazDwa→CyfraDruk→Karoma→Power of Mind→RazDwa; klik PREV: odwrotnie) oraz hrefy na podstronach — w obie strony. ✔
+- **axe = 0** (/, /uslugi, /portfolio + 4 case studies, desktop i mobile); **Lighthouse Accessibility = 100** (/, /uslugi, /portfolio) — bez regresji. ✔
+- Zrzuty przed/po (390 i 1440): hero /, blok Karoma /uslugi, siatka /portfolio — zmiany tylko w treści objętej zadaniami.
