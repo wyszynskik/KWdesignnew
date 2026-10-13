@@ -727,3 +727,140 @@ axe na mobile (390 px) flagował `.comparison-table-wrapper` (kontener tabeli po
   - *Uwaga metodyczna:* pierwszy pomiar bez `fonts.ready` dawał na /uslugi 4–11 % i pozorne przesunięcie podtytułu o 20 px — artefakt czasu ładowania web-fontu (hero jest wyśrodkowany flexem; H1 w Playfair domalowywał się po zrzucie i redystrybuował treść). Po dociągnięciu czcionek pozycje są identyczne.
 
 **Zakres utrzymany:** zmiany tylko w index.html, uslugi.html, assets/css/index-styles.css, assets/css/services-page.css, assets/js/index-scripts.js. Bez zmian treści, kolorów, tokens.css, portfolio.html, projects/*.html.
+
+## Runda PERF — wydajność na telefonie bez zmiany wyglądu (gałąź `runda-perf` od `origin/main` po #133)
+
+**Cel:** poprawa wydajności mobilnej bez zmiany wyglądu (poza jednym nagłówkiem). Docelowy system: **dwie rodziny — Playfair Display (nagłówki) + Inter (tekst/UI), zero Google Fonts.**
+
+### Diagnoza (Lighthouse mobile, mediana z 5, localhost)
+
+| Strona | Perf PRZED | LCP przed | element LCP |
+|---|---|---|---|
+| / | 68 | 6,77 s | obraz hero `presentation HERO.webp` 512 KB |
+| /uslugi | 86 | 3,89 s | tekst H1 (Playfair) |
+| /portfolio | 84 | 3,53 s | tekst CTA „Zobacz wybrane projekty" (Inter) |
+
+Fonty: Inter + Playfair z Google na każdej stronie (+ Albert Sans tylko na /, Montserrat tylko na voucher); Poppins lokalnie, używany tylko na /portfolio i /kontakt. `assets/fonts/` miało wyłącznie Poppins.
+
+### Zadanie 1 — H1 hero na / → Playfair; oddech H1↔eyebrow — ZROBIONE
+
+Albert Sans (600/700/800, tylko H1 hero) → `var(--font-heading)` (Playfair) 700; rozmiar (`clamp`) i akcent `.ht-line2` bez zmian; `Albert+Sans` usunięty z URL. Odstęp H1→eyebrow zwiększony `var(--space-3)` (łącznie ~22 px) — oddech pod wydłużeniami dolnymi. Liczby „−90%/~10 tyg." i „Karol Wyszyński" to już Inter 700 (bez zmian). Zrzuty hero przed/po zatwierdzone.
+
+### Zadanie 2 — usunięcie Poppins — ZROBIONE
+
+- „Wybrane projekty" (`.portfolio-section .section-title`) i `.cta-section h2` → `var(--font-heading)` (Playfair, jak pozostałe nagłówki sekcji).
+- `.btn-cta`, `.close-button`, `.error-msg`, breadcrumbs voucher → `var(--font-primary)` (Inter).
+- `style.css` (kontakt): `--font-body/-cta` → Inter, `--font-heading` → Playfair.
+- Usunięte wszystkie `@font-face` Poppins + 5 plików `assets/fonts/Poppins-*.woff2` (~267 KB).
+
+### Zadanie 3 — Montserrat → Inter (voucher) — ZROBIONE
+
+Usunięty link Google Montserrat; `--ui-font-heading/body` i próbki inline w sekcji „System UI" → Inter. Etykiety specyfikacji („Montserrat 600 · 48px") zostają jako treść. Zrzut voucher przed/po pokazany.
+
+### Zadanie 4 — fonty lokalnie — ZROBIONE
+
+- `tokens.css` (ładowany na każdej stronie): `@font-face` Inter (100–900) i Playfair Display (400–900) jako **zmienne woff2**, podzbiory **latin + latin-ext** (polskie znaki: `ó`=latin, `ąęśćżźłń`=latin-ext), `font-display: swap`. 4 pliki, ~192 KB łącznie (pokrywają wszystkie grubości).
+- **Fallbacki z nadpisaniem metryk** (`Inter Fallback`/Arial, `Playfair Display Fallback`/Times New Roman; `ascent/descent/size-adjust` z optymalizatora next/font) wpięte do `--font-primary` i `--font-heading` — ograniczają przesunięcie przy podmianie.
+- Usunięte linki Google Fonts + preconnect ze **wszystkich 14 stron**. **Preload** fontów 1. ekranu per strona (Playfair na /, /uslugi, /portfolio; dodatkowo Inter-latin na /portfolio, bo jego element LCP to tekstowy CTA).
+- Weryfikacja: **0 żądań do fonts.googleapis/gstatic** na wszystkich stronach; H1=Playfair, tekst=Inter; polskie znaki (latin-ext) renderują się poprawnie; case studies bez zmian krojów.
+
+### Zadanie 5 — obrazy na / i /uslugi (wzorzec /portfolio) — ZROBIONE
+
+- **Hero /** (LCP): 512 KB → warianty ASCII `presentation-hero-{480,640,800,1000}.webp` (19–64 KB) + `srcset/sizes` + responsywny `preload` (`imagesrcset`); mobile pobiera **640w = 30 KB**.
+- **/uslugi** `POWEROFMIND_FRONT.png` 476 KB → `powerofmind-front-{400,640}.webp` (13–24 KB) + srcset/sizes/width/height.
+- **Logo** / i /uslugi: PNG 44 KB → istniejący `kw-design-logo-160w.webp` 5 KB (jak /portfolio).
+- **Karty / i miniatury /uslugi**: srcset (400w/760w) + sizes + width/height (lazy). Oryginały zostają.
+
+### Zadanie 6 — nieblokujący CSS — ZROBIONE
+
+`about-me.css` (tylko sekcja „O mnie", poniżej 1. ekranu) ładowany wzorcem `preload+onload` jak `projects.css` na /portfolio (+ `noscript`). Pozostałe arkusze krytyczne dla 1. ekranu zostają blokujące. Bez łączenia/przepisywania.
+
+### Weryfikacja końcowa (Lighthouse mobile, mediana z 5)
+
+| Strona | Perf PRZED → PO | LCP | FCP | CLS | Perf desktop | axe | Lighthouse a11y |
+|---|---|---|---|---|---|---|---|
+| **/** | 68 → **86** ✓ | 6,77 → **3,61 s** | 3,73 → 2,56 | **0,000** | 100 | 0 | 100 |
+| **/uslugi** | 86 → **86** ✓ | 3,89 → 3,64 s | 2,11 → 2,55 | 0,003 | 99 | 0 | 100 |
+| **/portfolio** | 84 → **78** ✗ | 3,53 → 4,51 s | 3,16 → 3,16 | 0,024 → **0,000** | 99 | 0 | 100 |
+
+- **CLS ≤ 0,02 wszędzie** (portfolio 0,024 → 0,000 dzięki preloadowi + metrykom fallbacku). **Accessibility 100 i axe 0** bez regresji. **Desktop ≥ 95** (bez regresji). **Zero żądań Google Fonts.** Polskie znaki tym samym krojem w nagłówkach (Playfair) i tekście (Inter).
+- **/ i /uslugi: cel ≥ 85 osiągnięty** (/ z dużym skokiem 68→86 dzięki hero 512 KB→30 KB).
+- **/portfolio: 78 < 85 — niżej niż baseline 84. Przyczyna (zgodnie z DoD „podaj wynik i przyczynę"):** element LCP to tekstowy CTA (Inter). Po samodzielnym hostingu fonty są **tej samej domeny** i konkurują o pasmo z resztą zasobów; w teście **localhost HTTP/1.1 + Lighthouse slow-4G** 192 KB fontów ładuje się w oknie krytycznym i tekst LCP **poprawnie podmienia krój w oknie LCP**. W baseline Google Fonts ładowały się odroczenie (preload+onload), więc podmiana wypadała **poza** oknem LCP — LCP zostawał na malowaniu fallbackiem (3,53 s). To artefakt metryki, nie realna przewaga UX (odroczona podmiana = późniejszy FOUT). Na produkcji (GitHub Pages **HTTP/2**, multipleksacja, cache, brak 3rd-party DNS/TLS) konkurencja jest znacznie mniejsza, a samodzielny hosting zwykle bije Google Fonts. CLS spadło do 0 i zniknął 3rd-party (prywatność/niezawodność). *Opcjonalnie* można dociąć fonty (instancja wag 300–700) dla dalszej redukcji ~192 KB — do decyzji.
+
+### Brak zmian układu (zrzuty przed/po, 390 i 1440, `prefers-reduced-motion`, czcionki dociągnięte)
+
+Różnice wyłącznie w zatwierdzonych elementach: **H1 na /** (Albert Sans→Playfair + oddech), **„Wybrane projekty" i nagłówek CTA na /portfolio** (Poppins→Playfair; CTA zawija do 2 linii, bo Playfair szerszy), **próbki „System UI" na voucher** (Montserrat→Inter) oraz drobne elementy przemapowane z Poppins (CTA/close/error/breadcrumbs → Inter). Reszta układu, treści i kolorów bez zmian; wysokości stron zgodne.
+
+**Zakres utrzymany:** HTML, assets/css/, assets/fonts/, assets/images/ (nowe warianty). Bez zmian treści, kolorów i `tokens.css` w części kolorów (dodano tylko sekcję `@font-face`). Logika JS case studies nietknięta.
+
+### Zadanie 7 — dociśnięcie fontów (podzbiór + grubości) — ZROBIONE
+
+Na życzenie: zawężenie krojów do faktycznie używanych grubości i docięcie podzbioru.
+
+- **Grubości:** z pomiaru — Inter 400/500/600/700; Playfair 400 (kontakt), 600 (/portfolio ×6), 700 (dominant), 900 (/uslugi ×1, i w baseline clamp→700 bo Google dawał 400;700). Wybrano **instancję zmienną wght 400–700** (zachowuje 600; 900→700 jak w baseline). Porównanie wagi łącznej (4 pliki, latin+latin-ext): **zmienna = 151 KB** vs **statyczne 4×Inter + 2×Playfair = 291 KB** → wybrana zmienna.
+- **Podzbiór:** latin + latin-ext z zachowaniem symboli treści. Grep po HTML potwierdził użycie: — (488×), – (95×), „ ” (36×), … (1×), · (108×), − (5×), ~ (31×), % (36×), → (96×), ← (1×), × (3×). Wszystkie + polskie znaki obecne w cmap obu krojów (weryfikacja fontTools). Źródło: pełne warianty zmienne (google/fonts, `raw.githubusercontent`), bo strzałki → ← nie ma w „latin" Google — teraz renderują się w Inter zamiast fallbacku.
+- **Preload:** maks. 2 pliki/stronę — / i /uslugi: Playfair latin+latin-ext (H1); /portfolio: Inter-latin (element LCP: CTA) + Playfair-latin (H1).
+
+**Łączna waga fontów na stronę (faktycznie pobrana, mobile):**
+
+| strona | PRZED rundą | PO |
+|---|---|---|
+| / | 242 KB (6 plików: Inter+Playfair+Albert Sans) | **152 KB** (4) |
+| /uslugi | 188 KB (4) | **152 KB** (4) |
+| /portfolio | 499 KB (9: +Poppins +Google) | **152 KB** (4) |
+
+**Zrzut polskie znaki + symbole (H1 Playfair + akapit Inter) przed/po — identyczne.** Weryfikacja: 0 żądań Google Fonts.
+
+### Tabela końcowa — Lighthouse (mediana: mobile z 5, desktop z 3), PRZED rundą vs PO
+
+**Mobile**
+
+| strona | Performance | LCP | FCP | CLS |
+|---|---|---|---|---|
+| / | 68 → **88** | 6,76 → **3,45 s** | 3,71 → 2,40 | 0,000 → 0,000 |
+| /uslugi | 86 → **87** | 3,87 → 3,63 s | 2,10 → 2,40 | 0,003 → 0,003 |
+| /portfolio | 84 → **79** | 3,53 → 4,28 s | 3,16 → 3,15 | 0,024 → **0,020** |
+
+**Desktop**
+
+| strona | Performance | LCP | FCP | CLS |
+|---|---|---|---|---|
+| / | 96 → **100** | 1,27 → 0,68 s | 0,95 → 0,52 | 0,000 |
+| /uslugi | 98 → **100** | 0,92 → 0,81 s | 0,80 → 0,53 | 0,004 |
+| /portfolio | 100 → **99** | 0,71 → 0,83 s | 0,65 → 0,61 | 0,001 → 0,000 |
+
+**Podsumowanie:** mobile / 68→88 i /uslugi 87 (cel ≥85 ✓); desktop wszędzie ≥99 (bez regresji). **CLS ≤ 0,02 wszędzie** (/portfolio 0,024→0,020 — na granicy, bo limit 2 preloadów każe pominąć Playfair-latin-ext; z 3 preloadami było 0,000). **/portfolio mobile 79 < 85** — mimo redukcji fontów 499→152 KB element LCP (tekstowy CTA Inter) nadal podmienia krój w oknie LCP przy throttlingu slow-4G na localhost HTTP/1.1; na produkcji HTTP/2 + cache różnica będzie mniejsza. Dalej: można by przyjąć `font-display: optional` dla /portfolio (LCP = fallback, ale pierwsze malowanie bez web-fontu) — do decyzji; łamie to „swap" z założeń.
+
+---
+
+## ZAMKNIĘCIE ETAPU TECHNICZNEGO — stan wyjściowy vs końcowy
+
+Etap objął rundy: **C1** (dostępność i waga case studies), **KOLORY** (jeden system kolorów tekstu, kontrast ≥4.5:1), **A11Y** (Lighthouse Accessibility 100 na / i /uslugi), **PERF** (wydajność mobilna, fonty lokalne, dwie rodziny krojów). Każda runda: osobna gałąź od `origin/main`, draft PR, scalenie po akcepcie (PR #131, #132, #133, #134).
+
+**„Stan wyjściowy"** = wejście do rundy PERF (czyli stan skumulowany po C1 + KOLORY + A11Y, mierzony na `origin/main`). **„Stan końcowy"** = po scaleniu PERF.
+
+| strona | metryka | stan wyjściowy | stan końcowy |
+|---|---|---|---|
+| **/** | Performance mobile / desktop | 68 / 96 | **88 / 100** |
+| | LCP mobile | 6,76 s | **3,45 s** |
+| | CLS mobile | 0,000 | 0,000 |
+| | Accessibility / axe | 100 / 0 | 100 / 0 |
+| | waga fontów | 242 KB (6 plików, +Albert Sans) | **152 KB (4)** |
+| **/uslugi** | Performance mobile / desktop | 86 / 98 | **87 / 100** |
+| | LCP mobile | 3,87 s | 3,63 s |
+| | CLS mobile | 0,003 | 0,003 |
+| | Accessibility / axe | 100 / 0 | 100 / 0 |
+| | waga fontów | 188 KB (4) | **152 KB (4)** |
+| **/portfolio** | Performance mobile / desktop | 84 / 100 | 79 / **99** |
+| | LCP mobile | 3,53 s | 4,28 s |
+| | CLS mobile | 0,024 | **0,020** |
+| | Accessibility / axe | 100 / 0 | 100 / 0 |
+| | waga fontów | 499 KB (9, +Poppins +Google) | **152 KB (4)** |
+
+**Cała witryna (stan końcowy):**
+- **Zero żądań do Google Fonts** — Inter + Playfair Display hostowane lokalnie (zmienne woff2 400–700, latin + latin-ext, `font-display: swap`, fallbacki z metrykami). Dwie rodziny krojów: Playfair (nagłówki) + Inter (tekst/UI). Poppins, Albert Sans i Montserrat usunięte.
+- **Dostępność:** Accessibility 100 i axe 0 na stronach objętych audytem; nagłówki, landmarki, menu mobilne jako `<button>` z aria, kontrast ≥4.5:1 w jednym systemie kolorów (`tokens.css`).
+- **Obrazy:** hero / 512 KB → 30 KB (srcset), PNG /uslugi 476 KB → 24 KB, logo → WebP; warianty responsywne, width/height, lazy poniżej 1. ekranu.
+- **Polskie znaki i symbole** (— – „ ” … · − ~ % → ← × ™ €) renderują się właściwym krojem (podzbiór zweryfikowany).
+
+**Nota o /portfolio:** mobile 79 < 85 — element LCP to tekstowy CTA (Inter) podmieniający krój w oknie LCP przy throttlingu slow-4G na teście localhost HTTP/1.1; na produkcji (GitHub Pages HTTP/2 + cache, bez 3rd-party DNS/TLS) różnica jest mniejsza. W zamian waga fontów 499→152 KB, CLS 0,024→0,020 i zero zewnętrznych zależności. Dalsza poprawa wymagałaby `font-display: optional` (świadomie odrzucone — łamie „swap").

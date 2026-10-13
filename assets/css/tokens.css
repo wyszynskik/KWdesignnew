@@ -1,4 +1,49 @@
 /* ============================================================
+   KROJE LOKALNE — zero Google Fonts. Dwie rodziny:
+   Playfair Display (nagłówki) + Inter (tekst/UI). Zmienne woff2,
+   podzbiory latin + latin-ext (polskie znaki: ó=latin, ąęśćżźłń=latin-ext),
+   font-display: swap. Fallbacki z nadpisaniem metryk (wartości z
+   optymalizatora next/font) ograniczają przesunięcie przy podmianie fontu.
+   ============================================================ */
+/* Dociśnięte: instancja zmienna wght 400–700 (używane grubości); podzbiór
+   latin + latin-ext z zachowanymi symbolami treści (— – „ ” … · − ~ % → ← × ™ €). */
+@font-face {
+  font-family: 'Inter';
+  src: url('../fonts/Inter-latin.woff2') format('woff2');
+  font-weight: 400 700; font-style: normal; font-display: swap;
+  unicode-range: U+0000-00FF, U+2010-2027, U+2030, U+2032-2033, U+2039-203A, U+2044, U+2190-2193, U+2212, U+2215, U+20AC, U+2122, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: 'Inter';
+  src: url('../fonts/Inter-latinext.woff2') format('woff2');
+  font-weight: 400 700; font-style: normal; font-display: swap;
+  unicode-range: U+0100-024F, U+1E00-1EFF;
+}
+@font-face {
+  font-family: 'Playfair Display';
+  src: url('../fonts/Playfair-latin.woff2') format('woff2');
+  font-weight: 400 700; font-style: normal; font-display: swap;
+  unicode-range: U+0000-00FF, U+2010-2027, U+2030, U+2032-2033, U+2039-203A, U+2044, U+2190-2193, U+2212, U+2215, U+20AC, U+2122, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: 'Playfair Display';
+  src: url('../fonts/Playfair-latinext.woff2') format('woff2');
+  font-weight: 400 700; font-style: normal; font-display: swap;
+  unicode-range: U+0100-024F, U+1E00-1EFF;
+}
+/* Fallbacki dopasowane metrykami — rezerwują tę samą przestrzeń co docelowy krój */
+@font-face {
+  font-family: 'Inter Fallback';
+  src: local('Arial');
+  ascent-override: 90.44%; descent-override: 22.52%; line-gap-override: 0%; size-adjust: 107.12%;
+}
+@font-face {
+  font-family: 'Playfair Display Fallback';
+  src: local('Times New Roman');
+  ascent-override: 96.68%; descent-override: 22.46%; line-gap-override: 0%; size-adjust: 111.95%;
+}
+
+/* ============================================================
    KW DESIGN — TOKENY KOLORÓW (jedno źródło prawdy)
    Ładowany jako PIERWSZY arkusz na każdej stronie, więc tokeny są
    dostępne zanim zadziała którykolwiek inny arkusz.

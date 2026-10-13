@@ -66,8 +66,8 @@ body {
     --color-primary-900: #012B32;
     
     /* Premium Typography Stack */
-    --font-primary: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-    --font-heading: 'Playfair Display', Georgia, 'Times New Roman', serif;
+    --font-primary: 'Inter', 'Inter Fallback', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    --font-heading: 'Playfair Display', 'Playfair Display Fallback', Georgia, 'Times New Roman', serif;
     
     /* Font Weights */
     --font-weight-light: 300;
@@ -4446,12 +4446,14 @@ header * {
 /* Eyebrow: pozwól zawijać dłuższy zestaw kategorii oferty */
 .hero-text .hero-eyebrow {
     white-space: normal;
+    /* oddech pod wydłużeniami dolnymi H1 (np. „j" w „odzyskaj"); wartość ze skali */
+    margin-top: var(--space-3);
 }
 
-/* H1 hero — Albert Sans zamiast Playfair (2026-07-21), tylko ta sekcja */
+/* H1 hero — na kroju nagłówkowym (Playfair), grubość 700; rozmiar/akcent bez zmian */
 .hero-text .hero-title {
-    font-family: 'Albert Sans', var(--font-heading);
-    font-weight: 800;
+    font-family: var(--font-heading);
+    font-weight: 700;
 }
 .hero-title .ht-line1,
 .hero-title .ht-line2 {
@@ -4622,7 +4624,7 @@ ul.hero-info-icons {
     /* Kolejność: tytuł → eyebrow → zdjęcie → subtitle → statystyki → CTA.
        Zdjęcie wysoko przerywa ścianę tekstu, dalej idzie krótki opis. */
     .hero-text .hero-title   { order: 1 !important; margin-bottom: 0 !important; }
-    .hero-text .hero-eyebrow { order: 2 !important; margin-top: var(--space-2) !important; }
+    .hero-text .hero-eyebrow { order: 2 !important; margin-top: var(--space-3) !important; }
     .hero-image              { order: 3 !important; }
     .hero-text .hero-subtitle {
         order: 4 !important;

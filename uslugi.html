@@ -53,10 +53,9 @@
   <link rel="icon" type="image/png" sizes="192x192" href="assets/images/android-chrome-192x192.png">
   <link rel="icon" type="image/png" sizes="512x512" href="assets/images/android-chrome-512x512.png">
 
-  <!-- Google Fonts -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet" />
+  <!-- Kroje lokalne (zero Google Fonts); preload nagłówkowego Playfair (LCP H1) -->
+  <link rel="preload" href="assets/fonts/Playfair-latin.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="assets/fonts/Playfair-latinext.woff2" as="font" type="font/woff2" crossorigin>
 
   <!-- Main CSS -->
   <link rel="stylesheet" href="assets/css/tokens.css">
@@ -75,7 +74,7 @@
   <header class="header">
     <div class="container header-inner">
       <a href="/" class="logo-link" aria-label="Karol Wyszyński - Strona główna">
-        <img src="assets/images/KW_DESIGN_LOGO.png" alt="Karol Wyszyński – strony i automatyzacje" class="logo-img" />
+        <img src="assets/images/kw-design-logo-160w.webp" alt="Karol Wyszyński – strony i automatyzacje" class="logo-img" width="160" height="96" />
       </a>
       <nav class="nav">
         <ul class="nav-list" id="nav-list">
@@ -237,7 +236,10 @@
 
       <div class="service-proof">
         <span class="proof-label">Przykład z realizacji</span>
-        <img class="proof-thumb" src="assets/images/karoma/KAROMA_FRONT.webp" alt="Karoma — strona główna sklepu" loading="lazy">
+        <img class="proof-thumb" src="assets/images/karoma/karoma-front-760.webp"
+          srcset="assets/images/karoma/karoma-front-400.webp 400w, assets/images/karoma/karoma-front-760.webp 760w"
+          sizes="(max-width: 1023px) 90vw, 360px"
+          width="800" height="682" alt="Karoma — strona główna sklepu" loading="lazy">
         <p class="proof-desc">Sklep internetowy dla producenta narzędzi CNC — od brandingu po wdrożenie. Spójna identyfikacja, dedykowane funkcje B2B i integracja płatności. Gotowy do przyjmowania zamówień od pierwszego dnia, bez podwykonawców, w jednym ręku.</p>
         <div class="proof-metrics">
           <span class="proof-stat"><strong>~8 tygodni</strong>od briefu do launchu</span>
@@ -317,7 +319,10 @@
 
       <div class="service-proof">
         <span class="proof-label">Przykład z realizacji</span>
-        <img class="proof-thumb" src="assets/images/razdwa/Ekran_RAZDWA_KWdesign.webp" alt="Raz Dwa Druk — kalkulator wycen" loading="lazy">
+        <img class="proof-thumb" src="assets/images/razdwa/ekran-razdwa-760.webp"
+          srcset="assets/images/razdwa/ekran-razdwa-400.webp 400w, assets/images/razdwa/ekran-razdwa-760.webp 760w"
+          sizes="(max-width: 1023px) 90vw, 360px"
+          width="1450" height="1306" alt="Raz Dwa Druk — kalkulator wycen" loading="lazy">
         <p class="proof-desc">Drukarnia wyceniała zlecenia ręcznie — nawet godzinę na jedno zamówienie, z ryzykiem pomyłki. Aplikacja z kalkulatorem, koszykiem i eksportem PDF skróciła ten czas do ok. 5 minut. Zero kosztów stałych utrzymania.</p>
         <div class="proof-metrics">
           <span class="proof-stat"><strong>~60 → 5 min</strong>czas wyceny jednego zlecenia</span>
@@ -396,7 +401,10 @@
 
       <div class="service-proof">
         <span class="proof-label">Przykład z realizacji</span>
-        <img class="proof-thumb" src="assets/images/power-of-mind/POWEROFMIND_FRONT.png" alt="Power of Mind — platforma sprzedażowa" loading="lazy">
+        <img class="proof-thumb" src="assets/images/power-of-mind/powerofmind-front-640.webp"
+          srcset="assets/images/power-of-mind/powerofmind-front-400.webp 400w, assets/images/power-of-mind/powerofmind-front-640.webp 640w"
+          sizes="(max-width: 1023px) 90vw, 360px"
+          width="1144" height="975" alt="Power of Mind — platforma sprzedażowa" loading="lazy">
         <p class="proof-desc">Marka coachingowa potrzebowała platformy sprzedażowej — ale najpierw decyzji, na czym ją zbudować. Przetestowaliśmy trzy rozwiązania (Webflow, Wix, WordPress), wybraliśmy jedno. Klientka zarządza systemem samodzielnie od pierwszego dnia po wdrożeniu.</p>
         <div class="proof-metrics">
           <span class="proof-stat"><strong>~10 tygodni</strong>od analizy do launchu</span>
