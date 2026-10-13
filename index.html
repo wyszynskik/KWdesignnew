@@ -11,7 +11,9 @@
     <link rel="canonical" href="https://kwyszynski.pl/" />
 
     <!-- Preload hero image (LCP) -->
-    <link rel="preload" as="image" href="assets/images/presentation HERO.webp" fetchpriority="high" />
+    <link rel="preload" as="image" href="assets/images/presentation-hero-800.webp"
+          imagesrcset="assets/images/presentation-hero-480.webp 480w, assets/images/presentation-hero-640.webp 640w, assets/images/presentation-hero-800.webp 800w, assets/images/presentation-hero-1000.webp 1000w"
+          imagesizes="(max-width: 1023px) 284px, 400px" fetchpriority="high" />
 
     <!-- Open Graph -->
     <meta property="og:type" content="website" />
@@ -85,7 +87,7 @@
     <!-- Header -->
     <header class="header">
         <div class="container header-inner">
-            <a href="/" class="logo-link"><img src="assets/images/KW_DESIGN_LOGO.png" alt="Karol Wyszyński – strony i automatyzacje" class="logo-img" /></a>
+            <a href="/" class="logo-link"><img src="assets/images/kw-design-logo-160w.webp" alt="Karol Wyszyński – strony i automatyzacje" class="logo-img" width="160" height="96" /></a>
             <nav class="nav">
                 <ul class="nav-list" id="nav-list">
                     <li><a href="#hero" class="smooth">Start</a></li>
@@ -156,7 +158,10 @@
 
             <figure class="hero-image">
                 <div class="hero-image-container">
-                    <img src="assets/images/presentation HERO.webp" alt="Karol Wyszyński – projektuję, buduję i wdrażam rozwiązania cyfrowe" width="1000" height="1500" fetchpriority="high" />
+                    <img src="assets/images/presentation-hero-800.webp"
+                        srcset="assets/images/presentation-hero-480.webp 480w, assets/images/presentation-hero-640.webp 640w, assets/images/presentation-hero-800.webp 800w, assets/images/presentation-hero-1000.webp 1000w"
+                        sizes="(max-width: 1023px) 284px, 400px"
+                        alt="Karol Wyszyński – projektuję, buduję i wdrażam rozwiązania cyfrowe" width="1000" height="1500" fetchpriority="high" />
                 </div>
                 <figcaption class="hero-image-caption">
                     <span class="caption-name">Karol Wyszyński</span>
@@ -177,7 +182,10 @@
             <!-- KARTA 1: Raz Dwa Druk -->
             <a href="/portfolio#RazDwa" class="portfolio-new-card">
                 <div class="card-image-wrapper">
-                    <img src="assets/images/razdwa/Ekran_RAZDWA_KWdesign.webp" alt="Raz Dwa Druk – aplikacja B2B, PWA i strona internetowa" class="card-image--contain" loading="lazy" />
+                    <img src="assets/images/razdwa/ekran-razdwa-760.webp"
+                        srcset="assets/images/razdwa/ekran-razdwa-400.webp 400w, assets/images/razdwa/ekran-razdwa-760.webp 760w"
+                        sizes="333px" width="1450" height="1306"
+                        alt="Raz Dwa Druk – aplikacja B2B, PWA i strona internetowa" class="card-image--contain" loading="lazy" />
                 </div>
                 <div class="card-content">
                     <span class="card-category">Aplikacja B2B + PWA + Strona</span>
@@ -209,7 +217,10 @@
             <!-- KARTA 2: Karoma -->
             <a href="/portfolio#karoma" class="portfolio-new-card">
                 <div class="card-image-wrapper">
-                    <img src="assets/images/karoma/KAROMA_FRONT.webp" alt="Karoma" loading="lazy" />
+                    <img src="assets/images/karoma/karoma-front-760.webp"
+                        srcset="assets/images/karoma/karoma-front-400.webp 400w, assets/images/karoma/karoma-front-760.webp 760w"
+                        sizes="333px" width="800" height="682"
+                        alt="Karoma" loading="lazy" />
                 </div>
                 <div class="card-content">
                     <span class="card-category">E-commerce + Branding</span>
@@ -241,7 +252,10 @@
             <!-- KARTA 3: Power of Mind -->
             <a href="/portfolio#power-of-mind" class="portfolio-new-card">
                 <div class="card-image-wrapper">
-                    <img src="assets/images/power-of-mind/POWEROFMIND_HERO_1.webp" alt="Power of Mind" loading="lazy" />
+                    <img src="assets/images/power-of-mind/powerofmind-hero-1-760.webp"
+                        srcset="assets/images/power-of-mind/powerofmind-hero-1-400.webp 400w, assets/images/power-of-mind/powerofmind-hero-1-760.webp 760w"
+                        sizes="333px" width="1573" height="1383"
+                        alt="Power of Mind" loading="lazy" />
                 </div>
                 <div class="card-content">
                     <span class="card-category">Serwis + Sklep + Branding</span>
