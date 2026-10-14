@@ -18,6 +18,8 @@
     "dev": "echo 'Statyczna strona – otwórz index.html w przeglądarce'",
     "deploy": "echo 'Push na main → GitHub Pages lub Cloudflare Pages auto-deploy'",
     "serve": "node scripts/serve_kwdesign.js",
+    "sync": "node scripts/sync-partials.js",
+    "sync:check": "node scripts/sync-partials.js --check",
     "verify:cad": "node scripts/verify_cad.js",
     "verify:phase2": "node scripts/verify_phase2.js",
     "verify:razdwa": "node scripts/verify_razdwa.js",
