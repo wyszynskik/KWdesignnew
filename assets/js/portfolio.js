@@ -133,23 +133,9 @@ document.addEventListener('DOMContentLoaded', () => {
       cvBtn.className = 'btn-cta';
       cvBtn.textContent = 'Pobierz CV';
       cvBtn.setAttribute('download', '');
-      cvBtn.addEventListener('click', () => {
-        if (typeof window.gtag === 'function') {
-          window.gtag('event', 'cv_download', { file: data.cvUrl });
-        }
-      });
       buttonsWrap.insertBefore(cvBtn, buttonsWrap.firstChild);
     }
   });
-
-  const linkedinCta = document.getElementById('cta-linkedin');
-  if (linkedinCta) {
-    linkedinCta.addEventListener('click', () => {
-      if (typeof window.gtag === 'function') {
-        window.gtag('event', 'linkedin_click');
-      }
-    });
-  }
 
   const projectPages = {
     'voucher-magdy': 'projects/voucher-salon-magdy',
