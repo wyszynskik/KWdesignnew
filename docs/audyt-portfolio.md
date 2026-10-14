@@ -1043,3 +1043,67 @@ Spadek portfolio (99→97) mieści się w zwykłym szumie pomiarowym Lighthouse 
 - **`grep "Cyfra_obkiety"` = 0, `grep "D:\\KWdesign"` = 0.**
 
 **Definicja done — zgodna w całości.** Raport w `docs/audyt-portfolio.md`, push i draft PR — bez scalania.
+
+### Dogranie po przeglądzie (przed scaleniem)
+
+- **Waga `layout.css`:** 11,67 KB raw / 2,88 KB gzip — pod limitem 15 KB.
+- **Waga CSS na `/projects/karoma`** (tokens.css + [layout.css] + projects.css + kw-buttons.css, z git blob, nie z lokalnego working tree — ten ma CRLF z Windows checkoutu i myli proste `wc -c`):
+
+| | przed (5c966af) | po (HEAD) |
+|---|---|---|
+| raw | 149 178 B | 164 733 B (+15 555 B) |
+| gzip | 30 457 B | 34 699 B (+4 242 B) |
+
+Wzrost to w całości `layout.css` (11,4 KB) + przeniesione do `tokens.css` tokeny (`:root`, 112 linii) wcześniej niedostępne na case studies — nie nadmiarowy balast, tylko to, czego nagłówek/stopka faktycznie potrzebują.
+
+- **Usterka złapana na tym etapie:** zmiana `<h3>Karol Wyszyński</h3>` → `<p class="footer-brand">` (naprawa `heading-order` na 404) ubocznie zdjęła globalny `font-family: var(--font-heading)` (reguła `h1..h6` w `index-styles.css`, scoped po tagu). Dodany jawny `font-family: var(--font-heading)` w `.footer-info .footer-brand` (layout.css) — przywraca Playfair na stopce wszędzie, w tym po raz pierwszy spójnie na case studies (wcześniej nie ładowały `index-styles.css`, więc tam nazwa marki nigdy nie była serif).
+- **Zrzuty 390+1440:** `/projects/karoma` (nagłówek + breadcrumb „← Portfolio" + stopka), `404`, nagłówek/stopka `/uslugi` przed i po — potwierdzone: jeden nagłówek, jedna stopka, zero dublowania z paskiem rozdziałów (sticky, position:fixed, niezależny komponent); `/uslugi` różni się tylko treścią (dodane „O mnie", usunięte „Start", ujednolicony tagline stopki, przywrócony serif marki) — zero niezamierzonych zmian stylu.
+
+**PR #138 oznaczony jako gotowy, scalony do main, wypchnięty.** Merge commit `3ef54c2`.
+
+### Weryfikacja na produkcji (kwyszynski.pl, ~10 min po merge)
+
+| Sprawdzenie | Wynik |
+|---|---|
+| `/` nowy nagłówek (Portfolio/Usługi/O mnie/Kontakt) + stopka | ✔ |
+| `/uslugi` `aria-current="page"` na „Usługi" | ✔ |
+| `/portfolio` nagłówek + stopka | ✔ (200) |
+| `/projects/karoma` nagłówek (`<header class="header">`), `layout.css`, `nav.js` załadowane | ✔ |
+| `404` (dowolny nieistniejący URL) ma nagłówek | ✔ |
+| **`/kontakt` → 404** | ✔ (potwierdzone `curl`, kod 404) |
+| Menu mobilne na `/projects/karoma`: Enter otwiera (aria-expanded→true, nav-list.open), Escape zamyka + oddaje fokus | ✔ (zweryfikowane Playwright na żywej produkcji) |
+
+---
+
+## ZAMKNIĘCIE PROJEKTU — wszystkie rundy
+
+| Runda | PR | Data | Zakres |
+|---|---|---|---|
+| C1 | [#131](https://github.com/wyszynskik/KWdesignnew/pull/131) | 2026-10-12 | Dostępność i waga case studies |
+| KOLORY | [#132](https://github.com/wyszynskik/KWdesignnew/pull/132) | 2026-10-12 | Jeden system kolorów tekstu (kontrast ≥4.5:1) |
+| A11Y | [#133](https://github.com/wyszynskik/KWdesignnew/pull/133) | 2026-10-12 | Lighthouse Accessibility 100 na / i /uslugi |
+| PERF | [#134](https://github.com/wyszynskik/KWdesignnew/pull/134) | 2026-10-13 | Fonty lokalne, wydajność mobilna |
+| TREŚĆ-1 | [#135](https://github.com/wyszynskik/KWdesignnew/pull/135) | 2026-10-13 | Błędy treści i sprzeczne fakty |
+| TREŚĆ-2 | [#136](https://github.com/wyszynskik/KWdesignnew/pull/136) | 2026-10-13 | Spójność faktów w case studies |
+| TREŚĆ-3 | [#137](https://github.com/wyszynskik/KWdesignnew/pull/137) | 2026-10-14 | Spójny przekaz /, /uslugi, /narzedzie bez e-maila |
+| TECH-FINAL | [#138](https://github.com/wyszynskik/KWdesignnew/pull/138) | 2026-10-14 | Wspólny nagłówek/stopka, partiale, porządki w repo, CLAUDE.md |
+
+### Stan wyjściowy (przed rundą C1) vs stan końcowy (po TECH-FINAL)
+
+| Obszar | Wyjściowy | Końcowy |
+|---|---|---|
+| **Dostępność** | Lighthouse A11y 95, axe 5–6 naruszeń na /portfolio (`color-contrast`, `label-content-name-mismatch`, `landmark-one-main`, `region`, `aria-allowed-role`); hamburger = `<div>` bez roli/aria, niedostępny z klawiatury | Lighthouse A11y **100** i axe **0** na wszystkich stronach (13 stron × 2 viewporty = 26 kombinacji); menu mobilne = `<button>` z aria-expanded/aria-controls, Escape+zwrot fokusu, identyczne wszędzie |
+| **Wydajność (mobile, /)** | Performance **66**, LCP **10,4 s**, waga **1765 KiB** | Performance **88**, LCP **3,45 s** (po rundzie PERF; desktop po TECH-FINAL bez regresji, median 97–100) |
+| **Waga fontów** | 242 KB, 6 plików, Google Fonts + Albert Sans/Poppins/Montserrat | **152 KB**, 4 pliki, lokalne woff2 (Inter + Playfair Display), zero Google Fonts |
+| **Kolory** | Rozjechane tokeny w kilku plikach, kontrasty poniżej AA (2,32:1, 2,42:1, 3,29:1, 3,68:1) | Jeden system w `tokens.css` (po TECH-FINAL: jedyne źródło WSZYSTKICH tokenów — kolory, spacing, cienie, promienie, transitions, z-index), kontrast ≥4,5:1 wszędzie |
+| **Nagłówek/stopka** | 4 różne warianty (logo webp/png, menu 4–5 pozycji niespójnie, `#contact` vs `/#contact`, hamburger button vs div); case studies: zero nagłówka, minimalna stopka | Jeden `partials/header.html` + `partials/footer.html`, zsynchronizowane na 13 stronach (`npm run sync`/`sync:check`), identyczne wszędzie poza `aria-current` |
+| **Treść** | Sprzeczne fakty między stronami (różne wersje tej samej liczby/daty), literówki, nieaktualne nazwy usług, martwe linki `/index#` | Jedna wersja każdego faktu, zweryfikowane grepem (zero rozbieżności), formularze z kanoniczną wartością usługi |
+| **Repo** | `kontakt.html`/`projects/wizualizacje.html` orphan w sitemap, zaszyta ścieżka `D:\KWdesign` w `serve_kwdesign.js`, brak CLAUDE.md, README nieaktualny | Orphany usunięte, ścieżka z `__dirname`, CLAUDE.md (45 linii), README zgodny ze stanem repo |
+
+### Backlog (świadomie odłożone, nieblokujące)
+
+- **Opinie klientów** — 4 case studies (Raz Dwa Druk, CyfraDruk, Karoma, Power of Mind) mają gotowe, celowo wyłączone sloty `<!-- SLOT NA CYTAT KLIENTA -->` (style `.razdwa-quote` już w `projects.css`). Do aktywacji, gdy właściciele użyczą prawdziwej opinii — zero fikcyjnych nazwisk.
+- **GAS — `handleLeadMagnet()` nieużywany** — `narzedzie.html` od rundy TREŚĆ-3 generuje PDF przez `window.print()`, nie przez e-mail; `handleLeadMagnet()` w `gas/contact-form.gs` i `initLeadMagnetForm()` w `assets/js/index-scripts.js` zostają w kodzie bez wywołania. Do usunięcia w kolejnej porządkowej rundzie.
+- **GAS — nieaktualny `PDF_URL`** — wskazuje na `kwyszynskidesign.github.io/KWdesignnew/assets/pdf/...` (404, plik nigdy nie istniał w repo). Skoro mechanizm e-mail+PDF jest wyłączony, martwy URL nie szkodzi, ale wart usunięcia przy porządkowaniu GAS.
+- **Cloudflare Pages (opcjonalnie)** — `_headers`/`_redirects` już w repo, nieaktywne na GitHub Pages. Przełączenie hostingu aktywowałoby je bez dodatkowej pracy (CSP, HSTS, cache).
+- **`assets/css/about-me.css`** — plik bez żadnych odwołań (usunięty jedyny `<link>` w rundzie TREŚĆ-3). Kandydat do usunięcia.
