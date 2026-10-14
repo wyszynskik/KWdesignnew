@@ -6,6 +6,21 @@
    ============================================================ */
 
 /* Premium Header - Dark Theme z biaĹym KW */
+.container {
+    max-width: 1180px;
+    margin: 0 auto;
+    padding: 0 var(--space-8);
+    width: 100%;
+    box-sizing: border-box;
+    position: relative;
+}
+
+@media (max-width: 640px) {
+    .container {
+        padding: 0 var(--space-6);
+    }
+}
+
 .header {
     position: fixed;
     top: 0;
@@ -72,6 +87,7 @@
     font-size: 1.05rem;
     letter-spacing: 0.03em;
     transition: var(--transition-all);
+    text-decoration: none;
 
     /* ✅ USUŃ WSZELKIE CIENIE */
     text-shadow: none !important;
@@ -192,6 +208,7 @@
 .footer-info a {
   color: var(--color-text-accent-on-dark);
   font-weight: var(--font-weight-medium);
+  text-decoration: none;
 }
 
 .footer-info a:hover {
@@ -223,6 +240,7 @@
   font-weight: var(--font-weight-medium);
   letter-spacing: 0.02em;
   transition: var(--transition-fast);
+  text-decoration: none;
 }
 
 .footer-social a:hover {
@@ -243,6 +261,7 @@
   font-weight: var(--font-weight-medium);
   transition: var(--transition-fast);
   padding: var(--space-2) 0;
+  text-decoration: none;
 }
 
 .footer-links a:hover {
