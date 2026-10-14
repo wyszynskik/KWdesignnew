@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="theme-color" content="#06b6d4">
-   <title>Karol Wyszyński – Prowadzenie Projektów i Automatyzacja Procesów</title>
+   <title>Karol Wyszyński – prowadzenie projektów i automatyzacja procesów</title>
    <meta name="description" content="Tworzę cyfrowe narzędzia, które oszczędzają czas i porządkują procesy. Aplikacje, automatyzacje i strony — od analizy procesu po działające wdrożenie.">
 
     <!-- Canonical -->
@@ -18,7 +18,7 @@
     <!-- Open Graph -->
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://kwyszynski.pl/" />
-    <meta property="og:title" content="Karol Wyszyński – Prowadzenie Projektów i Automatyzacja Procesów" />
+    <meta property="og:title" content="Karol Wyszyński – prowadzenie projektów i automatyzacja procesów" />
     <meta property="og:description" content="Tworzę cyfrowe narzędzia, które oszczędzają czas i porządkują procesy. Aplikacje, automatyzacje i strony — od analizy procesu po działające wdrożenie." />
     <meta property="og:image" content="https://kwyszynski.pl/assets/images/og-share-1200x630.png" />
     <meta property="og:locale" content="pl_PL" />
@@ -72,10 +72,6 @@
     <!-- Main CSS -->
     <link rel="stylesheet" href="assets/css/tokens.css">
     <link rel="stylesheet" href="assets/css/index-styles.css" />
-    <!-- About Me — reużywane klasy (about-details-grid) dla sekcji About na stronie głównej -->
-    <!-- about-me.css styluje tylko sekcję „O mnie" (poniżej 1. ekranu) — ładowany nieblokująco (wzorzec jak projects.css na /portfolio) -->
-    <link rel="preload" href="assets/css/about-me.css" as="style" onload="this.onload=null;this.rel='stylesheet';">
-    <noscript><link rel="stylesheet" href="assets/css/about-me.css"></noscript>
     <!-- KW Buttons — system przycisków v1.0 (po index-styles.css, żeby aliasy .kw-btn wygrywały w kaskadzie) -->
     <link rel="stylesheet" href="assets/css/kw-buttons.css" />
 
@@ -153,8 +149,8 @@
                 </ul>
 
                 <div class="hero-actions">
-                    <a href="#contact" class="btn btn-primary btn-hero-cta smooth kw-btn kw-btn--lg" data-track="cta_hero_contact">Porozmawiajmy</a>
-                    <a href="/portfolio" class="hero-secondary-link">Zobacz, jak pracuję <span aria-hidden="true">→</span></a>
+                    <a href="#contact" class="btn btn-primary btn-hero-cta smooth kw-btn kw-btn--lg" data-track="cta_hero_contact">Opisz swój proces</a>
+                    <a href="/portfolio" class="hero-secondary-link">Zobacz realizacje <span aria-hidden="true">→</span></a>
                 </div>
             </div>
 
@@ -167,7 +163,7 @@
                 </div>
                 <figcaption class="hero-image-caption">
                     <span class="caption-name">Karol Wyszyński</span>
-                    <span class="caption-desc">Moje podejście: cały projekt w jednym ręku — Ty pilnujesz jednej osoby, nie zszywasz tego z pięciu.</span>
+                    <span class="caption-desc">prowadzenie projektów i automatyzacje</span>
                 </figcaption>
             </figure>
         </div>
@@ -192,19 +188,19 @@
                 <div class="card-content">
                     <span class="card-category">Aplikacja B2B + PWA + Strona</span>
                     <h3 class="card-title">Raz Dwa Druk</h3>
-                    <p class="card-description">Uporządkowanie skomplikowanego procesu wyceny i składania zamówień.</p>
+                    <p class="card-description">Aplikacja do wyceny i zamówień dla drukarni. Wycena z ok. 60 do ok. 5 minut.</p>
                     <div class="card-features">
                         <span class="feature-item">
                             <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
                                 <path d="M13.5 3.5L6 11L2.5 7.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                             </svg>
-                            −90% czasu wyceny B2B
+                            −90% czasu wyceny
                         </span>
                         <span class="feature-item">
                             <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
                                 <path d="M13.5 3.5L6 11L2.5 7.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                             </svg>
-                           Projekt i wdrożenie 
+                           Projekt i wdrożenie
                         </span>
                     </div>
                     <div class="card-cta">
@@ -216,7 +212,35 @@
                 </div>
             </a>
 
-            <!-- KARTA 2: Karoma -->
+            <!-- KARTA 2: CyfraDruk -->
+            <a href="/portfolio#cyfradruk" class="portfolio-new-card">
+                <div class="card-image-wrapper">
+                    <img src="assets/images/cyfradruk/automatyzacja-liniekolory-720w.webp"
+                        alt="CyfraDruk — automatyczne wykrywanie błędów kolorów i cienkich linii przed drukiem"
+                        width="720" height="720" class="card-image--contain" loading="lazy" />
+                </div>
+                <div class="card-content">
+                    <span class="card-category">Automatyzacja · Narzędzie wewnętrzne</span>
+                    <h3 class="card-title">CyfraDruk</h3>
+                    <p class="card-description">Panel w Illustratorze, który sprawdza plik przed drukiem. Kontrola z 5–20 min do ok. 1 min.</p>
+                    <div class="card-features">
+                        <span class="feature-item">
+                            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                                <path d="M13.5 3.5L6 11L2.5 7.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                            5–20 min → ok. 1 min
+                        </span>
+                    </div>
+                    <div class="card-cta">
+                        <span>Zobacz projekt</span>
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                            <path d="M6 12L10 8L6 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </div>
+                </div>
+            </a>
+
+            <!-- KARTA 3: Karoma -->
             <a href="/portfolio#karoma" class="portfolio-new-card">
                 <div class="card-image-wrapper">
                     <img src="assets/images/karoma/karoma-front-760.webp"
@@ -251,41 +275,6 @@
                 </div>
             </a>
 
-            <!-- KARTA 3: Power of Mind -->
-            <a href="/portfolio#power-of-mind" class="portfolio-new-card">
-                <div class="card-image-wrapper">
-                    <img src="assets/images/power-of-mind/powerofmind-hero-1-760.webp"
-                        srcset="assets/images/power-of-mind/powerofmind-hero-1-400.webp 400w, assets/images/power-of-mind/powerofmind-hero-1-760.webp 760w"
-                        sizes="333px" width="1573" height="1383"
-                        alt="Power of Mind" loading="lazy" />
-                </div>
-                <div class="card-content">
-                    <span class="card-category">Serwis + Sklep + Branding</span>
-                    <h3 class="card-title">Power of Mind</h3>
-                    <p class="card-description">Strona i sklep, które uporządkowały ofertę i wdrożyły sprzedaż online. Projekt zrealizowany; dziś dostępny jako wersja archiwalna.</p>
-                    <div class="card-features">
-                        <span class="feature-item">
-                            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                                <path d="M13.5 3.5L6 11L2.5 7.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                            </svg>
-                            WordPress
-                        </span>
-                        <span class="feature-item">
-                            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                                <path d="M13.5 3.5L6 11L2.5 7.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                            </svg>
-                            Strona gotowa end-to-end
-                        </span>
-                    </div>
-                    <div class="card-cta">
-                        <span>Zobacz projekt</span>
-                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                            <path d="M6 12L10 8L6 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                        </svg>
-                    </div>
-                </div>
-            </a>
-
         </div>
     </div>
 </section>
@@ -304,17 +293,13 @@
                 <div class="service-icon">
                     <img src="assets/images/KW_laptop.svg" alt="Ikona produkty cyfrowe" width="56" height="56">
                 </div>
-                <h3> Strony i produkty cyfrowe</h3>
+                <h3>Produkty cyfrowe</h3>
                <p class="service-description">Dla firm, które chcą uporządkować ofertę i zamienić stronę w czytelne narzędzie sprzedaży.</p>
                <ul class="service-features">
     <li><strong>Aplikacje webowe</strong> projektowane pod konkretny proces</li>
     <li><strong>Strony i sklepy</strong> od prezentacji oferty po sprzedaż online</li>
     <li>Architektura informacji, interfejs i wdrożenie w jednym procesie</li>
 </ul>
-                <div class="service-meta">
-                    <p class="service-time">Większe projekty: zwykle 4–5 miesięcy</p>
-                    
-                </div>
                 <a href="/uslugi#produkty" class="service-btn">Więcej informacji →</a>
             </div>
 
@@ -343,7 +328,7 @@
             <!-- OBSZAR 3: Analiza procesów -->
             <div class="service-card">
                 <div class="service-icon">
-                    <img src="assets/images/KW_rocket_STARTCOMPANY.svg" alt="Ikona usprawnienia" width="56" height="56">
+                    <img src="assets/images/KW_rocket_STARTCOMPANY.svg" alt="Ikona analizy procesów" width="56" height="56">
                 </div>
                 <h3>Analiza procesów</h3>
                <p class="service-description">Dla firm, które potrzebują jednego partnera do analizy, uporządkowania i wdrożenia zmian.</p>
@@ -423,7 +408,7 @@
 
     <div class="process-cta">
         <a href="#contact" class="btn btn-primary smooth kw-btn kw-btn--lg">
-            <span class="highlight">Porozmawiajmy</span>
+            <span class="highlight">Opisz swój proces</span>
         </a>
     </div>
 </section>
@@ -431,64 +416,37 @@
     <!-- About -->
     <section id="about" class="about-section">
         <div class="container">
-            <h2 class="section-title">Kim jestem</h2>
+            <h2 class="section-title">O mnie</h2>
             <p class="section-subtitle">
-                Projektuję i wdrażam rozwiązania cyfrowe od analizy procesu po działające narzędzie — aplikacje, automatyzacje i strony dla firm. Pracuję jako jeden odpowiedzialny wykonawca, bez przekazywania projektu między rękami.
+                Projektuję i wdrażam narzędzia, które zdejmują z zespołu ręczną robotę: automatyzacje, aplikacje i strony. Prowadzę projekt sam od analizy do wdrożenia, więc zakres, termin i efekt mają jednego właściciela.
             </p>
-            <div class="about-details-grid">
-                <div class="adg-item">
-                    <span class="adg-label">Jak pracuję</span>
-                    <p>Zaczynam od diagnozy procesu, projektuję rozwiązanie dopasowane do zespołu, wdrażam je i przekazuję z instrukcją — gotowe do samodzielnego użycia.</p>
+            <div class="benefits-grid">
+                <div class="benefit-card">
+                    <div class="benefit-icon">
+                        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+                    </div>
+                    <h3>Jedna osoba, zero zgadywania</h3>
+                    <p>Nie ganiasz kilku wykonawców i nie sprawdzasz, kto za co odpowiada. Piszesz do mnie i sprawa idzie dalej.</p>
                 </div>
-                <div class="adg-item">
-                    <span class="adg-label">W jaką stronę idę</span>
-                    <p>Naturalnie rozwijam się w stronę zarządzania projektami i dostarczaniem rozwiązań (Project &amp; Delivery Management) — to już dziś robię przy każdym wdrożeniu: planuję zakres, adresuję ryzyko i odpowiadam za efekt końcowy.</p>
+
+                <div class="benefit-card">
+                    <div class="benefit-icon">
+                        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3h18v18H3z"/><path d="M3 9h18"/><path d="M9 21V9"/></svg>
+                    </div>
+                    <h3>Decyzje zamiast kolejnych rund</h3>
+                    <p>Ustalamy priorytety na początku i przechodzimy do działania. Wiesz, co dzieje się teraz i co będzie następne.</p>
+                </div>
+
+                <div class="benefit-card">
+                    <div class="benefit-icon">
+                        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+                    </div>
+                    <h3>Wdrożenie, nie tylko koncepcja</h3>
+                    <p>Dostajesz działające narzędzie z instrukcją, dopasowane do tego, jak naprawdę pracuje Twój zespół.</p>
                 </div>
             </div>
         </div>
     </section>
-
-
-   <!-- PM Competencies -->
-   <section id="social-proof" class="social-proof-section">
-    <div class="container">
-        <h2 class="section-title">Co zyskujesz we współpracy</h2>
-        <p class="section-subtitle">Nie tylko projekt, ale prosty proces, mniej niejasności i pewność, że rozwiązanie naprawdę zadziała.</p>
-        <div class="benefits-grid">
-            <div class="benefit-card">
-                <div class="benefit-icon">
-                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
-                </div>
-                <h3>Jeden numer, zero zgadywania</h3>
-                <p>Nie ganiasz kilku osób i nie sprawdzasz, kto teraz za co odpowiada. Dzwonisz do mnie i sprawa idzie dalej.</p>
-            </div>
-
-            <div class="benefit-card">
-                <div class="benefit-icon">
-                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3h18v18H3z"/><path d="M3 9h18"/><path d="M9 21V9"/></svg>
-                </div>
-                <h3>Mniej chaosu, szybsze decyzje</h3>
-                <p>Ustalamy priorytety, porządkujemy proces i przechodzimy do działania bez zbędnych rund.</p>
-            </div>
-
-            <div class="benefit-card">
-                <div class="benefit-icon">
-                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
-                </div>
-                <h3>Projekt i wdrożenie w jednym procesie</h3>
-                <p>Nie kończysz z samą koncepcją. Otrzymujesz rozwiązanie, które da się realnie wdrożyć.</p>
-            </div>
-
-            <div class="benefit-card">
-                <div class="benefit-icon">
-                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>
-                </div>
-                <h3>Rozwiązania dopasowane do pracy zespołu</h3>
-                <p>Proces ma działać w praktyce, nie tylko dobrze wyglądać na diagramie.</p>
-            </div>
-        </div>
-    </div>
-</section>
 
    <section id="faq" class="faq-section">
     <div class="container">
@@ -509,27 +467,16 @@
             </div>
 
             <div class="faq-item">
-                <button class="faq-question">Ile trwa współpraca?<span class="faq-icon">+</span></button>
+                <button class="faq-question">Ile to trwa?<span class="faq-icon">+</span></button>
                 <div class="faq-answer">
-                    <p>To zależy od zakresu projektu. Prostsze działania można zamknąć w krótszym czasie, a bardziej złożone wdrożenia wymagają podziału na etapy, ale zawsze na początku ustalamy realistyczny plan i priorytety, żeby było wiadomo, co dzieje się najpierw i kiedy można oczekiwać efektów.
-
-</p>
-                </div>
-            </div>
-
-            <div class="faq-item">
-                <button class="faq-question">Czy wdrażasz też technicznie?
- <span class="faq-icon">+</span></button>
-                <div class="faq-answer">
-                    <p>Tak — nie kończę pracy na rekomendacjach czy samej koncepcji. W zależności od projektu mogę przygotować rozwiązanie, uporządkować proces i przejść do wdrożenia technicznego, tak żeby całość była spójna i gotowa do działania.</p>
+                    <p>Mniejsze automatyzacje zamykam zwykle w kilka tygodni, większe projekty trwają kilka miesięcy. Harmonogram z etapami ustalamy po analizie, więc od początku wiesz, kiedy zobaczysz pierwszy efekt.</p>
                 </div>
             </div>
 
             <div class="faq-item">
                 <button class="faq-question">Ile kosztuje współpraca?<span class="faq-icon">+</span></button>
                 <div class="faq-answer">
-                    <p>To zależy od zakresu projektu. Na początku ustalamy priorytety, etapy i realistyczny harmonogram, żeby od razu było wiadomo, co robimy i kiedy możesz spodziewać się efektów.
-</p>
+                    <p>Każdy projekt wyceniam po krótkiej analizie zakresu. Wycenę dostajesz z podziałem na etapy, żeby było jasne, za co płacisz i kiedy zobaczysz efekt. Orientacyjny próg dla produktów cyfrowych znajdziesz na <a href="/uslugi#produkty">stronie usług</a>.</p>
                 </div>
             </div>
             </div>
@@ -544,13 +491,11 @@
         <div class="container">
             <div class="lm-teaser-inner">
                 <div class="lm-teaser-text">
-                    <p class="lm-teaser-hook">Każdy miesiąc zwłoki to godziny, które mógłbyś odzyskać.</p>
                     <span class="lm-teaser-badge">Darmowy materiał</span>
                     <h2 class="lm-teaser-title">Nie wiesz, co warto zautomatyzować?</h2>
-                    <p class="lm-teaser-desc">Przygotowałem krótką checklistę diagnostyczną — 7 konkretnych sygnałów, po których rozpoznasz, co warto usprawnić i od czego zacząć.</p>
-                    <p class="lm-teaser-note">Bez zapisywania się na newsletter — PDF dostajesz od razu.</p>
+                    <p class="lm-teaser-desc">Krótka checklista: 7 sygnałów, po których rozpoznasz, co warto usprawnić i od czego zacząć. Bez zapisu i bez podawania e-maila.</p>
                 </div>
-                <a href="/narzedzie" class="lm-teaser-cta kw-btn kw-btn--inverse kw-btn--md" data-track="cta_leadmagnet">Pobierz za darmo →</a>
+                <a href="/narzedzie" class="lm-teaser-cta kw-btn kw-btn--inverse kw-btn--md" data-track="cta_leadmagnet">Zobacz checklistę →</a>
             </div>
         </div>
     </section>
@@ -589,7 +534,7 @@
                                 <option value="aplikacja">Aplikacja biznesowa</option>
                                 <option value="strona">Strona internetowa</option>
                                 <option value="automatyzacja">Automatyzacja procesu</option>
-                                <option value="usprawnienie">Analiza procesów</option>
+                                <option value="analiza">Analiza procesów</option>
                                 <option value="nie-wiem">Nie wiem — pomóż mi to nazwać</option>
                             </select>
                         </div>
@@ -601,7 +546,7 @@
                     </div>
 
                     <button type="submit" class="submit-btn kw-btn kw-btn--inverse kw-btn--lg">
-                        <span class="btn-text">Umów pierwszy krok</span>
+                        <span class="btn-text">Wyślij wiadomość</span>
                         <span class="btn-loader">Wysyłam...</span>
                     </button>
 

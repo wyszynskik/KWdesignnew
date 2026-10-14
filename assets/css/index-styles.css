@@ -1224,7 +1224,7 @@ section {
 
 .benefits-grid {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(3, 1fr);
     gap: var(--space-10);
     margin-bottom: var(--space-20);
     max-width: 960px;
@@ -1295,13 +1295,13 @@ section {
     font-size: 1.4rem;
     font-weight: var(--font-weight-bold);
     margin-bottom: var(--space-4);
-    color: var(--color-text-inverse);
+    color: var(--color-text-primary);
     letter-spacing: -0.01em;
 }
 
 .benefit-card p {
     font-size: 1.05rem;
-    color: var(--color-text-footer);
+    color: var(--color-text-body);
     line-height: 1.7;
     letter-spacing: 0.01em;
     margin: 0;
@@ -3352,9 +3352,9 @@ section {
         padding: var(--space-4) var(--space-4) !important;
     }
 
-    /* 2. BENEFITS - 3 kolumny (6 kart w 2 rzędach) */
+    /* 2. BENEFITS - 3 kolumny (3 karty w 1 rzędzie) */
     .benefits-grid {
-        grid-template-columns: repeat(2, 1fr) !important;
+        grid-template-columns: repeat(3, 1fr) !important;
     }
 
     /* 3. PORTFOLIO - 3 kolumny */

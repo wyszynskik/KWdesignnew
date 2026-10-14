@@ -929,3 +929,59 @@ Niewielkie zmiany są oczekiwane po zawężeniu zakresu (bez cięć strukturalny
 - **Spisy rozdziałów:** wszystkie linki rozdziałów (`razdwa-chapter-link`) rozwiązują się do istniejących `id` — razdwa 12, cyfradruk 9, karoma 9, power-of-mind 11; brakujących kotwic brak (struktura sekcji niezmieniona). ✔
 - **Formularz** wysyła poprawną, niezmienioną wartość usługi (`usprawnienie`) — test przez inspekcję kodu front-end + gas, bez faktycznej wysyłki. ✔
 - **axe = 0** (/, /uslugi, /portfolio desktop+mobile oraz 4 case studies). **Lighthouse Accessibility = 100** (/, /uslugi, /portfolio + 4 case studies). Desktop-perf 100/100/99 — bez regresji. ✔
+
+---
+
+## Runda TREŚĆ-3 — spójny przekaz na / i /uslugi, /narzedzie bez e-maila (punkty 18–25 audytu treści)
+
+Gałąź `runda-tresc-3` od `origin/main` (d4e71f6, po scaleniu PR #136). Zakres: `index.html`, `uslugi.html`, `narzedzie.html`, `assets/css/index-styles.css`, `assets/css/services-page.css` (tylko osierocone style po usunięciu sekcji / nowa liczba kart). Poza zakresem: kolory, fonty, nagłówek/stopka, `portfolio.html`, `projects/*.html`.
+
+### Krok 0 — ustalenia przed kodem
+
+**a) Lead magnet /narzedzie — PDF nie istniał.** `handleLeadMagnet()` w `gas/contact-form.gs` pobierał PDF z `PDF_URL` wskazującym na `kwyszynskidesign.github.io/KWdesignnew/assets/pdf/7-sygnalow-automatyzacja.pdf` — 404 na tym URL i na `kwyszynski.pl/...` (repo ma tylko `assets/pdf/.gitkeep`). Skutek: mail wychodził bez załącznika, link „pobierz PDF bezpośrednio" wskazywał na ten sam martwy URL. Zgodnie z decyzją ownera: zmieniono model na wariant bez e-maila (patrz niżej) — martwy PDF przestaje być krytyczny.
+
+**b) Formularze — gas/contact-form.gs.** `doGet()` przyjmuje `params.projectType` bez żadnego mapowania/filtrowania — wartość leci surowo do arkusza `KONTAKTY` i do treści maila. Index.html używał `value="usprawnienie"`, uslugi.html `value="analiza"` — różne stringi dla tej samej usługi, bez znaczenia dla skryptu. Ujednolicenie bezpieczne bez zmian w gas (pkt 15).
+
+### Decyzje ownera po kroku 0
+
+- **Lead magnet, wariant bez e-maila:** `narzedzie.html` — usunięty formularz `#leadMagnetForm` i wywołanie `action=lead_magnet`; w to miejsce przycisk „Zapisz jako PDF" (`window.print()`) ze stylami `@media print` scoped tylko do tej strony (ukrywa nagłówek, stopkę, sam przycisk i link do usług). Link końcowy zmieniony na „Wolisz omówić to od razu? Opisz swój proces" do `/uslugi#contact`. Usunięto zdanie o zgodzie na kontakt (nie zbieramy już danych). `gas/contact-form.gs` bez zmian — `handleLeadMagnet` zostaje nieużywany kod (dług techniczny, nieusunięty w tej rundzie).
+- **Pkt 8, index.html:** tekst teasera „Krótka checklista: 7 sygnałów, po których rozpoznasz, co warto usprawnić i od czego zacząć. Bez zapisu i bez podawania e-maila.", usunięte zdanie „Bez zapisywania się na newsletter — PDF dostajesz od razu.", przycisk „Zobacz checklistę →".
+- **Pkt 15:** wartość kanoniczna „analiza" w obu formularzach (index.html zmieniony z „usprawnienie").
+
+### Wykonane punkty (commit + diff po każdym)
+
+1. **Meta** — tytuł i og:title: „Karol Wyszyński – prowadzenie projektów i automatyzacja procesów" (małe litery po myślniku).
+2. **Hero** — przyciski „Opisz swój proces" (#contact) / „Zobacz realizacje →" (/portfolio); podpis pod zdjęciem „Karol Wyszyński" + „prowadzenie projektów i automatyzacje"; usunięte zdanie „Moje podejście: cały projekt w jednym ręku…".
+3. **Karty „Procesy, które pomagam uporządkować"** — kolejność Raz Dwa Druk / CyfraDruk / Karoma; usunięta karta Power of Mind; nowa karta CyfraDruk (/portfolio#cyfradruk, obraz z karty w /portfolio, etykieta „Automatyzacja · Narzędzie wewnętrzne", tag „5–20 min → ok. 1 min"); RazDwa: opis „Aplikacja do wyceny i zamówień dla drukarni. Wycena z ok. 60 do ok. 5 minut.", tag „−90% czasu wyceny".
+4. **Sekcja usług** — „Produkty cyfrowe" (nagłówek bez literówki, usunięta linia „4–5 miesięcy"); alt ikony „Ikona analizy procesów"; stopka Automatyzacji była już poprawna.
+5. **„Jak pracuję"** — przycisk „Opisz swój proces".
+6. **Scalenie „Kim jestem" + „Co zyskujesz we współpracy" w sekcję id="about"**, H2 „O mnie", nowy akapit, usunięte bloki „Jak pracuję"/„W jaką stronę idę", 3 karty zamiast 4: „Jedna osoba, zero zgadywania", „Decyzje zamiast kolejnych rund", „Wdrożenie, nie tylko koncepcja" — reużyte ikony 1–3 z oryginalnych 4. CSS: .benefits-grid → repeat(3, 1fr) (było repeat(2,1fr)) w bazowej regule i w @media(min-width:1025px); usunięty martwy preload assets/css/about-me.css (zero pozostałych selektorów używanych na tej stronie po usunięciu .about-details-grid/.adg-item).
+   - **Regresja wykryta i naprawiona tu:** .benefit-card h3/p miały kolory pod ciemne tło starej sekcji social-proof-section (białe/jasnoszare); po przeniesieniu do jasnego about-section axe zgłosił color-contrast na 6 węzłach. Naprawione na --color-text-primary/--color-text-body — axe potwierdza 0 po fixie.
+7. **FAQ** — 4 pytania w kolejności: „Czy to ma sens…" / „Od czego zaczynamy?" (bez zmian) / „Ile to trwa?" (nowa treść) / „Ile kosztuje współpraca?" (nowa treść, link „stronie usług" do /uslugi#produkty). Usunięte „Czy wdrażasz też technicznie?" i zdanie-kontener .lm-teaser-hook „Każdy miesiąc zwłoki…".
+8. **Lead magnet** — patrz decyzje wyżej (8a index.html, 8b narzedzie.html).
+9. **Formularz /** — przycisk „Wyślij wiadomość" (zamiast „Umów pierwszy krok").
+10. **uslugi.html** — wszystkie 4 CTA do #contact (hero + 3× service-cta) → „Opisz swój proces →"; nav „Kontakt" bez zmian.
+11. **„8 000 PLN netto"** — zostaje tylko w bloku Produkty cyfrowe (service-cta: „Czas większych projektów: 4–5 miesięcy · od 8 000 PLN netto"). Karta w „Trzy obszary" → „Wycena po analizie zakresu". FAQ „Skąd wiem, ile to będzie kosztować?" przepisane zgodnie ze specyfikacją.
+12. **Usunięte 3× pasek „Jak przebiega projekt"** (4-krokowe steps-row) z bloków Produkty cyfrowe / Automatyzacje / Analiza procesów. Tabela „Jak wygląda współpraca" bez zmian. Po potwierdzeniu grepem zera użyć w HTML usunięto osierocone reguły .timeline, .timeline h3, .steps-row, .step-mini, .sn, .st + 2 bloki responsywne z services-page.css.
+13. **Tabela, etap 1:** „czy się pasujemy" → „czy dobrze nam się będzie współpracować".
+14. **Blok Analiza procesów / Power of Mind:** „od analizy do launchu" → „od analizy do uruchomienia".
+15. **Kanoniczna wartość formularzy** — „analiza" w obu (index.html zmienione z „usprawnienie"); gas/contact-form.gs bez zmian (echo-only, potwierdzone krokiem 0b).
+16. **narzedzie.html / formy gramatyczne** — fraza „żebyś mógł do niego wrócić kiedy trzeba" zniknęła wraz z usuniętym formularzem (pkt 8b). Grep „mógłbyś", „mógł ", „chciałbyś", „zrobiłeś" w index.html/uslugi.html/narzedzie.html = 0 (bez dodatkowych wystąpień do poprawy).
+
+### Weryfikacja techniczna
+
+- **axe = 0** na /, /uslugi, /narzedzie, desktop (1440) + mobile (390) — po naprawie kontrastu w pkt 6.
+- **Lighthouse Accessibility = 100** na wszystkich 3 stronach.
+- **Lighthouse Performance, mediana z 3, desktop:** index 97→98, uslugi 97→97 (baseline origin/main vs. ta runda) — bez regresji.
+- **Podgląd wydruku /narzedzie** (Chromium, emulateMedia('print')): nagłówek, stopka, przycisk i link końcowy ukryte; sama checklista (badge + H1 + 7 punktów) mieści się na 2 stronach A4.
+- **Formularze** — test przechwyceniem fetch (bez wysyłki): oba (/ i /uslugi) wysyłają identyczny projectType=analiza do tego samego endpointu GAS.
+- **Zrzuty przed/po** (1440 i 390, pełna strona) — / i /uslugi porównane wizualnie z origin/main: karty, sekcja O mnie, FAQ, lead-teaser, tabela współpracy renderują się poprawnie; drobne „puste" pasma widoczne na silnie zmniejszonych miniaturach to efekt scroll-reveal (IntersectionObserver + .fade-slide-in) nietriggerowanego przy jednorazowym resize-screenshot — potwierdzone identyczne na baseline i po rundzie; przy realnym przewijaniu (symulowanym krokowo) wszystkie sekcje renderują się poprawnie.
+
+**Definicja done — weryfikacja:**
+- Grepy = 0 (index.html, uslugi.html, narzedzie.html): „Umów pierwszy krok", „Zapytaj o wycenę", „Porozmawiajmy", „W jaką stronę idę", „Każdy miesiąc zwłoki", „mógłbyś", „czy się pasujemy", „PDF dostajesz od razu", „launchu", „Dzwonisz do mnie", „lead_magnet". ✔
+- „8 000" — dokładnie 1 wynik w uslugi.html (blok Produkty cyfrowe, poza danymi strukturalnymi — nie występuje w JSON-LD), 0 w index.html. ✔
+- Jedna wartość opcji „Analiza procesów" — value="analiza" w obu formularzach. ✔
+- Kotwice #about, #contact, #produkty, #automatyzacje, #usprawnienia — wszystkie obecne i celowane poprawnie z nav/CTA; /portfolio#cyfradruk rozwiązuje się przez mapę slugów w portfolio.js. ✔
+- axe 0 / Lighthouse A11y 100 / Performance bez regresji. ✔
+
+**Dług techniczny zarejestrowany:** handleLeadMagnet() w gas/contact-form.gs oraz initLeadMagnetForm() w assets/js/index-scripts.js pozostają w kodzie, ale nie są już wywoływane z żadnej strony (formularz usunięty z narzedzie.html) — kandydat do usunięcia w kolejnej porządkowej rundzie.
