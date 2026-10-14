@@ -775,12 +775,6 @@
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
 }
 
-/* Active Nav Link */
-.nav-list a.active {
-    color: var(--color-text-accent-on-dark);
-    font-weight: 600;
-}
-
 /* ========== PACKAGE GUIDE ========== */
 .package-guide {
     padding: 80px 0;

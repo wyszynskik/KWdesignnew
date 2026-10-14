@@ -133,6 +133,12 @@
     text-shadow: none !important;
 }
 
+/* Bieżąca strona — aria-current ustawiane przez scripts/sync-partials.js */
+.nav-list a[aria-current="page"] {
+    color: var(--color-text-accent-on-dark);
+    font-weight: 600;
+}
+
 /* Mobile Navigation */
 .hamburger {
     display: none;
