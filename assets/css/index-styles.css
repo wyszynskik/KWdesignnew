@@ -435,158 +435,28 @@ section {
     line-height: 1.6;
 }
 
-/* Premium Header - Dark Theme z biaĹym KW */
-.header {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    background: var(--color-dark);
-    border-bottom: none; /* ← ZMIENIONE: usuń border */
-    z-index: var(--z-sticky);
-    transition: var(--transition-normal);
-    min-height: 70px;
-    padding: var(--space-3) 0;
-}
 
-.header.scrolled {
-    background: rgba(30, 41, 59, 0.88);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
-    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.18);
-}
 
-.header-inner {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    min-height: 70px;
-    padding: 0 2rem;  /* ← ZMIENIONE z "padding: 0;" */
-}
 
-.logo-img {
-    height: 64px;
-    width: auto;
-    display: block;
-    vertical-align: middle;
-    transition: var(--transition-fast);
-    filter: brightness(1.15);
-}
 
-.logo-img:hover {
-    transform: scale(1.05);
-    filter: brightness(1.3);
-}
 
-.logo-link {
-    text-decoration: none;
-}
-/* Enhanced Navigation - Dark Theme */
-/* Enhanced Navigation - Dark Theme */
-.nav-list {
-    display: flex;
-    list-style: none;
-    gap: var(--space-10); /* 2.5rem między linkami */
-    margin: 0;
-    padding: 0;
-    align-items: center;
-}
 
-.nav-list a {
-    color: white;
-    font-weight: 600;
-    padding: var(--space-4) var(--space-4);
-    position: relative;
-    font-size: 1.05rem;
-    letter-spacing: 0.03em;
-    transition: var(--transition-all);
 
-    /* ✅ USUŃ WSZELKIE CIENIE */
-    text-shadow: none !important;
-    box-shadow: none !important;
-}
 
-.nav-list a::after {
-    content: '';
-    position: absolute;
-    bottom: -2px;
-    left: 50%;
-    width: 0;
-    height: 2px;
-    background: var(--color-primary);
-    transition: var(--transition-normal);
-    transform: translateX(-50%);
-    border-radius: var(--radius-full);
-    
-    /* ✅ USUŃ CIEŃ Z PODKREŚLENIA */
-    box-shadow: none !important;
-}
-
-.nav-list a:focus-visible::after {
-    width: 100%;
-}
 
 /* Hover-only pod prawdziwą myszką — na dotyku ":hover" zostaje "przyklejony"
    do ostatnio dotkniętego linku (stąd podkreślenie pod złym wyrazem na mobile) */
 @media (hover: hover) and (pointer: fine) {
-    .nav-list a:hover {
-        color: var(--color-text-accent);
-        text-shadow: none !important;
-    }
 
-    .nav-list a:hover::after {
-        width: 100%;
-    }
-}
-
-/* ✅ USUŃ CIEŃ Z FOCUS */
-.nav-list a:focus-visible {
-    outline: 2px solid var(--color-primary);
-    outline-offset: 4px;
-    text-shadow: none !important;
 }
 
 
-/* Mobile Navigation */
-.hamburger {
-    display: none;
-    flex-direction: column;
-    cursor: pointer;
-    gap: 4px;
-    padding: var(--space-2);
-    border-radius: var(--radius-md);
-    transition: var(--transition-fast);
-    /* reset stylów natywnego <button> – wygląd bez zmian względem poprzedniego <div> */
-    background: transparent;
-    border: 0;
-    -webkit-appearance: none;
-    appearance: none;
-}
 
-.hamburger:hover {
-    background: var(--color-dark-light);
-}
 
-.hamburger span {
-    width: 24px;
-    height: 2px;
-    background: white;
-    transition: var(--transition-fast);
-    border-radius: var(--radius-full);
-}
 
-.hamburger.active span:nth-child(1) {
-    transform: rotate(45deg) translate(5px, 5px);
-}
 
-.hamburger.active span:nth-child(2) {
-    opacity: 0;
-}
 
-.hamburger.active span:nth-child(3) {
-    transform: rotate(-45deg) translate(7px, -6px);
-}
+
 /* ========== HERO SECTION ========== */
 
 /* Premium Hero Section z animacją tła */
@@ -2335,97 +2205,6 @@ section {
   color: rgba(255, 255, 255, 0.8);
 }
 
-/* ========== FOOTER - DESKTOP ========== */
-.footer {
-  background: #0b0f19;
-  color: white;
-  padding: var(--space-16) 0 var(--space-8);
-  position: relative;
-  border-top: 1px solid rgba(255, 255, 255, 0.06);
-}
-.footer-inner {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  flex-wrap: wrap;
-  gap: var(--space-8);
-  margin-bottom: var(--space-8);
-}
-.footer-info h3 {
-  color: var(--color-text-accent-on-dark);
-  margin-bottom: var(--space-3);
-  font-size: 1.25rem;
-  font-weight: var(--font-weight-bold);
-}
-.footer-info p {
-  margin-bottom: var(--space-2);
-  opacity: 0.8;
-  line-height: 1.6;
-  color: var(--color-text-inverse);
-}
-.footer-info a {
-  color: var(--color-text-accent-on-dark);
-  font-weight: var(--font-weight-medium);
-}
-.footer-info a:hover {
-  color: var(--color-primary-light);
-}
-.footer-email {
-  display: block;
-  margin-bottom: var(--space-4);
-  font-size: 0.9rem;
-}
-.footer-social {
-  display: flex;
-  gap: var(--space-4);
-  margin-top: var(--space-2);
-}
-.footer-social a {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--space-2);
-  padding: var(--space-2) var(--space-3);
-  background: rgba(255, 255, 255, 0.07);
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  border-radius: var(--radius-lg);
-  color: rgba(255, 255, 255, 0.75) !important;
-  font-size: 0.82rem;
-  font-weight: var(--font-weight-medium);
-  letter-spacing: 0.02em;
-  transition: var(--transition-fast);
-}
-.footer-social a:hover {
-  background: rgba(6, 182, 212, 0.15);
-  border-color: rgba(6, 182, 212, 0.4);
-  color: var(--color-text-accent) !important;
-  transform: translateY(-1px);
-}
-.footer-links {
-  display: flex;
-  gap: var(--space-8);
-  flex-wrap: wrap;
-}
-.footer-links a {
-  color: rgba(255, 255, 255, 0.8);
-  font-weight: var(--font-weight-medium);
-  transition: var(--transition-fast);
-  padding: var(--space-2) 0;
-}
-.footer-links a:hover {
-  color: var(--color-text-accent);
-  transform: translateY(-1px);
-}
-.footer-bottom {
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
-  padding-top: var(--space-8);
-  text-align: center;
-}
-.footer-bottom p {
-  margin: 0;
-  opacity: 0.6;
-  font-size: 0.875rem;
-  color: var(--color-text-inverse);
-}
 /* ========================================
    RESPONSIVE DESIGN
    ======================================== */
@@ -2435,9 +2214,6 @@ section {
         padding: 0 var(--space-6);
     }
     
-    .header-inner {
-        padding: var(--space-3) var(--space-4);
-    }
     
     .process-section {
         padding: 80px 0 60px;
@@ -2641,31 +2417,6 @@ section {
     padding: 0 var(--space-4);
   }
 
-  /* ========== HEADER & NAVIGATION ========== */
-  .header-inner {
-    padding: var(--space-3) var(--space-4);
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }
-  .logo, 
-  .site-logo, 
-  .header-logo,
-  a.logo,
-  .logo-link {
-    margin-left: var(--space-6) !important;
-    padding-left: 0 !important;
-  }
-  .logo-img,
-  .logo img,
-  .header-logo img,
-  .site-logo img,
-  a.logo img,
-  a[class*="logo"] img {
-    height: 48px !important;
-    width: auto !important;
-    object-fit: contain !important;
-  }
 
   /* ========== SERVICES SECTION ========== */
   .services-section {
@@ -2891,51 +2642,6 @@ section {
     font-size: 0.82rem !important;
   }
 
-  /* ========== FOOTER ========== */
-  .footer {
-    padding: var(--space-12) 0 var(--space-6) !important;
-  }
-  .footer-inner {
-    flex-direction: column !important;
-    align-items: center !important;
-    justify-content: center !important;
-    text-align: center !important;
-    gap: var(--space-4) !important;
-    margin-bottom: var(--space-6) !important;
-  }
-  .footer-info,
-  .footer-links {
-    width: 100% !important;
-    text-align: center !important;
-    margin-bottom: var(--space-3) !important;
-  }
-  .footer-info h3 {
-    font-size: 1.15rem !important;
-    margin-bottom: var(--space-2) !important;
-  }
-  .footer-info p {
-    font-size: 0.92rem !important;
-    margin-bottom: var(--space-2) !important;
-  }
-  .footer-links {
-    display: flex !important;
-    flex-direction: column !important;
-    align-items: center !important;
-    gap: var(--space-3) !important;
-  }
-  .footer-links a {
-    font-size: 0.96rem !important;
-    padding: var(--space-2) 0 !important;
-    width: 100% !important;
-    text-align: center !important;
-  }
-  .footer-bottom {
-    padding-top: var(--space-6) !important;
-    text-align: center !important;
-  }
-  .footer-bottom p {
-    font-size: 0.84rem !important;
-  }
 
 
     
@@ -3073,10 +2779,6 @@ section {
         flex: 0 0 calc(50% - var(--space-4));
     }
 
-    /* Logo Tablet */
-    .logo-img {
-        height: 54px !important;
-    }
 } /* ✅ KONIEC TABLET */
 
     .benefits-grid,
@@ -3098,47 +2800,10 @@ section {
         border-radius: var(--radius-2xl);
     }
 
-    /* HAMBURGER POKAZUJE SIĘ NA MOBILE */
-    .hamburger {
-        display: flex !important;
-    }
     
-    /* MENU UKRYTE, POKAZUJE SIĘ PO KLIKNIĘCIU */
-    .nav-list {
-        position: fixed;
-        top: 70px;
-        left: 0;
-        right: 0;
-        background: var(--color-dark);
-        flex-direction: column;
-        gap: 0;
-        padding: var(--space-8);
-        border-top: 1px solid var(--color-dark-light);
-        transform: translateY(-100%);
-        opacity: 0;
-        visibility: hidden;
-        transition: var(--transition-all);
-        box-shadow: var(--shadow-lg);
-        z-index: 1000;
-    }
     
-    .nav-list.open {
-        transform: translateY(0);
-        opacity: 1;
-        visibility: visible;
-    }
     
-    .nav-list a {
-        padding: var(--space-5) 0;
-        border-bottom: 1px solid var(--color-dark-light);
-        width: 100%;
-        text-align: center;
-        font-size: 1.1rem;
-    }
     
-    .nav-list a:last-child { 
-        border-bottom: none;
-    }
 
     /* CTA Buttons */
     .cta-group {
@@ -3174,17 +2839,7 @@ section {
         padding: var(--space-8);
     }
 
-    /* Footer */
-    .footer-inner {
-        flex-direction: column;
-        text-align: center;
-        gap: var(--space-6);
-    }
     
-    .footer-links {
-        justify-content: center;
-        gap: var(--space-6);
-    }
 
     /* Spacing Adjustments */
     .section-title { 
@@ -3217,18 +2872,8 @@ section {
         height: 45px;
     }
 
-    /* Logo Mobile */
-    .logo-img {
-        height: 48px !important;
-    }
     
-    .header {
-        min-height: 70px;
-    }
     
-    .nav-list {
-        top: 80px;
-    }
 } /* ✅ KONIEC MOBILE */
 
 
@@ -3314,10 +2959,6 @@ section {
         flex: 0 0 calc(50% - var(--space-4));
     }
 
-    /* Logo Tablet */
-    .logo-img {
-        height: 54px !important;
-    }
 } /* ✅ KONIEC TABLET */
 
 
@@ -3327,30 +2968,8 @@ section {
 
 
 @media (min-width: 1025px) {
-    /* 1. NAVIGATION */
-    .hamburger {
-        display: none !important;
-    }
 
-    .nav-list {
-        display: flex !important;
-        position: static !important;
-        flex-direction: row !important;
-        transform: none !important;
-        opacity: 1 !important;
-        visibility: visible !important;
-        background: transparent !important;
-        padding: 0 !important;
-        gap: var(--space-10) !important;
-        border: none !important;
-    }
 
-    .nav-list a {
-        border-bottom: none !important;
-        width: auto !important;
-        text-align: left !important;
-        padding: var(--space-4) var(--space-4) !important;
-    }
 
     /* 2. BENEFITS - 3 kolumny (3 karty w 1 rzędzie) */
     .benefits-grid {
@@ -3412,17 +3031,7 @@ section {
         gap: var(--space-6) !important;
     }
  
-    /* 7. FOOTER */
-    .footer-inner {
-        flex-direction: row !important;
-        justify-content: space-between !important;
-        text-align: left !important;
-    }
 
-    .footer-links {
-        flex-direction: row !important;
-        gap: var(--space-8) !important;
-    }
 
     /* 8. HERO - 2 kolumny */
     .hero-main-content {
@@ -3715,19 +3324,6 @@ section {
 /* Opcjonalnie: dla wszystkich obrazów z nazwą PowerOfMind */
 .card-image-wrapper img[src*="POWEROFMIND"] {
     object-position: center 15%;
-}
-.header,
-.header *,
-.nav,
-.nav *,
-.nav-list,
-.nav-list *,
-.nav-list a,
-header,
-header * {
-  text-shadow: none !important;
-  box-shadow: none !important;
-  border-bottom: none !important;
 }
 
 /* ========== DANE ZAMÓWIENIA – PRINT SHOP TOOL ========== */
@@ -4082,11 +3678,6 @@ header * {
     box-shadow: var(--shadow-md);
 }
 
-/* ========== ZESTAW B: sticky-header cień po scroll ========== */
-/* Override globalnego "box-shadow: none !important" dla stanu .scrolled */
-.header.scrolled {
-    box-shadow: 0 4px 12px -4px rgba(0, 0, 0, 0.1) !important;
-}
 
 /* ============================================================
    LEAD MAGNET — teaser na index.html + landing narzedzie.html
