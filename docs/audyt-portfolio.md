@@ -1107,3 +1107,111 @@ Wzrost to w całości `layout.css` (11,4 KB) + przeniesione do `tokens.css` toke
 - **GAS — nieaktualny `PDF_URL`** — wskazuje na `kwyszynskidesign.github.io/KWdesignnew/assets/pdf/...` (404, plik nigdy nie istniał w repo). Skoro mechanizm e-mail+PDF jest wyłączony, martwy URL nie szkodzi, ale wart usunięcia przy porządkowaniu GAS.
 - **Cloudflare Pages (opcjonalnie)** — `_headers`/`_redirects` już w repo, nieaktywne na GitHub Pages. Przełączenie hostingu aktywowałoby je bez dodatkowej pracy (CSP, HSTS, cache).
 - **`assets/css/about-me.css`** — plik bez żadnych odwołań (usunięty jedyny `<link>` w rundzie TREŚĆ-3). Kandydat do usunięcia.
+
+---
+
+# Audyt uzupełniający — cookies, OG, GA4, JSON-LD, emoji, martwy kod
+
+Analiza bez zmian w kodzie, na `origin/main` po PR #138 (commit `0fedc8e`). Zero plików zmienionych — raport dopisany do istniejącego dokumentu.
+
+## P1 — krytyczne
+
+### 1. og:image dla /, /uslugi i /portfolio to logo KLIENTA, nie marka właściciela strony
+
+Wszystkie trzy najważniejsze strony (`/`, `/uslugi`, `/portfolio`) używają jako `og:image` pliku `assets/images/og-share-1200x630.png` (1200×630 PNG, 156 KB, poprawne wymiary). **Treść obrazu to logo „Power of Mind" i podpis „Ewa Bugaj"** — branding klienta z case study Power of Mind, bez jakiegokolwiek odniesienia do Karola Wyszyńskiego, jego nazwy, usług czy pozycjonowania „prowadzenie projektów i automatyzacja procesów".
+
+**Skutek:** każde udostępnienie linku do strony głównej, usług lub portfolio na LinkedIn/Facebook/Slacku/Messengerze pokazuje branding cudzej firmy zamiast własnego. To podważa cel posiadania strony portfolio — pierwszy kontakt wizualny w social share jest całkowicie niezwiązany z właścicielem.
+
+**Prawdopodobna przyczyna:** plik wygląda na przypadkowo skopiowany z folderu assetów Power of Mind przy pierwszym ustawianiu generycznego OG-image i nigdy niezweryfikowany (social preview rzadko się sprawdza ręcznie).
+
+### 2. GA4 aktywne bez jakiegokolwiek mechanizmu zgody na cookies
+
+`assets/js/analytics.js` ma ustawiony **prawdziwy Measurement ID** (`G-TG0HE09DE7`, wklejony commitem `40d0544` z 2026-08-07, nie placeholder) i jest ładowany na wszystkich 13 stronach. Przy wejściu na dowolną stronę natychmiast:
+- ładuje `googletagmanager.com/gtag/js` (zewnętrzny skrypt),
+- woła `gtag('config', ...)`, co ustawia cookies `_ga` (2 lata) i `_ga_<container-id>` (2 lata),
+- wysyła automatyczny `page_view` (URL, referrer, user-agent, rozdzielczość, przybliżona lokalizacja z IP).
+
+**W całym repozytorium nie ma ŻADNEGO mechanizmu zgody** (zero bibliotek consent — sprawdzone pod kątem Cookiebot/OneTrust/Iubenda/Osano/Termly/CookieYes/Complianz, zero własnego baneru). Jedyne złagodzenie to `anonymize_ip: true` (maskowanie IP) — nie zastępuje zgody na ustawienie cookies.
+
+**Ryzyko:** cookies analityczne (nie-niezbędne) ustawiane przed zgodą naruszają art. 173 ust. 1 Prawa telekomunikacyjnego (implementacja dyrektywy ePrivacy) i oczekiwania RODO wobec profilowania/trackingu.
+
+### 3. polityka-prywatnosci.html wprost zaprzecza rzeczywistości
+
+Treść: *„Serwis nie instaluje własnych plików cookie ani nie prowadzi własnego systemu analityki. Pliki cookie mogą być ustawiane przez zewnętrzne usługi wskazane w pkt 4."* Punkt 4 wymienia **wyłącznie Google Apps Script i Google Sheets** (backend formularzy — wywołanie API, zero cookies). **GA4 nie jest wymienione nigdzie w dokumencie**, mimo że to jedyna usługa na stronie faktycznie ustawiająca cookies. Polityka kieruje czytelnika do złego miejsca, jakby cookies pochodziły z zapisu formularza do arkusza, podczas gdy realne cookies pochodzą z Google Analytics, o którym dokument milczy.
+
+## P2 — średni priorytet
+
+### 4. Najważniejsza konwersja na stronie jest niewidoczna w GA4
+
+`kwTrack()` (`index-scripts.js:23`) woła `window.cf('track', ...)` — kolejkę **Cloudflare Web Analytics**, nie `window.gtag`. Formularz kontaktowy na `/` i `/uslugi` (`form_submit`, `form_success`), lead magnet (przed rundą TREŚĆ-3) i 4 warianty `cta_click` (`cta_hero`, `cta_hero_contact`, `cta_leadmagnet`, `cta_quote`) wszystkie lecą do `window.cf`. Ten mechanizm jest **martwy**: beacon Cloudflare (`static.cloudflareinsights.com/beacon.min.js`) ładuje się tylko na 3 z 13 stron (`uslugi.html`, `narzedzie.html`, `polityka-prywatnosci.html`), ze wszędzie placeholderowym tokenem `"TWOJ_TOKEN"` — nigdzie realnie nie wysyła danych. Na `/` i `/portfolio` beacon nie ładuje się wcale, więc `window.cf(...)` tylko dopisuje do pustej tablicy w pamięci, czytanej przez nikogo.
+
+**Efekt:** wysłanie formularza kontaktowego — najważniejsza akcja na stronie — nie generuje żadnego zdarzenia w jedynej aktywnej analityce (GA4). Właściciel nie widzi w GA4, ile osób wysyła zapytania ani skąd przychodzą konwersje.
+
+### 5. Błędne og:image:width/height na 5 z 7 case studies
+
+| Strona | deklarowane w meta | rzeczywiste wymiary pliku | zgodność |
+|---|---|---|---|
+| razdwa_aplikacja.html | 1200×630 | 1388×1269 | ❌ |
+| cyfradruk.html | 1254×1254 | 1254×1254 | ✔ |
+| karoma.html | 1200×630 | 1221×1275 | ❌ |
+| power-of-mind.html | 1200×630 | 1144×975 | ❌ |
+| sir-roger.html | 1200×630 | **229×134** | ❌ (plik 5× mniejszy niż deklaracja) |
+| voucher-salon-magdy.html | 1423×1240 | 1423×1240 | ✔ |
+| KW-Design.html | 1200×630 | 2160×1410 | ❌ |
+
+Wygląda na to, że „1200/630" wklejono jako uniwersalny domyślny wymiar bez sprawdzenia realnych plików. `sir-roger.html` jest najbardziej problematyczny — źródłowy plik `Roger.png` ma zaledwie 229×134 px, więc podgląd w social share będzie rozmyty niezależnie od deklaracji.
+
+### 6. Spacja w nazwie pliku og:image (razdwa_aplikacja.html)
+
+`og:image` wskazuje na `https://kwyszynski.pl/assets/images/razdwa/strona startowa_RAZDWA.webp` — **nieenkodowana spacja** w URL-u. Niezgodne z RFC 3986; część crawlerów social (szczególnie starsze parsery Facebooka/LinkedIn) może nie pobrać obrazu poprawnie. Przeglądarki zwykle auto-koduja spację przy nawigacji, ale meta-crawlery bywają mniej tolerancyjne.
+
+### 7. polityka-prywatnosci.html opisuje nieaktualny mechanizm lead magnet
+
+Pkt 2–3 polityki: *„Lead magnet (checklista PDF): adres e-mail"* / *„wyłącznie w celu wysłania zamówionego materiału (PDF)"*. Od rundy TREŚĆ-3 `/narzedzie` **nie zbiera żadnych danych** — materiał pobiera się przez `window.print()` w przeglądarce, formularz e-mail został usunięty. Polityka opisuje proces, który już nie istnieje na stronie.
+
+### 8. Emoji zamiast spójnych SVG na /uslugi
+
+`uslugi.html` (sekcja „Trzy obszary"), trzy karty-linki z emoji jako ikonami: 💻 (Produkty cyfrowe), ⚙️ (Automatyzacje), 🎯 (Analiza procesów) — wszystkie `aria-hidden="true"` (poprawnie, nie zaśmiecają drzewa dostępności), ale renderują się niespójnie między systemami (Windows/macOS/Android różne zestawy emoji, różne kolory/style).
+
+**Gotowe zamienniki już istnieją** — `index.html` dla tych samych trzech kategorii, w tej samej kolejności, używa:
+- Produkty cyfrowe → `assets/images/KW_laptop.svg`
+- Automatyzacje procesów → inline SVG (ikona cyklu/sync)
+- Analiza procesów → `assets/images/KW_rocket_STARTCOMPANY.svg`
+
+Zamiana wymaga tylko podmiany znacznika `<div class="card-icon">{emoji}</div>` na odpowiedni `<img>`/`<svg>` — zero nowych assetów do zrobienia.
+
+### 9. Ciężkie, niezoptymalizowane OG-images (PNG zamiast WebP)
+
+| Plik | format | waga |
+|---|---|---|
+| `karoma/karoma_Front_side.png` | PNG | 532 KB |
+| `power-of-mind/POWEROFMIND_FRONT.png` | PNG | 476 KB |
+| `kwyszynski/KWDESIGN_HERO.png` | PNG | **1,1 MB** |
+
+Reszta strony konsekwentnie używa WebP (potwierdzone w rundach PERF/TECH-FINAL); te trzy pliki OG-specific nie przeszły przez ten sam pipeline. Większość platform social re-kompresuje obraz przy pobraniu, ale czas pobrania i ryzyko timeoutu rosną wraz z wagą źródła.
+
+### 10. Cloudflare beacon z placeholder tokenem na 3 stronach
+
+`uslugi.html`, `narzedzie.html`, `polityka-prywatnosci.html` ładują `static.cloudflareinsights.com/beacon.min.js` z `data-cf-beacon='{"token": "TWOJ_TOKEN"}'` — nieprawidłowy token, skrypt generuje żądanie sieciowe do zewnętrznej domeny (dodatkowe opóźnienie, dodatkowy punkt w CSP/zaufaniu) bez żadnego realnego efektu. Pozostałe 10 stron w ogóle nie ładują tego skryptu — niespójne.
+
+## P3 — niski priorytet / porządkowe
+
+### 11. Brak Open Graph na 3 stronach
+
+`narzedzie.html` (ma `noindex,nofollow`, więc częściowo uzasadnione), `polityka-prywatnosci.html` i `404.html` nie mają żadnych tagów `og:*`. Udostępnienie linku do polityki prywatności pokaże generyczną kartę bez obrazu/opisu.
+
+### 12. `assets/css/about-me.css` — martwy plik
+
+Zero odwołań w jakimkolwiek `<link>` na żadnej z 13 stron (potwierdzone grepem). Zostawiony po usunięciu jedynego linku w rundzie TREŚĆ-3. (Już w backlogu zamknięcia projektu — powtórzone tu dla kompletności audytu.)
+
+### 13. `cv_download` — zdarzenie dla warunkowo nieistniejącego elementu
+
+`portfolio.js:138` woła `gtag('event', 'cv_download', ...)` wewnątrz handlera przycisku, który **tworzy się tylko, gdy `cvUrl` w `assets/data/testimonials.json` jest niepuste**. Obecna zawartość: `{"cvUrl": "", "items": []}` — przycisk nigdy nie powstaje, zdarzenie nigdy nie odpala. To nie martwy/błędny kod (logika warunkowa jest poprawna), tylko przygotowana, obecnie nieaktywna funkcja — do odnotowania, nie do naprawy. Dla porównania `linkedin_click` (ten sam plik, l.149) ma realny, zawsze obecny element (`#cta-linkedin` na `portfolio.html`) i działa.
+
+### 14. Dane zbierane przez formularz kontaktowy a treść polityki
+
+Pole `projectType` (select „Jak mogę pomóc?") nie jest wymienione wprost w pkt 2 polityki — mieści się pod ogólnym „rodzaj zapytania", ale dosłowne dopasowanie do faktycznych pól formularza (imię, e-mail, telefon, rodzaj zapytania, opis) byłoby czystsze.
+
+---
+
+**Podsumowanie:** 3 ustalenia P1 (błędny branding w OG, GA4 bez zgody, polityka prywatności sprzeczna z rzeczywistością), 7 ustaleń P2, 4 ustalenia P3. Zero zmian w kodzie — zgodnie z poleceniem.
