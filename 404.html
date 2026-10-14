@@ -10,27 +10,27 @@
     <link rel="stylesheet" href="/assets/css/tokens.css">
     <link rel="stylesheet" href="/assets/css/layout.css">
     <style>
-        :root {
-            --color-primary: #06b6d4;
-            --color-dark: #1e293b;
-            --color-text: #0f172a;
-            --color-text-light: #64748b;
-            --font-primary: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-            --font-heading: 'Playfair Display', Georgia, serif;
-        }
+        /* Tokeny kolorów i fontów z tokens.css (załadowany wyżej) — bez
+           lokalnego :root tutaj, żeby nie dublować jedynego źródła prawdy. */
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             font-family: var(--font-primary);
             background: #f8fafc;
             color: var(--color-text-primary);
             display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+        .error-main {
+            flex: 1;
+            display: flex;
             align-items: center;
             justify-content: center;
-            min-height: 100vh;
             text-align: center;
             padding: 2rem;
+            padding-top: calc(70px + 2rem); /* odsunięcie pod sticky .header */
         }
-        .container { max-width: 600px; }
+        .error-content { max-width: 600px; }
         .code {
             font-family: var(--font-heading);
             font-size: clamp(6rem, 15vw, 10rem);
@@ -56,7 +56,7 @@
             flex-wrap: wrap;
             justify-content: center;
         }
-        a {
+        .links a {
             display: inline-flex;
             align-items: center;
             gap: 0.5rem;
@@ -68,13 +68,13 @@
             border-radius: 0.5rem;
             transition: background 0.2s;
         }
-        a:hover { background: var(--color-brand-strong-hover); }
-        a.secondary {
+        .links a:hover { background: var(--color-brand-strong-hover); }
+        .links a.secondary {
             background: transparent;
             color: var(--color-text-accent);
             border: 2px solid var(--color-primary);
         }
-        a.secondary:hover {
+        .links a.secondary:hover {
             background: var(--color-brand-strong);
             color: var(--color-text-inverse);
         }
@@ -105,7 +105,8 @@
   </div>
 </header>
 <!-- /partial:header -->
-    <div class="container">
+    <main class="error-main">
+      <div class="error-content">
         <div class="code">404</div>
         <h1>Ups, strona nie istnieje</h1>
         <p>
@@ -117,12 +118,13 @@
             <a href="/portfolio" class="secondary">Portfolio</a>
             <a href="/uslugi" class="secondary">Usługi</a>
         </div>
-    </div>
+      </div>
+    </main>
     <!-- partial:footer -->
 <footer class="footer">
   <div class="container footer-inner">
     <div class="footer-info">
-      <h3>Karol Wyszyński</h3>
+      <p class="footer-brand">Karol Wyszyński</p>
       <p>Prowadzenie projektów · Automatyzacje · Wdrożenia cyfrowe</p>
       <p>Aplikacje, automatyzacje i strony — od analizy procesu po wdrożenie.</p>
       <a href="mailto:wyszynski.k@onet.pl" class="footer-email">wyszynski.k@onet.pl</a>
@@ -147,5 +149,5 @@
   </div>
 </footer>
 <!-- /partial:footer -->
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'a0884d5d4ef03528',t:'MTc4MDkyNTk2MQ=='};var a=document.createElement('script');a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</body>
 </html>

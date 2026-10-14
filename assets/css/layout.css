@@ -197,7 +197,7 @@
   margin-bottom: var(--space-8);
 }
 
-.footer-info h3 {
+.footer-info .footer-brand {
   color: var(--color-text-accent-on-dark);
   margin-bottom: var(--space-3);
   font-size: 1.25rem;
@@ -345,7 +345,7 @@
     margin-bottom: var(--space-3) !important;
   }
 
-  .footer-info h3 {
+  .footer-info .footer-brand {
     font-size: 1.15rem !important;
     margin-bottom: var(--space-2) !important;
   }
