@@ -985,3 +985,61 @@ Gałąź `runda-tresc-3` od `origin/main` (d4e71f6, po scaleniu PR #136). Zakres
 - axe 0 / Lighthouse A11y 100 / Performance bez regresji. ✔
 
 **Dług techniczny zarejestrowany:** handleLeadMagnet() w gas/contact-form.gs oraz initLeadMagnetForm() w assets/js/index-scripts.js pozostają w kodzie, ale nie są już wywoływane z żadnej strony (formularz usunięty z narzedzie.html) — kandydat do usunięcia w kolejnej porządkowej rundzie.
+
+---
+
+## Runda TECH-FINAL — wspólny nagłówek/stopka, porządki w repo, CLAUDE.md (punkty 27–29 audytu)
+
+Gałąź `runda-tech-final` od `origin/main` po scaleniu PR #137 (5c966af). 12 commitów.
+
+### Krok 0 — kolejność
+PR #137 scalony do main i wypchnięty przed utworzeniem gałęzi (zgodnie z decyzją ownera).
+
+### Krok 1 — inwentaryzacja (skrót; pełne ustalenia w poprzedniej wiadomości rundy)
+- 16 plików HTML z 4 różnymi wariantami nagłówka/stopki (różne logo — webp vs legacy png, różne pozycje menu, różne warianty hamburgera — button z aria vs goły div, różne teksty stopki, `#contact` vs `/#contact`).
+- `kontakt.html` i `projects/wizualizacje.html`: oba orphan (zero inbound linków), oba w sitemap.xml, oba nieaktualne względem reszty witryny.
+- `sitemap.xml`: zawierał oba orphany; `/narzedzie` słusznie pominięty (noindex).
+- `404.html`: brak wspólnego nagłówka/stopki, wklejony skrypt Cloudflare challenge-platform, lokalny `:root` z duplikatami tokenów.
+- Case studies (`projects/*.html`): zero `<header>`, tylko `kwcs-breadcrumb`; identyczna minimalna `kwcs-footer`; nie ładują `index-styles.css`.
+
+### Decyzje ownera i wykonanie
+
+1. **Usunięto** `kontakt.html`, `projects/wizualizacje.html`, `assets/css/style.css` (potwierdzone grepem — zero innych odwołań) + oba wpisy z `sitemap.xml`.
+2. **`assets/css/layout.css`** — wydzielone `.header`, `.header-inner`, `.header.scrolled`, `.logo-img`, `.logo-link`, `.nav`, `.nav-list` (+ stany/media queries), `.hamburger` (+ stany), `.footer` i wszystkie `.footer-*` z `index-styles.css`. Załadowany na wszystkich 16 stronach, w tym `projects/*.html`, przed arkuszem specyficznym dla strony. `index-styles.css` NIE jest ładowany na case studies (zgodnie z wymaganiem).
+3. **`partials/header.html` + `partials/footer.html`** jako jedyne źródło; `scripts/sync-partials.js` (Node, zero zależności) wstawia treść między znaczniki `<!-- partial:header/footer -->`, tryb `--check` (exit 1 przy rozjeździe, zero zapisu). `npm run sync` / `npm run sync:check` w `package.json`. Menu: Portfolio/Usługi/O mnie/Kontakt (bez „Start"), logo → `/`, wszystkie linki absolutne. `aria-current="page"` ustawiane przez skrypt na podstawie ścieżki pliku.
+4. **Case studies** — nagłówek wstawiony nad `nav.kwcs-breadcrumb` (breadcrumb zostaje), minimalna `kwcs-footer` zastąpiona wspólną stopką; oba partiale poza `section.kwcs`, co viewer na `/portfolio` i tak wyciąga wyłącznie tę sekcję — zero zmian w `portfolio.js` potrzebnych. **Weryfikacja viewera:** wszystkie 7 slugów (`RazDwa`, `cyfradruk`, `karoma`, `power-of-mind`, `sir-roger`, `voucher-magdy`, `KW-Design`) otwarte przez hash — po 1 `.header` i 1 `.footer` w DOM za każdym razem, prawidłowy tytuł.
+5. **`aria-current="page"`** — jedyna reguła `.active` w całym CSS (`services-page.css`, działała tylko na `/uslugi`) przeniesiona do `layout.css` jako `.nav-list a[aria-current="page"]` — teraz działa identycznie na `/uslugi` i `/portfolio` (wcześniej na portfolio `class="active"` nie miało żadnego stylu).
+6. **`404.html`** — usunięty wklejony skrypt Cloudflare challenge-platform i lokalny `:root` (wszystkie jego zmienne już w `tokens.css` po konsolidacji w pkt 2); przebudowany layout pod stały nagłówek (`<main class="error-main">` z `padding-top` pod sticky header, `flex-direction:column` na body); ujednoznaczniona klasa `.container`→`.error-content` (kolizja z `.container` partiali); CTA `a{}` zawężone do `.links a` (bleed teal-button na linki stopki). Przy okazji: footer brand `<h3>`→`<p class="footer-brand">` site-wide (axe `heading-order` na 404 — jedyna strona bez żadnego h2 w treści).
+7. **`assets/js/nav.js`** — `initNavigation()` wyodrębniony z `index-scripts.js` (hamburger + smooth-scroll), ładowany z `defer` na wszystkich 13 stronach z menu. Usunięty duplikat hamburgera z `portfolio.js` i oryginalna funkcja + jej wywołanie z `index-scripts.js`.
+8. **`Cyfra_obkiety.webp` → `cyfra-obiekty.webp`** + aktualizacja jedynego odwołania (`projects/cyfradruk.html`).
+9. **`scripts/serve_kwdesign.js`** — `BASE` z zaszytego `D:\KWdesign` na `path.resolve(__dirname, '..')`; `npm run serve` przetestowany, działa.
+10. **`README.md`** — pełny przegląd: aktualny stack, hosting (GitHub Pages aktywny; `_headers`/`_redirects` nieaktywne, na wypadek Cloudflare Pages), struktura katalogów (w tym `partials/`, `layout.css`, `nav.js`), komendy, zasady pracy z partialami.
+11. **`CLAUDE.md`** (nowy, katalog główny, 45 linii) — stack/hosting, komenda podglądu, mapa stron, mechanizm viewera + 7 slugów (wielkość liter), partiale + obowiązek `npm run sync`, tokeny/fonty, zasady pracy (gałąź/fetch/bez stash/plan+OK/commit/scalanie po akceptacji/10 min CDN), definicja done.
+
+### Odkryta podczas wdrożenia usterka (poza pierwotnym planem, naprawiona w tej samej rundzie)
+
+Przeniesienie reguł do `layout.css` ujawniło, że **wiele tokenów używanych przez nagłówek/stopkę (`--color-dark`, `--z-sticky`, `--shadow-lg`, cała skala `--space-*`/`--radius-*`/`--transition-*`) było zdefiniowanych wyłącznie w `index-styles.css`**, którego case studies celowo nie ładują — nagłówek renderował się przezroczysty, bez z-index, logo i linki nakładały się na breadcrumb. Naprawione przez przeniesienie całego bloku `:root` (112 linii, zero kolizji nazw) z `index-styles.css` do `tokens.css`, konsolidując tokeny w jedynym miejscu zgodnym z nazwą pliku. Dodatkowo: `.container` (potrzebny przez `.header-inner`/`.footer-inner`) skopiowany do `layout.css` (nie przenoszony z index-styles.css, bo tam używany też poza nagłówkiem/stopką); `text-decoration: none` dodany do `.nav-list a`/`.footer-info a`/`.footer-links a`/`.footer-social a` (globalny reset `a{text-decoration:none}` też żył tylko w `index-styles.css`); `.kwcs-breadcrumb { margin-top: 70px }` w `projects.css`, żeby breadcrumb nie chował się pod sticky header.
+
+### Weryfikacja techniczna
+
+- **`npm run sync:check`** — PASS (wszystkie 13 stron zsynchronizowane).
+- **axe = 0** na wszystkich 13 stronach × 2 viewporty (390, 1440) = 26 kombinacji, zero wyjątków (w tym 404.html po naprawie).
+- **Lighthouse Accessibility = 100** na wszystkich sprawdzonych stronach (/, /uslugi, /portfolio, /narzedzie, /projects/razdwa_aplikacja), przed i po rundzie.
+- **Lighthouse Performance, median z 2 przebiegów, desktop, baseline (5c966af) vs po rundzie:**
+
+| Strona | przed | po |
+|---|---|---|
+| / | 100 | 100 |
+| /uslugi | 98 | 98 |
+| /portfolio | 99 | 97 |
+| /narzedzie | 100 | 100 |
+| /projects/razdwa_aplikacja | 100 | 100 |
+
+Spadek portfolio (99→97) mieści się w zwykłym szumie pomiarowym Lighthouse (±2–3 pkt) — bez realnej regresji.
+
+- **Zrzuty 390 + 1440** dla /, /uslugi, /portfolio, /narzedzie, 404, /projects/razdwa_aplikacja (standalone) — nagłówek/stopka identyczne wizualnie z resztą witryny, poprawny offset pod sticky header wszędzie.
+- **Menu mobilne z klawiatury** — przetestowane na 7 stronach (/, /uslugi, /portfolio, /narzedzie, /polityka-prywatnosci, /404.html, /projects/razdwa_aplikacja): Enter otwiera (aria-expanded→true, nav-list.open), Escape zamyka i oddaje fokus na przycisk — identycznie wszędzie.
+- **Viewer /portfolio, 7 slugów** — po 1 `.header` + 1 `.footer` w DOM za każdym razem, zero duplikacji.
+- **`grep "Cyfra_obkiety"` = 0, `grep "D:\\KWdesign"` = 0.**
+
+**Definicja done — zgodna w całości.** Raport w `docs/audyt-portfolio.md`, push i draft PR — bez scalania.

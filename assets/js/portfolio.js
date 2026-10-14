@@ -9,16 +9,7 @@ document.addEventListener('DOMContentLoaded', () => {
     archiveCount.textContent = document.querySelectorAll('.archive-grid .portfolio-new-card').length;
   }
 
-  const burger = document.querySelector('.hamburger');
-  const navList = document.querySelector('.nav-list');
-  if (burger && navList) {
-    burger.addEventListener('click', () => {
-      const isOpen = navList.classList.toggle('open');
-      burger.classList.toggle('active', isOpen);
-      burger.setAttribute('aria-expanded', String(isOpen));
-      burger.setAttribute('aria-label', isOpen ? 'Zamknij menu' : 'Otwórz menu');
-    });
-  }
+  // Obsługa menu (hamburger) — wspólna dla całej witryny, assets/js/nav.js.
 
   // Wariant hover zdjecia hero: zero fetchu na dotyku (brak hover), prefetch
   // w czasie idle na urzadzeniach z hover - obraz jest juz w cache, zanim

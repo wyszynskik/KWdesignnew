@@ -3,7 +3,7 @@ const fs = require('fs');
 const path = require('path');
 
 const PORT = 8787;
-const BASE = 'D:\\KWdesign';
+const BASE = path.resolve(__dirname, '..');
 
 const MIME = {
   '.html': 'text/html',
