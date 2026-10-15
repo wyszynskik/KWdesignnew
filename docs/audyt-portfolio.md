@@ -1215,3 +1215,86 @@ Pole `projectType` (select „Jak mogę pomóc?") nie jest wymienione wprost w p
 ---
 
 **Podsumowanie:** 3 ustalenia P1 (błędny branding w OG, GA4 bez zgody, polityka prywatności sprzeczna z rzeczywistością), 7 ustaleń P2, 4 ustalenia P3. Zero zmian w kodzie — zgodnie z poleceniem.
+
+---
+
+# Runda uzupełniająca — naprawa ustaleń P1-P3 (gałąź `runda-uzupelniajaca` od `origin/main`)
+
+Realizacja wszystkich 5 punktów audytu powyżej. 5 commitów, diff pokazany po każdym punkcie, bez `git stash`.
+
+## Punkt 1 — Analityka: GA4 → Cloudflare Web Analytics
+
+- Usunięto `assets/js/analytics.js`, tag `<script>` na 13 stronach, `window.cf`/`kwTrack()` i wszystkie wywołania (`form_submit`, `form_success` ×2, `cta_click`, `cv_download`, `linkedin_click`), całą funkcję `initCTATracking()`, placeholderowe beacony (`TWOJ_TOKEN`) na `uslugi.html`/`narzedzie.html`/`polityka-prywatnosci.html`.
+- Dodano prawdziwy beacon Cloudflare Web Analytics (`type="module"`, token produkcyjny) w `partials/footer.html` — jedno źródło, propagowane na 13 stron przez `npm run sync`.
+- Grep sweep: zero wyników dla `googletagmanager`, `gtag`, `G-TG0HE09DE7`, `kwTrack`, `window.cf` w plikach publicznych.
+- 2 commity: `fix(analytics): usun GA4 (...)`, `feat(analytics): dodaj Cloudflare Web Analytics beacon (...)`.
+- **Nie zweryfikowane na produkcji**: realne żądanie do `cloudflareinsights.com` wymaga wdrożenia na `kwyszynski.pl` — branch nie jest scalony (zgodnie z poleceniem „Bez scalania"). Do zweryfikowania po akceptacji i merge.
+
+## Punkt 2 — Polityka prywatności
+
+Przepisano `polityka-prywatnosci.html` zgodnie z 8 wymaganymi punktami: administrator, formularz kontaktowy (pola, cel, Google Apps Script/Sheets/e-mail, okres przechowywania), analityka (Cloudflare Web Analytics, bez cookies), hosting (GitHub Pages, logi serwera), czcionki lokalne (brak Google Fonts), brak newslettera/lead magnetu, prawa osoby. Usunięto zdanie o braku własnej analityki i opis lead magnetu. Okres przechowywania oznaczony jako `[DO UZUPEŁNIENIA]` — decyzja właściciela.
+
+**⚠️ Treść wymaga weryfikacji prawnej przed publikacją produkcyjną** — nie jest to opinia prawna, tylko techniczny opis mechanizmów strony.
+
+Commit: `docs(polityka-prywatnosci): przepisz zgodnie z realnym stanem serwisu`.
+
+## Punkt 3 — Open Graph
+
+8 nowych obrazów w `assets/images/og/` (1200×630, JPG, wszystkie ≤80 KB — margines do limitu 200 KB):
+
+| Plik | Źródło | Metoda | Waga |
+|---|---|---|---|
+| `kwyszynski-og.jpg` | `presentation-hero-1000.webp` | cover-crop + imię (Playfair) + tagline (Inter), kolory z tokens.css | 58 KB |
+| `razdwa-aplikacja-og.jpg` | hero (1450×1306, ≥1200px) | cover-crop | 77 KB |
+| `power-of-mind-og.jpg` | hero (1573×1383, ≥1200px) | cover-crop | 76 KB |
+| `cyfradruk-og.jpg` | hero (1180×1180, <1200px) | natywny rozmiar na tle `--color-dark`, nazwa pod spodem, bez upscale | 29 KB |
+| `karoma-og.jpg` | hero (800×682, <1200px) | j.w. | 43 KB |
+| `sir-roger-og.jpg`, `voucher-salon-magdy-og.jpg`, `kw-design-og.jpg` | — | kopia `kwyszynski-og.jpg` (wspólny obraz archiwum, decyzja właściciela) | 58 KB każdy |
+
+`kwyszynski-og.jpg` i `razdwa-aplikacja-og.jpg` pokazane i zaakceptowane przed zastosowaniem na resztę stron.
+
+Zastosowano na `/`, `/uslugi`, `/portfolio`, `/narzedzie`, polityce prywatności (dodano brakujący blok OG na dwóch ostatnich) i wszystkich 7 case studies. `og:image`/`twitter:image` jako pełny adres `https://kwyszynski.pl/...`, `og:image:width`/`og:image:height` = 1200/630 wszędzie (poprawiono błędne wymiary z audytu: cyfradruk 1254×1254→1200×630, voucher 1423×1240→1200×630).
+
+Usunięto 4 stare obrazy OG z zerową liczbą referencji (grep potwierdzony): `og-share-1200x630.png`, `karoma_Front_side.png`, `POWEROFMIND_FRONT.png`, `KWDESIGN_HERO.png`. `sir-roger/Roger.png` **zostaje** — nadal używany jako miniatura w `portfolio.html`.
+
+**Ograniczenie jakości, odnotowane transparentnie:** `sir-roger-og.jpg` to kopia wspólnego obrazu (decyzja właściciela o traktowaniu archiwum zbiorczo) — źródłowy hero tego case study (`roger-229w.webp`, 229×134px) pozostaje jedynym plikiem w repo i nie został użyty do dedykowanego OG z powodu zbyt niskiej rozdzielczości.
+
+Commit: `feat(og): nowe obrazy Open Graph 1200x630, usun przestarzale pliki`.
+
+## Punkt 4 — Emoji → SVG na /uslugi
+
+3 emoji w kartach „Trzy obszary" (💻⚙️🎯) zamienione na te same ikony co na `index.html`: `KW_laptop.svg`, inline SVG (gear/cykl), `KW_rocket_STARTCOMPANY.svg`. `alt=""` — ikony dekoracyjne, nazwa obszaru już jest w nagłówku karty. Dodano `.card-icon img/svg { width/height: 48px }` (40px na mobile) w `services-page.css`, zastępując font-size-driven skalowanie emoji.
+
+Commit: `fix(uslugi): zamien emoji na ikony SVG w kartach Trzy obszary`.
+
+## Punkt 5 — Martwy kod i JSON-LD
+
+- Usunięto `assets/css/about-me.css` (0 referencji, potwierdzone grepem).
+- Pełny sweep wszystkich plików w `assets/css/` i `assets/js/`: każdy pozostały plik ma ≥1 referencję — brak innych kandydatów do usunięcia.
+- JSON-LD na wszystkich stronach: pola `"image"` na 7 case studies automatycznie zaktualizowane przy wymianie OG (punkt 3, ten sam URL co `og:image`). Reszta treści (Person na `/`, Service na `/uslugi`, CollectionPage na `/portfolio`, CreativeWork na case studies) bez przestarzałych danych — bez zmian.
+
+Commit: `chore: usun martwy about-me.css (0 referencji)`.
+
+## Weryfikacja
+
+**axe-core** (Playwright + axe.min.js, lokalny serwer, 13 stron): **0 nowych naruszeń** wprowadzonych tą rundą. Znaleziono 2 preexisting naruszenia niezwiązane z tym zakresem prac:
+- `projects/razdwa_aplikacja.html` i `projects/power-of-mind.html`: `scrollable-region-focusable` (serious) — scrollowalny kontener bez fokusowalności klawiaturą (prawdopodobnie `.kwcs-chapter-rail` lub `.user-flow`, `overflow-x/y: auto` bez `tabindex`). Potwierdzone diffem względem `origin/main` jako **niezwiązane z tą rundą** (te pliki w tej rundzie dostały wyłącznie zmiany w `<head>`, treść `<body>` nietknięta). Nie naprawione — poza zakresem 5 punktów tego zlecenia, wymaga osobnej decyzji właściciela.
+
+**Lighthouse desktop**, mediana z 3 przebiegów, lokalny serwer:
+
+| Strona | Accessibility | Performance |
+|---|---|---|
+| `/` | 100 | 99 |
+| `/uslugi` | 100 | 99 |
+| `/portfolio` | 100 | 99 |
+
+Bez regresji względem ostatniej zanotowanej bazy (97–98, Runda TECH-FINAL) — wynik nawet nieznacznie wyższy (prawdopodobnie efekt usunięcia blokującego `analytics.js`).
+
+**Debugger podglądu linków (opengraph.xyz / LinkedIn Post Inspector) — NIE WYKONANE.** Wymaga działającego adresu `kwyszynski.pl/...`; branch `runda-uzupelniajaca` nie jest scalony z `main` (zgodnie z poleceniem „Bez scalania"), więc żaden debugger zewnętrzny nie zobaczy tych zmian. Do wykonania po akceptacji i merge, z zachowaniem ~10 min odstępu na propagację CDN (ustalony wzorzec tego projektu).
+
+## Otwarte punkty po tej rundzie
+
+1. Weryfikacja prawna treści `polityka-prywatnosci.html` (właściciel).
+2. Uzupełnienie `[DO UZUPEŁNIENIA]` — okres przechowywania danych z formularza (właściciel).
+3. Realne potwierdzenie żądania do `cloudflareinsights.com` i wyników debuggera OG — dopiero po merge do `main`.
+4. `scrollable-region-focusable` na 2 case studies (preexisting, poza zakresem tej rundy).

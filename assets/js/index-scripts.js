@@ -1,7 +1,6 @@
 // Enhanced Main JavaScript file
 document.addEventListener('DOMContentLoaded', function() {
     initErrorTracking();
-    initCTATracking();
     initFAQ();
     initContactForm();
     initLeadMagnetForm();
@@ -19,11 +18,6 @@ document.addEventListener('DOMContentLoaded', function() {
 // Configuration
 const CONTACT_API_URL = 'https://script.google.com/macros/s/AKfycbz7q6dEJrmXBq2WKjcVuLUub0nSTNV1I2F7a8n6UgieHmiESbaxHG-nxrx7sT3AJiCz/exec';
 
-window.cf = window.cf || function(){(window.cf.q=window.cf.q||[]).push(arguments)};
-function kwTrack(name, props) {
-    try { window.cf('track', name, props || {}); } catch(_) {}
-}
-
 // Contact form functionality
 // Contact form functionality - WERSJA GET (OMIJA CORS)
 function initContactForm() {
@@ -38,7 +32,6 @@ function initContactForm() {
         e.preventDefault();
 
         if (!validateContactForm(contactForm)) return;
-        kwTrack('form_submit', { form: 'contact' });
         setSubmitButtonState(true, submitBtn, btnText, btnLoader);
 
         try {
@@ -61,7 +54,6 @@ function initContactForm() {
 
             if (result === 'SUCCESS') {
                 showNotification('🎉 Dziękuję za wiadomość! Odezwę się w ciągu 24h.', 'success');
-                kwTrack('form_success', { form: 'contact' });
                 contactForm.reset();
             } else if (result.startsWith('ERROR:')) {
                 throw new Error(result.replace('ERROR: ', ''));
@@ -150,7 +142,6 @@ function initLeadMagnetForm() {
         if (btn) btn.disabled = true;
         if (btnText) btnText.style.display = 'none';
         if (btnLoader) btnLoader.style.display = 'inline';
-        kwTrack('form_submit', { form: 'lead_magnet' });
 
         const wrap = form.closest('.lm-form-wrap');
 
@@ -173,7 +164,6 @@ function initLeadMagnetForm() {
                     </div>
                 `;
             }
-            kwTrack('form_success', { form: 'lead_magnet' });
         } catch (err) {
             window.logFormError?.('leadMagnetForm', err.message);
             if (btn) btn.disabled = false;
@@ -407,15 +397,6 @@ function initServiceCardsAnimation() {
   }, { threshold: 0.15 });
 
   cards.forEach(card => observer.observe(card));
-}
-
-// ========== CTA TRACKING ==========
-function initCTATracking() {
-    document.body.addEventListener('click', function(e) {
-        const el = e.target.closest('[data-track]');
-        if (!el) return;
-        kwTrack('cta_click', { label: el.getAttribute('data-track') });
-    });
 }
 
 // ========== ERROR TRACKING — localStorage log ==========
