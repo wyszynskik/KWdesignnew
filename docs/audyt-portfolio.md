@@ -1325,7 +1325,21 @@ Wniosek: `/` lepsza na runda-uzupelniajaca (+6 pkt, TBT 0 — usunięcie blokuj�
 
 **Przyczyna:** dwa nakładające się "emergency fix" breakpointy w `portfolio.css` (`max-width:768px` i `max-width:480px`) ustawiają `.about-me-visuals{align-items:center}` (usuwa flex `stretch`), bez jawnej `width`. Box liczy się jako shrink-to-fit po dziecku (`.about-me-image{width:100%}`), które zależy od rodzica — cykliczna nieokreśloność. Pierwszy layout dostaje prowizoryczny (bliski zeru) rozmiar, realny dociąga się dopiero gdy przeglądarka pozna wymiary obrazka hero — po pierwszym malowaniu, więc liczy się do CLS.
 
-**Fix:** jawna `width:min(240px,100%)` (blok 480px) i `width:min(270px,100%)` (blok 768px) na `.about-me-visuals`. Bez `!important` — brak innej reguły `width` na ten selektor w pliku, więc nie było potrzeby nadpisywać nic silniejszego.
+**Fix:** jawna `width:min(240px,100%)` (blok 480px) i `width:min(270px,100%)` (blok 768px) na `.about-me-visuals`.
+
+**Decyzja `!important`:** pierwsza wersja (commit roboczy przed `c693615`, nigdy niewypchnięty) użyła `width:240px !important` tylko dla bloku 480px i tylko na szerokości 320-390px — wtedy jeszcze nieprzetestowane 481-768px. Przed commitem `c693615` sprawdziłem grepem całe `portfolio.css` pod `.about-me-visuals` (6 wystąpień — baza desktop, 2× sam selektor w breakpointach, 2× `.about-me-visuals .cta-portfolio`, komentarz) — żadna inna reguła nie ustawia na nim `width`, więc `!important` niczego nie musiał pokonywać. Usunięty w finalnej wersji na obu blokach (480px i 768px) — potwierdzone, że bez niego CLS=0 nadal trzyma (tabela niżej). Gdyby jakaś inna reguła `width` z `!important` istniała, zostałby zachowany i odnotowany tu jako dług.
+
+**Weryfikacja per szerokość (Lighthouse mobile, `throttlingMethod:simulate`, 3 przebiegi każda, finalna wersja bez `!important`):**
+
+| Szerokość | Przebieg 1 | Przebieg 2 | Przebieg 3 |
+|---|---|---|---|
+| 320px | CLS 0,0000 | CLS 0,0000 | CLS 0,0000 |
+| 360px | CLS 0,0000 | CLS 0,0000 | CLS 0,0000 |
+| 390px | CLS 0,0000 | CLS 0,0000 | CLS 0,0000 |
+| 600px | CLS 0,0000 | CLS 0,0000 | CLS 0,0000 |
+| 768px | CLS 0,0000 | CLS 0,0000 | CLS 0,0000 |
+
+Przed fixem (dla porównania, osobny przebieg): 600px i 768px dawały CLS 0,1203-0,1284 w 2-3 z 3 przebiegów; 320/360/390px — flakiness 0 / 0,1229 (opisane wcześniej w sekcji A/B main vs runda-uzupelniajaca).
 
 **Efekt uboczny znaleziony przy diagnozie, osobny bug:** `.lightbox-content{animation:imageZoomIn}` w `projects.css` działała bezwarunkowo od załadowania strony — `.lightbox` jest skryty `opacity/visibility` (nie `display:none`), więc animacja realnie tyka w drzewie renderowania na zamkniętym modalu. Zawężone do `.lightbox.active .lightbox-content` (klasa realnie przełączana w `projects.js:120`). Nie był to główny powód zmierzonego CLS (potwierdzone: fix usunięty → shift nadal występował), ale zbędna praca silnika warta naprawienia.
 
