@@ -1355,4 +1355,38 @@ Przed fixem (dla porównania, osobny przebieg): 600px i 768px dawały CLS 0,1203
 2. ~~Uzupełnienie `[DO UZUPEŁNIENIA]`~~ — zamknięte, grep w całym repo = 0.
 3. ~~Realne potwierdzenie żądania do `cloudflareinsights.com` i wyników debuggera OG~~ — zamknięte, patrz wyżej.
 4. ~~`scrollable-region-focusable` na 2 case studies~~ — naprawione (`tabindex="0" role="region" aria-label`), zero zmian wizualnych.
-5. CLS `/portfolio` (font-swap `#portfolio-section`, 0,123 w ok. 1/3 przebiegów) — przeniesione do punktu B0 części B, naprawa przyczyny (font-metrics override), nie tylko objawu.
+5. ~~CLS `/portfolio`~~ — naprawione w B0 (patrz niżej), realna przyczyna to `.about-me-visuals` bez jawnej `width`, nie font-swap.
+
+## B1-B5 — uśmiech na hero /portfolio, dotyk (gałąź runda-hero-mobile, commit `6fcc950`)
+
+**Zakres:** `assets/css/portfolio.css` (CSS), `assets/js/portfolio.js` (logika). Zero zmian w `portfolio.html` — struktura `.ami-base`/`.ami-hover` już istniała.
+
+**Mechanizm (urządzenia `hover:none` lub `pointer:coarse`, bez `prefers-reduced-motion:reduce`):**
+- Wariant z uśmiechem ładowany dopiero po `window.load`, w `requestIdleCallback` (fallback `setTimeout` 1500ms).
+- `IntersectionObserver` (próg 0,3) na `.about-me-image`, trzyma ostatni `intersectionRatio`.
+- Pierwsze zdarzenie `scroll` (`passive, once`) startuje `setTimeout(1000ms)`. Po nim: jeśli zdjęcie widoczne ≥30% — przejście startuje; jeśli nie — obserwator sam wywoła przejście, gdy zdjęcie znów przekroczy próg 30% (flaga „po bramce" zostaje ustawiona raz, na stałe).
+- Przejście czeka na Promise z załadowania obrazu + `await img.decode()` (fallback przy braku wsparcia/błędzie), dopiero potem dodaje klasę `.ami-smile-active` (`requestAnimationFrame`).
+- Jednorazowe, bez odwrotu — po wywołaniu `observer.disconnect()`, flaga `revealTriggered` blokuje ponowne uruchomienie.
+- `prefers-reduced-motion:reduce` — cały blok JS pomijany (warunek wejścia), dodatkowo CSS `!important` jako zabezpieczenie drugiej linii.
+- Desktop (`hover:hover and pointer:fine`) — kod nietknięty; jedyna usunięta reguła to `@media(hover:none){display:none}`, która wcześniej w całości blokowała funkcję na dotyku.
+
+**Weryfikacja (Playwright, emulacja iPhone 13, 390px):**
+- Bez scrolla, bez dotknięcia: `hasClass:false, opacity:0` — brak zmiany ✓.
+- Scroll (5px) + zdjęcie widoczne, po ~1,5s: `hasClass:true, opacity≈0,92` (w trakcie przejścia 0,6s) ✓. Zrzuty: `seq-1-no-scroll.png` (baza) → `seq-2-after-scroll-1s.png` (uśmiech, identyczna pozycja/rozmiar, zero przesunięcia).
+- Scroll daleko w dół (zdjęcie poza kadrem) → gate przechodzi, ale `hasClass:false` (zdjęcie niewidoczne) → scroll z powrotem do góry → `hasClass:true, opacity:1` natychmiast po powrocie w kadr ✓.
+- `prefers-reduced-motion:reduce` + scroll: `hasClass:false, opacity:0, hoverSrc:""` (obraz nawet nie załadowany — cała funkcja wyłączona) ✓.
+- Desktop (1280px, mysz): hover → `opacity:1`, zjazd kursora → `opacity:0`, `hasClass` zawsze `false` — identyczne z zachowaniem sprzed zmiany ✓.
+
+**Lighthouse mobile /portfolio** (`throttlingMethod:simulate`, 390px, po B1-B5): Performance 74-75, LCP ~5,05-5,07s, **CLS 0,0000 w 8/8 przebiegów** — bez regresji względem stanu po B0 (Performance 74-75, LCP ~4,97-5,07s, CLS 0,0000 w 8/8).
+
+**axe-core:** 0 naruszeń na `/portfolio` (390px, po B1-B5).
+
+**Definicja done — status:**
+- [x] Test telefon 390px, dotyk: bez scrolla = bez zmiany; krótkie przewinięcie = zmiana po ~1s; szybkie przewinięcie w dół i powrót = zmiana po powrocie.
+- [x] `prefers-reduced-motion`: brak zmiany.
+- [x] Desktop: hover jak wcześniej.
+- [x] Lighthouse mobile /portfolio: Performance i LCP nie gorsze niż przed zmianą (B0), CLS bez zmian (0,0000).
+- [x] CLS /portfolio ≤0,02 w każdym z przebiegów mobile (zmierzone: 0,0000 w 8/8, oraz 15/15 w teście 5 szerokości w B0).
+- [x] axe 0.
+- [x] Raport w `docs/audyt-portfolio.md`.
+- [ ] Push i draft PR — następny krok.
