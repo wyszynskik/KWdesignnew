@@ -1290,11 +1290,39 @@ Commit: `chore: usun martwy about-me.css (0 referencji)`.
 
 Bez regresji względem ostatniej zanotowanej bazy (97–98, Runda TECH-FINAL) — wynik nawet nieznacznie wyższy (prawdopodobnie efekt usunięcia blokującego `analytics.js`).
 
-**Debugger podglądu linków (opengraph.xyz / LinkedIn Post Inspector) — NIE WYKONANE.** Wymaga działającego adresu `kwyszynski.pl/...`; branch `runda-uzupelniajaca` nie jest scalony z `main` (zgodnie z poleceniem „Bez scalania"), więc żaden debugger zewnętrzny nie zobaczy tych zmian. Do wykonania po akceptacji i merge, z zachowaniem ~10 min odstępu na propagację CDN (ustalony wzorzec tego projektu).
+**Debugger podglądu linków — WYKONANE po merge.** PR #139 scalony do `main` 2026-10-18 12:10 UTC (`2fc3c21`), weryfikacja produkcji po ~10 min propagacji CDN.
+
+## Weryfikacja produkcji (po merge PR #139, 2026-10-18)
+
+**Żądania sieciowe** (Playwright, `networkidle`, realny request log — nie tylko HTML):
+- `/`: `cloudflareinsights.com` → **2 żądania** (`beacon.min.js` + `cdn-cgi/rum`), `googletagmanager.com` → **0**.
+- `/portfolio`: identycznie — `cloudflareinsights.com` **2 żądania**, `googletagmanager.com` **0**.
+
+**Podgląd linku (meta tagi `og:title`/`og:image`, odczyt bezpośredni zamiast zewnętrznego debuggera — te same dane, bez zależności od dostępności narzędzia trzeciej strony):**
+
+| Strona | og:title | og:image |
+|---|---|---|
+| `/` | Karol Wyszyński – prowadzenie projektów i automatyzacja procesów | `assets/images/og/kwyszynski-og.jpg` |
+| `/portfolio` | Portfolio – Karol Wyszyński \| Produkty cyfrowe, aplikacje, automatyzacje | `assets/images/og/kwyszynski-og.jpg` |
+| `/projects/razdwa_aplikacja` | Raz Dwa Druk — aplikacja, która skróciła wycenę z ok. 60 do ok. 5 minut | `assets/images/og/razdwa-aplikacja-og.jpg` |
+
+Obrazy OG zweryfikowane: oba `200 OK`, `image/jpeg` (kwyszynski-og.jpg 59 638 B, razdwa-aplikacja-og.jpg 79 283 B).
+
+## A/B Lighthouse mobile — origin/main vs runda-uzupelniajaca (przed merge, interleaved, 3 przebiegi/gałąź)
+
+| Strona | Branch | Performance (mediana) | LCP (mediana) | CLS (mediana) | TBT (mediana) |
+|---|---|---|---|---|---|
+| `/` | main | 77 | 5,21s | 0,0005 | 122ms |
+| `/` | runda-uzupelniajaca | 83 | 4,12s | 0,0005 | 0ms |
+| `/portfolio` | main | 75 | 4,78s | 0 (flaky: 0,1229 w 1/3) | 113ms |
+| `/portfolio` | runda-uzupelniajaca | 74 | 5,02s | 0 (flaky: 0,1229 w 1/3) | 0ms |
+
+Wniosek: `/` lepsza na runda-uzupelniajaca (+6 pkt, TBT 0 — usunięcie blokującego `analytics.js`). `/portfolio` różnica 1 pkt (w granicy 3) — bez regresji przypisywalnej tej rundzie. CLS-flakiness na `/portfolio` (`#portfolio-section`, font-swap `.subtitle`) występuje **identycznie na obu gałęziach** — potwierdzony pre-existing bug, nie wprowadzony przez PR #139. Naprawa przeniesiona do punktu B0 części B (runda-hero-mobile).
 
 ## Otwarte punkty po tej rundzie
 
-1. Weryfikacja prawna treści `polityka-prywatnosci.html` (właściciel).
-2. Uzupełnienie `[DO UZUPEŁNIENIA]` — okres przechowywania danych z formularza (właściciel).
-3. Realne potwierdzenie żądania do `cloudflareinsights.com` i wyników debuggera OG — dopiero po merge do `main`.
-4. `scrollable-region-focusable` na 2 case studies (preexisting, poza zakresem tej rundy).
+1. ~~Weryfikacja prawna treści `polityka-prywatnosci.html` (właściciel).~~ — treść uzupełniona (okres przechowywania, podstawa prawna, transfer poza EOG, prawa RODO); **ostateczna weryfikacja prawnika wciąż rekomendowana**, nie wykonana w tej rundzie.
+2. ~~Uzupełnienie `[DO UZUPEŁNIENIA]`~~ — zamknięte, grep w całym repo = 0.
+3. ~~Realne potwierdzenie żądania do `cloudflareinsights.com` i wyników debuggera OG~~ — zamknięte, patrz wyżej.
+4. ~~`scrollable-region-focusable` na 2 case studies~~ — naprawione (`tabindex="0" role="region" aria-label`), zero zmian wizualnych.
+5. CLS `/portfolio` (font-swap `#portfolio-section`, 0,123 w ok. 1/3 przebiegów) — przeniesione do punktu B0 części B, naprawa przyczyny (font-metrics override), nie tylko objawu.
