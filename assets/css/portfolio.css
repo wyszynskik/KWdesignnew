@@ -952,6 +952,11 @@ body.portfolio-page.page-voucher-magdy .breadcrumbs a:hover{color:var(--color-te
   }
   
   .about-me-visuals{
+    /* Jawna szerokosc - ten sam powod co w bloku max-width:480px nizej
+       (brak stretch przez align-items:center, shrink-to-fit zalezny od
+       czasu poznania rozmiaru obrazka = sporadyczny CLS). 270px = finalna
+       szerokosc .about-me-image (240) + padding 15px*2 (border-box). */
+    width:min(270px, 100%);
     order:2 !important;
     transform:none !important;
     -webkit-transform:none !important;
@@ -1151,6 +1156,13 @@ body.portfolio-page.page-voucher-magdy .breadcrumbs a:hover{color:var(--color-te
   }
   
   .about-me-visuals{
+    /* Szerokosc jawna, nie shrink-to-fit (align-items:center z bloku 768px
+       usuwa stretch). Bez tego szerokosc zalezy od momentu, w ktorym
+       przeglqdarka pozna naturalny rozmiar obrazka hero - powodowalo to
+       sporadyczny CLS (box startowal ~20px, skakal do finalnych 240px).
+       Brak innej reguly width na .about-me-visuals w tym pliku, wiec
+       !important nie jest tu potrzebny. */
+    width:min(240px, 100%);
     padding:0 10px !important;
     overflow:visible !important;
     display:flex !important;
