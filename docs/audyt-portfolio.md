@@ -1317,7 +1317,23 @@ Obrazy OG zweryfikowane: oba `200 OK`, `image/jpeg` (kwyszynski-og.jpg 59 638 B,
 | `/portfolio` | main | 75 | 4,78s | 0 (flaky: 0,1229 w 1/3) | 113ms |
 | `/portfolio` | runda-uzupelniajaca | 74 | 5,02s | 0 (flaky: 0,1229 w 1/3) | 0ms |
 
-Wniosek: `/` lepsza na runda-uzupelniajaca (+6 pkt, TBT 0 — usunięcie blokującego `analytics.js`). `/portfolio` różnica 1 pkt (w granicy 3) — bez regresji przypisywalnej tej rundzie. CLS-flakiness na `/portfolio` (`#portfolio-section`, font-swap `.subtitle`) występuje **identycznie na obu gałęziach** — potwierdzony pre-existing bug, nie wprowadzony przez PR #139. Naprawa przeniesiona do punktu B0 części B (runda-hero-mobile).
+Wniosek: `/` lepsza na runda-uzupelniajaca (+6 pkt, TBT 0 — usunięcie blokującego `analytics.js`). `/portfolio` różnica 1 pkt (w granicy 3) — bez regresji przypisywalnej tej rundzie. CLS-flakiness na `/portfolio` (`#portfolio-section`) występuje **identycznie na obu gałęziach** — potwierdzony pre-existing bug, nie wprowadzony przez PR #139. Realna przyczyna (nie font-swap, jak wstępnie podejrzewano — patrz B0 niżej) i naprawa przeniesione do punktu B0 części B (runda-hero-mobile).
+
+## B0 — fix CLS /portfolio (gałąź runda-hero-mobile, commit `7d3a948`)
+
+**Diagnoza** (Chrome trace via Lighthouse `additionalTraceCategories`, PerformanceObserver z `sources`, `getBoundingClientRect` polling): element, który się przesuwa, to `.about-me-visuals` (kontener zdjęcia hero) — box startował `20×26px`, skakał do finalnych `240×220px` (lub `270×240px` na 600-768px) w oknie ~250-900ms po starcie, przesuwając `#portfolio-section` i CTA o tę samą deltę (stąd CLS 0,1229 widziane wcześniej).
+
+**Przyczyna:** dwa nakładające się "emergency fix" breakpointy w `portfolio.css` (`max-width:768px` i `max-width:480px`) ustawiają `.about-me-visuals{align-items:center}` (usuwa flex `stretch`), bez jawnej `width`. Box liczy się jako shrink-to-fit po dziecku (`.about-me-image{width:100%}`), które zależy od rodzica — cykliczna nieokreśloność. Pierwszy layout dostaje prowizoryczny (bliski zeru) rozmiar, realny dociąga się dopiero gdy przeglądarka pozna wymiary obrazka hero — po pierwszym malowaniu, więc liczy się do CLS.
+
+**Fix:** jawna `width:min(240px,100%)` (blok 480px) i `width:min(270px,100%)` (blok 768px) na `.about-me-visuals`. Bez `!important` — brak innej reguły `width` na ten selektor w pliku, więc nie było potrzeby nadpisywać nic silniejszego.
+
+**Efekt uboczny znaleziony przy diagnozie, osobny bug:** `.lightbox-content{animation:imageZoomIn}` w `projects.css` działała bezwarunkowo od załadowania strony — `.lightbox` jest skryty `opacity/visibility` (nie `display:none`), więc animacja realnie tyka w drzewie renderowania na zamkniętym modalu. Zawężone do `.lightbox.active .lightbox-content` (klasa realnie przełączana w `projects.js:120`). Nie był to główny powód zmierzonego CLS (potwierdzone: fix usunięty → shift nadal występował), ale zbędna praca silnika warta naprawienia.
+
+**Weryfikacja:**
+- CLS = **0,0000** w 15/15 przebiegów Lighthouse mobile, 5 szerokości (320/360/390/600/768px, 3 przebiegi każda).
+- Pixel-diff zrzutów hero (320px i 600px, przed/po) = **0,0000%** — zero zmiany wizualnej.
+
+**Dług techniczny (nie naprawiony w tym PR):** dwa nakładające się breakpointy awaryjne `max-width:768px` i `max-width:480px` w `portfolio.css` (sekcje „EMERGENCY MOBILE FIX" / „480PX BREAKPOINT") duplikują i częściowo nadpisują te same selektory (`.about-me-visuals`, `.about-me-image`, `.about-me-text` itd.) z `!important` po obu stronach — np. `.about-me-image` dostaje `aspect-ratio:1` z bloku 768px, nieredefiniowane w bloku 480px, więc wygrywa mimo że wizualny design zakłada proporcję 4:5. Działa (potwierdzone pixel-diff 0%), ale struktura jest krucha — do uporządkowania w osobnej rundzie: scalić do jednego, nienakładającego się zestawu breakpointów.
 
 ## Otwarte punkty po tej rundzie
 
