@@ -15,7 +15,9 @@
   <meta property="og:url" content="https://kwyszynski.pl/uslugi" />
   <meta property="og:title" content="Usługi – Karol Wyszyński | Produkty cyfrowe, automatyzacje, procesy" />
   <meta property="og:description" content="Projektowanie i wdrażanie produktów cyfrowych, automatyzacje procesów biznesowych, analiza procesów. Każdy projekt wyceniam indywidualnie." />
-  <meta property="og:image" content="https://kwyszynski.pl/assets/images/og-share-1200x630.png" />
+  <meta property="og:image" content="https://kwyszynski.pl/assets/images/og/kwyszynski-og.jpg" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
   <meta property="og:locale" content="pl_PL" />
   <meta property="og:site_name" content="Karol Wyszyński – Prowadzenie Projektów i Automatyzacje" />
 
@@ -23,7 +25,7 @@
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="Usługi – Karol Wyszyński | Produkty cyfrowe, automatyzacje, procesy" />
   <meta name="twitter:description" content="Projektowanie i wdrażanie produktów cyfrowych, automatyzacje procesów biznesowych, analiza procesów. Każdy projekt wyceniam indywidualnie." />
-  <meta name="twitter:image" content="https://kwyszynski.pl/assets/images/og-share-1200x630.png" />
+  <meta name="twitter:image" content="https://kwyszynski.pl/assets/images/og/kwyszynski-og.jpg" />
 
   <!-- JSON-LD -->
   <script type="application/ld+json">
@@ -64,9 +66,6 @@
   <link rel="stylesheet" href="assets/css/services-page.css" />
 
   <!-- Cloudflare Web Analytics -->
-  <script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "TWOJ_TOKEN"}'></script>
-    <!-- Google Analytics 4 (identyfikator w /assets/js/analytics.js) -->
-    <script defer src="/assets/js/analytics.js"></script>
 </head>
 
 <body>
@@ -141,7 +140,9 @@
         <!-- Obszar 1: Produkty cyfrowe -->
         <a href="#produkty" class="pricing-card" id="produkty-cyfrowe-card">
           <div class="card-header">
-            <div class="card-icon" aria-hidden="true">💻</div>
+            <div class="card-icon">
+              <img src="assets/images/KW_laptop.svg" alt="" width="48" height="48">
+            </div>
             <h3 class="card-title">Produkty cyfrowe</h3>
             <p class="card-subtitle">Własne narzędzie zamiast walki z gotowcem.</p>
           </div>
@@ -153,7 +154,11 @@
         <a href="#automatyzacje" class="pricing-card featured" id="automatyzacje-card">
           <div class="popular-badge">Najczęściej wybierane</div>
           <div class="card-header">
-            <div class="card-icon" aria-hidden="true">⚙️</div>
+            <div class="card-icon">
+              <svg width="48" height="48" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                <path stroke="#0f172a" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0 3.181 3.183a8.25 8.25 0 0 0 13.803-3.7M4.031 9.865a8.25 8.25 0 0 1 13.803-3.7l3.181 3.182m0-4.991v4.99"/>
+              </svg>
+            </div>
             <h3 class="card-title">Automatyzacje procesów</h3>
             <p class="card-subtitle">Z ręcznej roboty do działającego automatu</p>
           </div>
@@ -164,7 +169,9 @@
         <!-- Obszar 3: Analiza procesów -->
         <a href="#usprawnienia" class="pricing-card" id="usprawnienia-card">
           <div class="card-header">
-            <div class="card-icon" aria-hidden="true">🎯</div>
+            <div class="card-icon">
+              <img src="assets/images/KW_rocket_STARTCOMPANY.svg" alt="" width="48" height="48">
+            </div>
             <h3 class="card-title">Analiza procesów</h3>
             <p class="card-subtitle">Kiedy wiesz, że coś nie działa — ale nie wiesz jeszcze od czego zacząć.</p>
           </div>
@@ -585,6 +592,9 @@
     </div>
   </div>
 </footer>
+<!-- Cloudflare Web Analytics -->
+<script type="module" src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "84135a4c932e43659936d5a8b0942f0a"}'></script>
+<!-- End Cloudflare Web Analytics -->
 <!-- /partial:footer -->
 
   <button id="scrollToTop" class="scroll-to-top" aria-label="Wróć na górę">
