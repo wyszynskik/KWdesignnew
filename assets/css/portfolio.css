@@ -404,9 +404,21 @@ body.portfolio-page #design-archive .section-subtitle {
 .about-me-image:focus-within .ami-hover{
   opacity:1;
 }
-@media (hover:none){
-  /* Na dotyku brak hovera — nie rezerwujemy zachowania, zostaje wersja bazowa. */
-  .about-me-image .ami-hover{display:none;}
+
+/* Dotyk: jednorazowe, trwale przejscie po scrollu (logika w portfolio.js),
+   bez mozliwosci powrotu do wersji bazowej. Osobny czas przejscia (.6s)
+   niz hover (.35s), zgodnie ze specyfikacja. */
+.about-me-image.ami-smile-active .ami-hover{
+  opacity:1;
+  transition:opacity .6s ease;
+}
+@media (prefers-reduced-motion: reduce){
+  /* Bez animacji i bez zmiany - zostaje wersja bazowa, nawet jesli klasa
+     zostala juz dodana (JS rowniez sprawdza ten warunek przed startem). */
+  .about-me-image.ami-smile-active .ami-hover{
+    opacity:0 !important;
+    transition:none !important;
+  }
 }
 
 /* === PREMIUM CTA BUTTON === */
