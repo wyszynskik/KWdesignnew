@@ -1317,7 +1317,37 @@ Obrazy OG zweryfikowane: oba `200 OK`, `image/jpeg` (kwyszynski-og.jpg 59 638 B,
 | `/portfolio` | main | 75 | 4,78s | 0 (flaky: 0,1229 w 1/3) | 113ms |
 | `/portfolio` | runda-uzupelniajaca | 74 | 5,02s | 0 (flaky: 0,1229 w 1/3) | 0ms |
 
-Wniosek: `/` lepsza na runda-uzupelniajaca (+6 pkt, TBT 0 — usunięcie blokującego `analytics.js`). `/portfolio` różnica 1 pkt (w granicy 3) — bez regresji przypisywalnej tej rundzie. CLS-flakiness na `/portfolio` (`#portfolio-section`, font-swap `.subtitle`) występuje **identycznie na obu gałęziach** — potwierdzony pre-existing bug, nie wprowadzony przez PR #139. Naprawa przeniesiona do punktu B0 części B (runda-hero-mobile).
+Wniosek: `/` lepsza na runda-uzupelniajaca (+6 pkt, TBT 0 — usunięcie blokującego `analytics.js`). `/portfolio` różnica 1 pkt (w granicy 3) — bez regresji przypisywalnej tej rundzie. CLS-flakiness na `/portfolio` (`#portfolio-section`) występuje **identycznie na obu gałęziach** — potwierdzony pre-existing bug, nie wprowadzony przez PR #139. Realna przyczyna (nie font-swap, jak wstępnie podejrzewano — patrz B0 niżej) i naprawa przeniesione do punktu B0 części B (runda-hero-mobile).
+
+## B0 — fix CLS /portfolio (gałąź runda-hero-mobile, commit `7d3a948`)
+
+**Diagnoza** (Chrome trace via Lighthouse `additionalTraceCategories`, PerformanceObserver z `sources`, `getBoundingClientRect` polling): element, który się przesuwa, to `.about-me-visuals` (kontener zdjęcia hero) — box startował `20×26px`, skakał do finalnych `240×220px` (lub `270×240px` na 600-768px) w oknie ~250-900ms po starcie, przesuwając `#portfolio-section` i CTA o tę samą deltę (stąd CLS 0,1229 widziane wcześniej).
+
+**Przyczyna:** dwa nakładające się "emergency fix" breakpointy w `portfolio.css` (`max-width:768px` i `max-width:480px`) ustawiają `.about-me-visuals{align-items:center}` (usuwa flex `stretch`), bez jawnej `width`. Box liczy się jako shrink-to-fit po dziecku (`.about-me-image{width:100%}`), które zależy od rodzica — cykliczna nieokreśloność. Pierwszy layout dostaje prowizoryczny (bliski zeru) rozmiar, realny dociąga się dopiero gdy przeglądarka pozna wymiary obrazka hero — po pierwszym malowaniu, więc liczy się do CLS.
+
+**Fix:** jawna `width:min(240px,100%)` (blok 480px) i `width:min(270px,100%)` (blok 768px) na `.about-me-visuals`.
+
+**Decyzja `!important`:** pierwsza wersja (commit roboczy przed `c693615`, nigdy niewypchnięty) użyła `width:240px !important` tylko dla bloku 480px i tylko na szerokości 320-390px — wtedy jeszcze nieprzetestowane 481-768px. Przed commitem `c693615` sprawdziłem grepem całe `portfolio.css` pod `.about-me-visuals` (6 wystąpień — baza desktop, 2× sam selektor w breakpointach, 2× `.about-me-visuals .cta-portfolio`, komentarz) — żadna inna reguła nie ustawia na nim `width`, więc `!important` niczego nie musiał pokonywać. Usunięty w finalnej wersji na obu blokach (480px i 768px) — potwierdzone, że bez niego CLS=0 nadal trzyma (tabela niżej). Gdyby jakaś inna reguła `width` z `!important` istniała, zostałby zachowany i odnotowany tu jako dług.
+
+**Weryfikacja per szerokość (Lighthouse mobile, `throttlingMethod:simulate`, 3 przebiegi każda, finalna wersja bez `!important`):**
+
+| Szerokość | Przebieg 1 | Przebieg 2 | Przebieg 3 |
+|---|---|---|---|
+| 320px | CLS 0,0000 | CLS 0,0000 | CLS 0,0000 |
+| 360px | CLS 0,0000 | CLS 0,0000 | CLS 0,0000 |
+| 390px | CLS 0,0000 | CLS 0,0000 | CLS 0,0000 |
+| 600px | CLS 0,0000 | CLS 0,0000 | CLS 0,0000 |
+| 768px | CLS 0,0000 | CLS 0,0000 | CLS 0,0000 |
+
+Przed fixem (dla porównania, osobny przebieg): 600px i 768px dawały CLS 0,1203-0,1284 w 2-3 z 3 przebiegów; 320/360/390px — flakiness 0 / 0,1229 (opisane wcześniej w sekcji A/B main vs runda-uzupelniajaca).
+
+**Efekt uboczny znaleziony przy diagnozie, osobny bug:** `.lightbox-content{animation:imageZoomIn}` w `projects.css` działała bezwarunkowo od załadowania strony — `.lightbox` jest skryty `opacity/visibility` (nie `display:none`), więc animacja realnie tyka w drzewie renderowania na zamkniętym modalu. Zawężone do `.lightbox.active .lightbox-content` (klasa realnie przełączana w `projects.js:120`). Nie był to główny powód zmierzonego CLS (potwierdzone: fix usunięty → shift nadal występował), ale zbędna praca silnika warta naprawienia.
+
+**Weryfikacja:**
+- CLS = **0,0000** w 15/15 przebiegów Lighthouse mobile, 5 szerokości (320/360/390/600/768px, 3 przebiegi każda).
+- Pixel-diff zrzutów hero (320px i 600px, przed/po) = **0,0000%** — zero zmiany wizualnej.
+
+**Dług techniczny (nie naprawiony w tym PR):** dwa nakładające się breakpointy awaryjne `max-width:768px` i `max-width:480px` w `portfolio.css` (sekcje „EMERGENCY MOBILE FIX" / „480PX BREAKPOINT") duplikują i częściowo nadpisują te same selektory (`.about-me-visuals`, `.about-me-image`, `.about-me-text` itd.) z `!important` po obu stronach — np. `.about-me-image` dostaje `aspect-ratio:1` z bloku 768px, nieredefiniowane w bloku 480px, więc wygrywa mimo że wizualny design zakłada proporcję 4:5. Działa (potwierdzone pixel-diff 0%), ale struktura jest krucha — do uporządkowania w osobnej rundzie: scalić do jednego, nienakładającego się zestawu breakpointów.
 
 ## Otwarte punkty po tej rundzie
 
@@ -1325,4 +1355,38 @@ Wniosek: `/` lepsza na runda-uzupelniajaca (+6 pkt, TBT 0 — usunięcie blokuj�
 2. ~~Uzupełnienie `[DO UZUPEŁNIENIA]`~~ — zamknięte, grep w całym repo = 0.
 3. ~~Realne potwierdzenie żądania do `cloudflareinsights.com` i wyników debuggera OG~~ — zamknięte, patrz wyżej.
 4. ~~`scrollable-region-focusable` na 2 case studies~~ — naprawione (`tabindex="0" role="region" aria-label`), zero zmian wizualnych.
-5. CLS `/portfolio` (font-swap `#portfolio-section`, 0,123 w ok. 1/3 przebiegów) — przeniesione do punktu B0 części B, naprawa przyczyny (font-metrics override), nie tylko objawu.
+5. ~~CLS `/portfolio`~~ — naprawione w B0 (patrz niżej), realna przyczyna to `.about-me-visuals` bez jawnej `width`, nie font-swap.
+
+## B1-B5 — uśmiech na hero /portfolio, dotyk (gałąź runda-hero-mobile, commit `6fcc950`)
+
+**Zakres:** `assets/css/portfolio.css` (CSS), `assets/js/portfolio.js` (logika). Zero zmian w `portfolio.html` — struktura `.ami-base`/`.ami-hover` już istniała.
+
+**Mechanizm (urządzenia `hover:none` lub `pointer:coarse`, bez `prefers-reduced-motion:reduce`):**
+- Wariant z uśmiechem ładowany dopiero po `window.load`, w `requestIdleCallback` (fallback `setTimeout` 1500ms).
+- `IntersectionObserver` (próg 0,3) na `.about-me-image`, trzyma ostatni `intersectionRatio`.
+- Pierwsze zdarzenie `scroll` (`passive, once`) startuje `setTimeout(1000ms)`. Po nim: jeśli zdjęcie widoczne ≥30% — przejście startuje; jeśli nie — obserwator sam wywoła przejście, gdy zdjęcie znów przekroczy próg 30% (flaga „po bramce" zostaje ustawiona raz, na stałe).
+- Przejście czeka na Promise z załadowania obrazu + `await img.decode()` (fallback przy braku wsparcia/błędzie), dopiero potem dodaje klasę `.ami-smile-active` (`requestAnimationFrame`).
+- Jednorazowe, bez odwrotu — po wywołaniu `observer.disconnect()`, flaga `revealTriggered` blokuje ponowne uruchomienie.
+- `prefers-reduced-motion:reduce` — cały blok JS pomijany (warunek wejścia), dodatkowo CSS `!important` jako zabezpieczenie drugiej linii.
+- Desktop (`hover:hover and pointer:fine`) — kod nietknięty; jedyna usunięta reguła to `@media(hover:none){display:none}`, która wcześniej w całości blokowała funkcję na dotyku.
+
+**Weryfikacja (Playwright, emulacja iPhone 13, 390px):**
+- Bez scrolla, bez dotknięcia: `hasClass:false, opacity:0` — brak zmiany ✓.
+- Scroll (5px) + zdjęcie widoczne, po ~1,5s: `hasClass:true, opacity≈0,92` (w trakcie przejścia 0,6s) ✓. Zrzuty: `seq-1-no-scroll.png` (baza) → `seq-2-after-scroll-1s.png` (uśmiech, identyczna pozycja/rozmiar, zero przesunięcia).
+- Scroll daleko w dół (zdjęcie poza kadrem) → gate przechodzi, ale `hasClass:false` (zdjęcie niewidoczne) → scroll z powrotem do góry → `hasClass:true, opacity:1` natychmiast po powrocie w kadr ✓.
+- `prefers-reduced-motion:reduce` + scroll: `hasClass:false, opacity:0, hoverSrc:""` (obraz nawet nie załadowany — cała funkcja wyłączona) ✓.
+- Desktop (1280px, mysz): hover → `opacity:1`, zjazd kursora → `opacity:0`, `hasClass` zawsze `false` — identyczne z zachowaniem sprzed zmiany ✓.
+
+**Lighthouse mobile /portfolio** (`throttlingMethod:simulate`, 390px, po B1-B5): Performance 74-75, LCP ~5,05-5,07s, **CLS 0,0000 w 8/8 przebiegów** — bez regresji względem stanu po B0 (Performance 74-75, LCP ~4,97-5,07s, CLS 0,0000 w 8/8).
+
+**axe-core:** 0 naruszeń na `/portfolio` (390px, po B1-B5).
+
+**Definicja done — status:**
+- [x] Test telefon 390px, dotyk: bez scrolla = bez zmiany; krótkie przewinięcie = zmiana po ~1s; szybkie przewinięcie w dół i powrót = zmiana po powrocie.
+- [x] `prefers-reduced-motion`: brak zmiany.
+- [x] Desktop: hover jak wcześniej.
+- [x] Lighthouse mobile /portfolio: Performance i LCP nie gorsze niż przed zmianą (B0), CLS bez zmian (0,0000).
+- [x] CLS /portfolio ≤0,02 w każdym z przebiegów mobile (zmierzone: 0,0000 w 8/8, oraz 15/15 w teście 5 szerokości w B0).
+- [x] axe 0.
+- [x] Raport w `docs/audyt-portfolio.md`.
+- [ ] Push i draft PR — następny krok.

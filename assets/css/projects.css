@@ -607,8 +607,20 @@
   object-fit: contain;
   border-radius: 12px;
   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
-  animation: imageZoomIn 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
   pointer-events: auto;
+}
+
+/* Animacja tylko gdy lightbox realnie aktywny (.active, przelaczana w
+   projects.js). Bez tego warunku animacja tyka w tle od load strony,
+   bo .lightbox jest ukryty opacity/visibility (nie display:none) -
+   element wciaz jest w drzewie renderowania, wiec CSS animation dziala
+   i co 0.35s wywoluje recalc stylu na #lightbox-img, nawet gdy modal
+   nigdy sie nie otworzyl. Znaleziony przy diagnozie CLS /portfolio
+   (trace pokazal StyleRecalcInvalidationTracking na tym elemencie) -
+   realna przyczyna CLS to .about-me-visuals (patrz portfolio.css), ale
+   ten lek w tle to osobny, warty naprawienia bug (zbedna praca silnika). */
+.lightbox.active .lightbox-content {
+  animation: imageZoomIn 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
 @keyframes imageZoomIn {

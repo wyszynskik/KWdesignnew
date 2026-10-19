@@ -28,6 +28,67 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
+  // Wariant "usmiech" na dotyku: jednorazowe, trwale przejscie po pierwszym
+  // scrollu, bez powrotu do wersji bazowej. Zero fetchu przed zdarzeniem
+  // load, zero animacji gdy prefers-reduced-motion. Samo dotkniecie bez
+  // przewiniecia niczego nie uruchamia (gate = zdarzenie 'scroll').
+  const amiImage = document.querySelector('.about-me-image');
+  const isTouchDevice = window.matchMedia('(hover: none), (pointer: coarse)').matches;
+  const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (amiImage && amiHover && amiHover.dataset.src && isTouchDevice && !reducedMotion) {
+    let smileReadyResolve;
+    const smileReady = new Promise((resolve) => { smileReadyResolve = resolve; });
+    amiHover.addEventListener('load', () => smileReadyResolve(), { once: true });
+
+    window.addEventListener('load', () => {
+      const loadSmileImage = () => {
+        if (amiHover.src) return;
+        amiHover.srcset = amiHover.dataset.srcset || '';
+        amiHover.src = amiHover.dataset.src;
+      };
+      if ('requestIdleCallback' in window) {
+        requestIdleCallback(loadSmileImage, { timeout: 2000 });
+      } else {
+        setTimeout(loadSmileImage, 1500);
+      }
+    });
+
+    let lastRatio = 0;
+    let scrollGatePassed = false;
+    let revealTriggered = false;
+
+    const revealSmile = async () => {
+      if (revealTriggered) return;
+      revealTriggered = true;
+      visibilityObserver.disconnect();
+      await smileReady;
+      try {
+        if (amiHover.decode) await amiHover.decode();
+      } catch (e) {
+        // Dekodowanie nie powiodlo sie (np. przerwany fetch) - i tak
+        // pokazujemy obraz, zamiast trzymac uzytkownika bez reakcji.
+      }
+      requestAnimationFrame(() => {
+        amiImage.classList.add('ami-smile-active');
+      });
+    };
+
+    const visibilityObserver = new IntersectionObserver((entries) => {
+      lastRatio = entries[entries.length - 1].intersectionRatio;
+      if (scrollGatePassed && lastRatio >= 0.3) {
+        revealSmile();
+      }
+    }, { threshold: [0, 0.3, 1] });
+    visibilityObserver.observe(amiImage);
+
+    window.addEventListener('scroll', () => {
+      setTimeout(() => {
+        scrollGatePassed = true;
+        if (lastRatio >= 0.3) revealSmile();
+      }, 1000);
+    }, { passive: true, once: true });
+  }
+
   // Jedno pobranie assets/data/testimonials.json po idle (po pierwszym
   // malowaniu, nie blokuje renderu) - obsluguje opinie (items) i przycisk
   // CV (cvUrl), zeby nie robic dwoch zadan do tego samego pliku.
