@@ -562,6 +562,16 @@ header * {
     }
 }
 
+/* Obszar dotyku linków w stopce na mobile >=24px (runda-menu-mobile).
+   E-mail miał 23 px wys.; wygląd napisu bez zmian. */
+@media (max-width: 1024px) {
+    .footer-info a {
+        min-height: 24px;
+        display: inline-flex;
+        align-items: center;
+    }
+}
+
 /* Bez animacji przy prefers-reduced-motion */
 @media (prefers-reduced-motion: reduce) {
     .nav-list {
