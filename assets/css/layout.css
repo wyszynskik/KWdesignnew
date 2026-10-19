@@ -524,3 +524,48 @@ header * {
     box-shadow: 0 4px 12px -4px rgba(0, 0, 0, 0.1) !important;
 }
 
+/* ============================================================
+   Mobilne menu — obszary dotyku (runda-menu-mobile)
+   Linki były inline → pudełka <a> nachodziły na siebie ~33 px,
+   przez co dotknięcie trafiało w link poniżej. Blokowe linki o
+   min. 48 px wysokości, pełnej szerokości panelu i 8 px odstępie
+   usuwają nachodzenie. Wygląd napisów (krój, rozmiar, kolor,
+   wyśrodkowanie) bez zmian. Scoped do <=1024 px, żeby nie ruszać
+   poziomej nawigacji desktopu (>=1025 px).
+   ============================================================ */
+@media (max-width: 1024px) {
+    .nav-list {
+        gap: var(--space-2); /* >=8 px między obszarami dotyku */
+    }
+
+    .nav-list a {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 48px;      /* minimalny obszar dotyku */
+        width: 100%;           /* pełna szerokość panelu */
+        padding: var(--space-3) var(--space-4);
+    }
+
+    /* Hamburger / X — też co najmniej 48x48 px */
+    .hamburger {
+        min-width: 48px;
+        min-height: 48px;
+        align-items: center;
+        justify-content: center;
+    }
+
+    /* W trakcie wjazdu panelu linki nie przyjmują dotknięć
+       (klasę .nav-animating zdejmuje nav.js na transitionend). */
+    .nav-list.nav-animating a {
+        pointer-events: none;
+    }
+}
+
+/* Bez animacji przy prefers-reduced-motion */
+@media (prefers-reduced-motion: reduce) {
+    .nav-list {
+        transition: none;
+    }
+}
+
