@@ -8,7 +8,33 @@ document.addEventListener('DOMContentLoaded', function initNavigation() {
     const header = document.querySelector('.header');
 
     if (hamburger && navList) {
+        const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+        let animTimer = null;
+
+        // Koniec animacji wjazdu: odblokuj dotknięcia linków.
+        function endAnimation() {
+            navList.classList.remove('nav-animating');
+            navList.removeEventListener('transitionend', onTransitionEnd);
+            if (animTimer) { clearTimeout(animTimer); animTimer = null; }
+        }
+        function onTransitionEnd(e) {
+            // tylko wjazd panelu (transform); pomiń opacity/visibility i dzieci
+            if (e.target === navList && e.propertyName === 'transform') endAnimation();
+        }
+
         const setMenu = (open) => {
+            // Przy otwieraniu z animacją: linki nie przyjmują dotknięć, dopóki
+            // panel nie skończy wjeżdżać — inaczej dotknięcie w trakcie ruchu
+            // trafia w inny link. setTimeout to zabezpieczenie, gdyby
+            // transitionend nie przyszedł (np. przerwana animacja).
+            if (open && !reduceMotion.matches) {
+                navList.classList.add('nav-animating');
+                navList.addEventListener('transitionend', onTransitionEnd);
+                if (animTimer) clearTimeout(animTimer);
+                animTimer = setTimeout(endAnimation, 400);
+            } else {
+                endAnimation();
+            }
             navList.classList.toggle('open', open);
             hamburger.classList.toggle('active', open);
             hamburger.setAttribute('aria-expanded', open ? 'true' : 'false');

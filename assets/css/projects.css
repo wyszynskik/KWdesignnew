@@ -3656,6 +3656,14 @@ body.lightbox-open .kwcs-chapter-rail { display: none; }
   transition: color 0.2s;
 }
 .kwcs-back-btn:hover { color: var(--color-text-accent-hover); }
+/* Obszar dotyku breadcrumbu na mobile >=44px (runda-menu-mobile) — napis bez zmian */
+@media (max-width: 1024px) {
+  .kwcs-back-btn {
+    min-height: 44px;
+    padding-top: var(--space-2);
+    padding-bottom: var(--space-2);
+  }
+}
 .kwcs-breadcrumb-sep { color: var(--color-text-subtle); font-size: 0.9rem; }
 .kwcs-breadcrumb-current { font-size: 0.9rem; color: var(--color-text-subtle); }
 
