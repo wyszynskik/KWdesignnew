@@ -1390,3 +1390,37 @@ Przed fixem (dla porównania, osobny przebieg): 600px i 768px dawały CLS 0,1203
 - [x] axe 0.
 - [x] Raport w `docs/audyt-portfolio.md`.
 - [ ] Push i draft PR — następny krok.
+
+---
+
+## Runda MENU-MOBILE — naprawa dotknięć w menu mobilnym
+
+Zgłoszenie: na iPhonie (WebKit w przeglądarce Messengera) dotknięcie „Portfolio" w otwartym menu otwierało `/uslugi`. Gałąź `runda-menu-mobile` od `origin/main`. Zakres: `partials/header.html` (bez zmian — markup OK), `assets/css/layout.css`, `assets/js/nav.js`; dodatkowo `assets/css/projects.css` (breadcrumb, w ramach audytu pozostałych linków).
+
+### Diagnoza (Krok 1)
+Przyczyna: `.nav-list a` były **`display:inline`**. Dla elementów inline `width:100%` jest ignorowane, a pionowy `padding: 1,25rem` rysuje się wizualnie, ale nie rezerwuje miejsca w układzie. Zmierzone @390px: pudełka przepływu `<li>` miały 28 px, a klikalne pudełka `<a>` 61 px → **nachodziły na siebie ~33 px**, i w strefie nachodzenia wygrywał link **późniejszy w DOM** (poniżej). Stąd dotknięcie środka „Portfolio" trafiało w „Usługi".
+- Reprodukcja (Chromium @ iPhone 390px, ustabilizowane menu): Portfolio środek → `/uslugi`, dół → `/#about`; każda pozycja myliła się o jeden w dół.
+- `nav.js` zamykał menu na `click` (nie `pointerdown`/`touchstart`) — to nie było przyczyną.
+- Animacja wejścia `.nav-list` (`transform: translateY(-100%)→0`, 250 ms) dokładała błędy przy dotknięciu w trakcie ruchu (czynnik wtórny).
+
+### Poprawka (Krok 2)
+- **`layout.css`** (scoped `@media (max-width:1024px)`): `.nav-list a` → `display:flex; align-items/justify center; min-height:48px; width:100%; padding 12/16px`; `.nav-list { gap: 8px }`; hamburger/X `min 48×48`; `.nav-list.nav-animating a { pointer-events:none }`. `@media (prefers-reduced-motion: reduce) .nav-list { transition:none }`. Napisy (krój, rozmiar, kolor, wyśrodkowanie) bez zmian. Desktop (≥1025px) nietknięty.
+- **`nav.js`**: przy otwieraniu z animacją linki dostają `pointer-events:none` (klasa `.nav-animating`), zdejmowaną na `transitionend` (`transform`) z zabezpieczeniem `setTimeout(400 ms)`; przy `prefers-reduced-motion` bez blokady (brak animacji). Zamknięcie nadal na `click`, bez przesuwania listy przed nawigacją.
+- **`projects.css`**: `.kwcs-back-btn` (breadcrumb) min-height 44px na mobile (było 17px). **`layout.css`**: `.footer-info a` e-mail min-height 24px (było 23px).
+
+### Weryfikacja (DoD)
+- **Tabela dotknięć 4 pozycje × 3 punkty** (góra/środek/dół), menu ustabilizowane — **wszystkie trafiają we właściwą stronę**, na Chromium @ iPhone 390px i Chromium Android (Pixel 5):
+
+  | pozycja | góra | środek | dół |
+  |---|---|---|---|
+  | Portfolio | /portfolio | /portfolio | /portfolio |
+  | Usługi | /uslugi | /uslugi | /uslugi |
+  | O mnie | /#about | /#about | /#about |
+  | Kontakt | /#contact | /#contact | /#contact |
+
+- **Dotknięcie środka każdej pozycji w trakcie animacji wejścia → brak nawigacji** (zostaje `/`), na obu silnikach.
+- Obszary dotyku po poprawce @390px: linki menu ~108×52 (8px odstępy), hamburger 48×48, breadcrumb „‹ Portfolio" 70,8×**60**, e-mail w stopce 146,5×**24**. Pozostałe (stopka linki 358×41, social 107×39, prev/next 310×73) były OK.
+- **axe = 0** (/, /uslugi, /portfolio desktop+mobile oraz 4 case studies). **Lighthouse Accessibility = 100** (3 strony desktop i mobile). Perf desktop 100/100/99 — bez regresji.
+- **CLS bez zmian**: index 0,0000, portfolio 0,0000, razdwa 0,0261 (baseline origin/main 0,0284 — w granicach szumu).
+- Zrzuty menu @390px przed i po.
+- **Test WebKit iPhone — do wykonania na urządzeniu przez właściciela.** WebKit nie da się uruchomić w kontenerze (polityka sieci blokuje `cdn.playwright.dev`, 403). Diagnoza i poprawka są czysto-CSS/JS i reprodukują się niezależnie od silnika; finalne potwierdzenie na realnym iPhonie (Messenger/WebKit) po stronie właściciela.
