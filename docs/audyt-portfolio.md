@@ -1424,3 +1424,54 @@ Przyczyna: `.nav-list a` były **`display:inline`**. Dla elementów inline `widt
 - **CLS bez zmian**: index 0,0000, portfolio 0,0000, razdwa 0,0261 (baseline origin/main 0,0284 — w granicach szumu).
 - Zrzuty menu @390px przed i po.
 - **Test WebKit iPhone — do wykonania na urządzeniu przez właściciela.** WebKit nie da się uruchomić w kontenerze (polityka sieci blokuje `cdn.playwright.dev`, 403). Diagnoza i poprawka są czysto-CSS/JS i reprodukują się niezależnie od silnika; finalne potwierdzenie na realnym iPhonie (Messenger/WebKit) po stronie właściciela.
+
+---
+
+## Runda OG v2 + hero + jakość miniatur (2026-10-22)
+
+Gałąź `runda-og-v2` od `origin/main`. Problem wyjściowy: podgląd linków (OG) był
+nieczytelny na LinkedIn (wyświetlany ~550 px), a na `/uslugi` miniatury
+„Przykład z realizacji" miały widoczną „kaszanę" jakościową.
+
+### Punkt 1 — główny obraz OG (`assets/images/og/kwyszynski-og.jpg`)
+- Render HTML w skali 2× (2400×1260) → downscale do 1200×630 (ostre krawędzie liter).
+- Imię i nazwisko (Playfair) 2 wiersze, podtytuł „Prowadzenie projektów i automatyzacje"
+  (44 px), portret z cutoutem na granatowym tle z poświatą za postacią.
+- Marginesy ≥ 60 px, JPG, waga w zakresie ~165 KB.
+
+### Punkt 2 — OG 4 głównych case studies
+- Markowe karty zamiast surowych zrzutów: eyebrow „Case study", nazwa projektu 76 px
+  (≥ 64 px), podtytuł, zdjęcie z `/portfolio` z gradientowym wygaszeniem, stopka.
+- `razdwa-aplikacja`, `cyfradruk`, `karoma`, `power-of-mind` — każda 1200×630, 138–187 KB.
+
+### Punkt 3 — meta `/portfolio`
+- `<title>`, `og:title`, `twitter:title` → „Portfolio – Karol Wyszyński |
+  Prowadzenie projektów i automatyzacje".
+- Opisy (meta/og/twitter) mówią teraz o projektach **prowadzonych i wdrożonych od
+  początku do końca**, nie tylko o produktach.
+
+### Hero `/` — podmiana portretu
+- Nowy portret ze `Zdjecie_HERO_KWyszynski_1200x1000J1.webp` (źródło 1440×1318),
+  warianty 480/640/800/1000 w, `width/height` zaktualizowane (1000×915).
+
+### Jakość miniatur `/uslugi` („Przykład z realizacji")
+- Przyczyna „kaszany": koder WebP w ImageMagicku w tym środowisku **ignoruje
+  `-quality`** (q40 == q99, identyczne bajty), co dawało stałą, niską jakość na
+  zrzutach z drobnym tekstem (kalkulator Raz Dwa, strona Power of Mind).
+- Przekodowano enkoderem WebP w Chromium (canvas, q0.92) z oryginalnych źródeł
+  (`KAROMA_FRONT.webp`, `Ekran_RAZDWA_KWdesign.webp`, `POWEROFMIND_FRONT.png`
+  odzyskany z historii git).
+- Dodano większe warianty do `srcset`, by ekrany retina/mobile (`sizes` 90vw) nie
+  skalowały w górę: `ekran-razdwa-1140.webp`, `powerofmind-front-960.webp`.
+  Karoma pozostaje na 760 w (limit źródła 800 px).
+
+### Definicja done (ta runda)
+- Zmiany dotyczą obrazów OG, zdjęcia hero, 6 plików graficznych `/uslugi` oraz
+  tekstu `<title>`/meta `/portfolio`. **Struktura DOM i atrybuty dostępności bez
+  zmian** (te same `alt`, ta sama semantyka, rozszerzony wyłącznie `srcset`) —
+  brak wpływu na axe/Lighthouse A11y względem poprzedniej rundy (axe = 0,
+  A11y = 100 utrzymane). Brak regresji CLS: `width/height` na wszystkich
+  podmienionych obrazach zachowują proporcje źródeł.
+- Produkcja kwyszynski.pl jest nieosiągalna z kontenera (proxy 403) — finalną
+  weryfikację podglądów OG (LinkedIn Post Inspector) i hero na żywo wykonuje
+  właściciel po scaleniu i odświeżeniu CDN.
