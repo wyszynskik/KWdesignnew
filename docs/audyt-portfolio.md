@@ -1475,3 +1475,22 @@ nieczytelny na LinkedIn (wyświetlany ~550 px), a na `/uslugi` miniatury
 - Produkcja kwyszynski.pl jest nieosiągalna z kontenera (proxy 403) — finalną
   weryfikację podglądów OG (LinkedIn Post Inspector) i hero na żywo wykonuje
   właściciel po scaleniu i odświeżeniu CDN.
+
+---
+
+## Runda drobnych poprawek (2026-10-23)
+
+Gałąź `runda-poprawki-drobne` od `origin/main`.
+
+1. **Liczba starszych prac (portfolio.html).** `<span class="archive-count">` było puste — bez JS nawiasy „Starsze prace graficzne ( )" renderowały się bez liczby. Wpisano `2` na stałe; JS (`assets/js/portfolio.js`) nadal nadpisuje tę samą wartość, więc fallback jest sensowny i bez JS.
+2. **Alt logo (partials/header.html).** `alt` → „Karol Wyszyński – prowadzenie projektów i automatyzacje"; `npm run sync` rozniósł nagłówek na wszystkie strony.
+3. **Spójność nazwy marki.**
+   - `og:site_name` na **wszystkich** stronach → „Karol Wyszyński – prowadzenie projektów i automatyzacje" (strony case studies miały wcześniej „Karol Wyszyński Portfolio").
+   - `alt` zdjęcia hero na `/portfolio` → „Karol Wyszyński – prowadzenie projektów i automatyzacje".
+   - Poprawione wielkie litery w środku fraz „Prowadzenie Projektów" / „Automatyzacja Procesów": `index.html` `twitter:title`, JSON-LD `jobTitle`, `package.json` `description` → małe litery (spójne z istniejącym `<title>`/`og:title`). Grep po zmianie: brak pozostałych wystąpień.
+4. **Pole „Staż" (portfolio.html, Doświadczenie).** → „8 lat doświadczenia zawodowego · od 2 lat projektuję i wdrażam produkty cyfrowe".
+5. **Sir Roger — rozdzielczość obrazu.** W repo są wyłącznie `sir-roger/Roger.png` i `sir-roger/roger-229w.webp`, **oba 229×134** — brak źródła w wyższej rozdzielczości. Zgodnie z poleceniem miniatura pozostaje bez zmian (karta na `/portfolio` nadal używa `Roger.png` 229×134). Jeśli pojawi się grafika w wyższej rozdzielczości, można ją dodać jako WebP z `width/height`. (Uwaga poboczna, nie zmieniana w tej rundzie: karta używa `Roger.png` 27 KB, choć istnieje identyczny rozmiarowo `roger-229w.webp` 3,5 KB — ewentualny lekki zysk wagi bez zmiany jakości.)
+
+### Definicja done
+- **axe = 0** na `/`, `/portfolio`, `/uslugi`, `/narzedzie`, `/polityka-prywatnosci` (desktop 1440 i mobile 390) oraz na 7 case studies w trybie viewer i standalone + bare `/portfolio`.
+- Zmiany są wyłącznie tekstowe (alt, meta, treść) — brak wpływu na strukturę/kontrast, więc Lighthouse Accessibility = 100 i Performance bez regresji (brak zmian w zasobach renderowanych).
