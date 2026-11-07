@@ -203,10 +203,12 @@ function initLeadMagnetForm() {
                     <div class="lm-success">
                         <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#06b6d4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="9 12 11 14 15 10"/></svg>
                         <h2>Gotowe.</h2>
-                        <p>Materiał za chwilę trafi na <strong>${email}</strong> — sprawdź skrzynkę (i folder spam, gdyby nie dotarł).</p>
+                        <p>Materiał za chwilę trafi na <strong class="lm-success-email"></strong> — sprawdź skrzynkę (i folder spam, gdyby nie dotarł).</p>
                         <p class="lm-success-sub">Masz konkretny proces do omówienia? <a href="/uslugi">Przejdź do usług →</a></p>
                     </div>
                 `;
+                const emailSlot = wrap.querySelector('.lm-success-email');
+                if (emailSlot) emailSlot.textContent = email;
             }
         } catch (err) {
             window.logFormError?.('leadMagnetForm', err.message);
@@ -358,50 +360,54 @@ function initScrollEffects() {
 
 function initNotifications() {
     window.showNotification = (message, type = 'success') => {
-        // BACKUP 1: Spróbuj normalnego powiadomienia
         try {
-            const notification = document.createElement('div');
-            notification.innerHTML = `
-                <div style="
-                    position: fixed; 
-                    top: 20px; 
-                    right: 20px; 
-                    background: ${type === 'success' ? '#d4edda' : '#f8d7da'}; 
-                    color: ${type === 'success' ? '#155724' : '#721c24'}; 
-                    border: 2px solid ${type === 'success' ? '#28a745' : '#dc3545'};
-                    padding: 15px 20px; 
-                    border-radius: 8px; 
-                    box-shadow: 0 4px 12px rgba(0,0,0,0.3); 
-                    z-index: 999999; 
-                    max-width: 400px; 
-                    font-family: Arial; 
-                    font-size: 16px; 
-                    font-weight: bold;
-                    cursor: pointer;
-                " onclick="this.remove()">
-                    ${message}
-                    <button onclick="this.parentElement.remove()" style="
-                        float: right; 
-                        background: none; 
-                        border: none; 
-                        font-size: 20px; 
-                        cursor: pointer; 
-                        margin-left: 10px;
-                        color: inherit;
-                    ">×</button>
-                </div>
-            `;
-            
-            document.body.appendChild(notification);
-            
+            const box = document.createElement('div');
+            box.setAttribute('role', 'alert');
+            box.setAttribute('aria-live', 'assertive');
+            box.style.position = 'fixed';
+            box.style.top = '20px';
+            box.style.right = '20px';
+            box.style.background = type === 'success' ? '#d4edda' : '#f8d7da';
+            box.style.color = type === 'success' ? '#155724' : '#721c24';
+            box.style.border = `2px solid ${type === 'success' ? '#28a745' : '#dc3545'}`;
+            box.style.padding = '15px 20px';
+            box.style.borderRadius = '8px';
+            box.style.boxShadow = '0 4px 12px rgba(0,0,0,0.3)';
+            box.style.zIndex = '999999';
+            box.style.maxWidth = '400px';
+            box.style.fontFamily = 'Arial';
+            box.style.fontSize = '16px';
+            box.style.fontWeight = 'bold';
+            box.style.cursor = 'pointer';
+
+            const text = document.createElement('span');
+            text.textContent = message;
+            box.appendChild(text);
+
+            const closeBtn = document.createElement('button');
+            closeBtn.textContent = '×';
+            closeBtn.style.float = 'right';
+            closeBtn.style.background = 'none';
+            closeBtn.style.border = 'none';
+            closeBtn.style.fontSize = '20px';
+            closeBtn.style.cursor = 'pointer';
+            closeBtn.style.marginLeft = '10px';
+            closeBtn.style.color = 'inherit';
+            closeBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                box.remove();
+            });
+            box.appendChild(closeBtn);
+
+            box.addEventListener('click', () => box.remove());
+
+            document.body.appendChild(box);
+
             setTimeout(() => {
-                if (notification.parentNode) {
-                    notification.remove();
-                }
+                if (box.parentNode) box.remove();
             }, 5000);
-            
+
         } catch (error) {
-            // BACKUP 2: Użyj alert
             alert(`${type === 'success' ? '✅' : '❌'} ${message}`);
         }
     };
