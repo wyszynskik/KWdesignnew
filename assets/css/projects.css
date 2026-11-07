@@ -1004,6 +1004,11 @@ body.lightbox-open {
   font-size: 2.5rem;
   margin-bottom: 1rem;
 }
+.scope-icon svg {
+  width: 40px;
+  height: 40px;
+  stroke: var(--color-primary);
+}
 
 .scope-item p {
   font-size: 0.95rem;
@@ -1093,6 +1098,11 @@ body.lightbox-open {
   font-size: 2.5rem;
   margin-bottom: 1rem;
   display: inline-block;
+}
+.result-icon svg {
+  width: 40px;
+  height: 40px;
+  stroke: var(--color-primary);
 }
 
 .result-card h3, .result-card h4 {
