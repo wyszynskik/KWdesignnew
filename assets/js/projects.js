@@ -82,29 +82,36 @@ function initLightbox() {
   
   let scrollPosition = 0;
   let imageElement = null;
-  
+  let previouslyFocused = null;
+
   const closeLightbox = () => {
     lightbox.classList.remove('active');
     document.body.classList.remove('lightbox-open');
     lightboxImg.src = '';
     lightboxCaption.textContent = '';
-    
+
     window.scrollTo(0, scrollPosition);
-    
+
+    if (previouslyFocused && typeof previouslyFocused.focus === 'function') {
+      previouslyFocused.focus();
+    }
+    previouslyFocused = null;
+
     console.log('✖️ Lightbox closed - scroll restored');
   };
 
-  // ⭐ UNIWERSALNY SELEKTOR — WSZYSTKO ŁAPIE
   document.addEventListener('click', function(e) {
-    // Sprawdzaj czy to IMG z data-caption lub lightbox-trigger
     const img = e.target.closest('img');
-    
+
     if (!img) return;
-    
-    // ⭐ FILTR: Pomiń SVG i ikony
+
+    // Pomiń SVG i ikony
     if (img.closest('svg') || img.closest('[class*="icon"]')) return;
-    
-    // ⭐ FILTR: Pomiń bardzo małe zdjęcia (ikony, avatary)
+
+    // Pomiń logo i portrety autora (header, hero, #about, /portfolio hero) — to nie są case-study screeny
+    if (img.closest('.logo-link, .about-me-visuals, .hero-image-container, .about-photo')) return;
+
+    // Pomiń bardzo małe zdjęcia (ikony, avatary)
     if (img.width < 100 && img.height < 100) return;
 
     scrollPosition = window.scrollY || window.pageYOffset;
@@ -115,12 +122,14 @@ function initLightbox() {
     });
     
     imageElement = img;
+    previouslyFocused = document.activeElement;
 
     setTimeout(() => {
       lightbox.classList.add('active');
       lightboxImg.src = img.src;
       lightboxCaption.textContent = img.dataset.caption || img.alt || '';
       document.body.classList.add('lightbox-open');
+      closeBtn.focus();
 
       console.log('🖼️ Lightbox opened:', img.alt || img.src);
     }, 300);
@@ -136,8 +145,17 @@ function initLightbox() {
   });
 
   document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape' && lightbox.classList.contains('active')) {
+    if (!lightbox.classList.contains('active')) return;
+
+    if (e.key === 'Escape') {
       closeLightbox();
+      return;
+    }
+
+    if (e.key === 'Tab') {
+      // Jedyny interaktywny element w lightboxie to closeBtn — trap trzyma na nim fokus.
+      e.preventDefault();
+      closeBtn.focus();
     }
   });
 

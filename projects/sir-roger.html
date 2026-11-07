@@ -36,7 +36,7 @@
   <link rel="icon" type="image/png" sizes="32x32" href="/assets/images/favicon-32x32.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/assets/images/favicon-16x16.png">
   <link rel="apple-touch-icon" sizes="180x180" href="/assets/images/apple-touch-icon.png">
-  <link rel="shortcut icon" href="/favicon.ico">
+  <link rel="shortcut icon" href="/assets/images/favicon.ico">
   
   <!-- Canonical URL -->
   <link rel="canonical" href="https://kwyszynski.pl/projects/sir-roger">
@@ -67,6 +67,7 @@
 </head>
 
 <body>
+  <a href="#main" class="skip-link">Przejdź do treści</a>
 
   <!-- partial:header -->
 <header class="header">
@@ -103,7 +104,7 @@
   </nav>
 
   <!-- Case Study Content -->
-  <main>
+  <main id="main">
     <section class="kwcs" id="case-sir-roger" aria-label="Case Study: Sir Roger — rebranding i opakowania herbat">
 
     <nav class="razdwa-chapter-rail" id="sirroger-chapter-rail" aria-label="Spis treści case study">
@@ -462,7 +463,7 @@
 
   <!-- Lightbox Modal -->
   <div id="lightbox" class="lightbox" role="dialog" aria-modal="true" aria-label="Powiększony obraz">
-    <span class="lightbox-close" role="button" aria-label="Zamknij lightbox" tabindex="0">&times;</span>
+    <button type="button" class="lightbox-close" aria-label="Zamknij lightbox">&times;</button>
     <img class="lightbox-content" id="lightbox-img" alt="Powiększony obraz">
     <div class="lightbox-caption" id="lightbox-caption"></div>
   </div>

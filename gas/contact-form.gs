@@ -15,6 +15,27 @@
 //    kolumnę Status — błędy Gmaila są tam zapisywane wprost (np. "BŁĄD MAILA: ...").
 // ═══════════════════════════════════════════════════════════════════════════
 
+function isValidEmailFormat_(email) {
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+}
+
+// Google Sheets wykonuje formuły zaczynające się od =,+,-,@ — apostrof z przodu
+// wymusza traktowanie wartości jako tekst (Formula Injection guard).
+function sanitizeForSheet_(value) {
+  const v = String(value || '');
+  return /^[=+\-@]/.test(v) ? "'" + v : v;
+}
+
+// Rate limit: max 1 zgłoszenie z tego samego adresu e-mail na 15 minut —
+// blokuje prosty skrypt walący doGet?email=... w pętli (email bombing na Gmailu właściciela).
+function isRateLimited_(email) {
+  const cache = CacheService.getScriptCache();
+  const key = 'contact_' + email.toLowerCase();
+  if (cache.get(key)) return true;
+  cache.put(key, '1', 15 * 60);
+  return false;
+}
+
 function doGet(e) {
   try {
     // Routing dla lead magnetu (checklista PDF z narzedzie.html)
@@ -34,6 +55,12 @@ function doGet(e) {
       return ContentService.createTextOutput('API działa!');
     }
 
+    // Honeypot — ukryte pole w formularzu, wypełnia je tylko bot. Zwracamy
+    // SUCCESS (nie ERROR), żeby bot nie dostał sygnału, że został złapany.
+    if (params.website) {
+      return ContentService.createTextOutput('SUCCESS');
+    }
+
     const data = {
       name: params.name || '',
       email: params.email || '',
@@ -48,6 +75,14 @@ function doGet(e) {
       return ContentService.createTextOutput('ERROR: Brakuje wymaganych danych');
     }
 
+    if (!isValidEmailFormat_(data.email)) {
+      return ContentService.createTextOutput('ERROR: Nieprawidłowy adres email');
+    }
+
+    if (isRateLimited_(data.email)) {
+      return ContentService.createTextOutput('ERROR: Zgłoszenie z tym adresem email zostało już wysłane, odczekaj 15 minut');
+    }
+
     const ss = SpreadsheetApp.getActiveSpreadsheet();
     let sheet = ss.getSheetByName('KONTAKTY');
     if (!sheet) {
@@ -59,13 +94,13 @@ function doGet(e) {
     // dane klienta nie mogą zginąć, jeśli zawiedzie tylko powiadomienie mailowe.
     const rowIndex = sheet.appendRow([
       new Date(),
-      data.name,
-      data.email,
+      sanitizeForSheet_(data.name),
+      sanitizeForSheet_(data.email),
       data.phone,
-      data.company,
+      sanitizeForSheet_(data.company),
       data.projectType,
       data.budget,
-      data.message,
+      sanitizeForSheet_(data.message),
       'NOWE'
     ]).getLastRow();
 
@@ -103,14 +138,19 @@ function doGet(e) {
 }
 
 // ── LEAD MAGNET ──────────────────────────────────────────────────────────────
-var PDF_URL = 'https://kwyszynskidesign.github.io/KWdesignnew/assets/pdf/7-sygnalow-automatyzacja.pdf';
+var PDF_URL = 'https://kwyszynski.pl/assets/pdf/7-sygnalow-automatyzacja.pdf';
 var SHEET_NAME = 'LeadMagnet';
 
 function handleLeadMagnet(e) {
   var email = (e.parameter.email || '').trim().toLowerCase();
 
-  if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+  if (!email || !isValidEmailFormat_(email)) {
     return ContentService.createTextOutput('ERROR: invalid email')
+      .setMimeType(ContentService.MimeType.TEXT);
+  }
+
+  if (isRateLimited_(email)) {
+    return ContentService.createTextOutput('ERROR: already sent, try later')
       .setMimeType(ContentService.MimeType.TEXT);
   }
 
@@ -164,7 +204,7 @@ function handleLeadMagnet(e) {
     pdfStatus = pdfStatus === 'OK' ? 'MAIL_ERROR' : pdfStatus + '_MAIL_ERROR';
   }
 
-  sheet.appendRow([timestamp, email, source, pdfStatus]);
+  sheet.appendRow([timestamp, sanitizeForSheet_(email), sanitizeForSheet_(source), pdfStatus]);
 
   return ContentService.createTextOutput('SUCCESS')
     .setMimeType(ContentService.MimeType.TEXT);
