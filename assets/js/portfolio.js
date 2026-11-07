@@ -202,7 +202,6 @@ document.addEventListener('DOMContentLoaded', () => {
     'voucher-magdy': 'projects/voucher-salon-magdy',
     'karoma': 'projects/karoma',
     'power-of-mind': 'projects/power-of-mind',
-    'KW-Design': 'projects/KW-Design',
     'sir-roger': 'projects/sir-roger',
     'RazDwa': 'projects/razdwa_aplikacja',
     'cyfradruk': 'projects/cyfradruk',

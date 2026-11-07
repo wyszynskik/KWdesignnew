@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Usługi Karola Wyszyńskiego — prowadzenie projektów i automatyzacja procesów. Projektowanie i wdrażanie produktów cyfrowych, automatyzacje procesów biznesowych, analiza procesów. Każdy projekt wyceniam indywidualnie.">
+  <meta name="description" content="Usługi Karola Wyszyńskiego — Product & Delivery Manager. Projektowanie i wdrażanie produktów cyfrowych, automatyzacje procesów biznesowych, analiza procesów. Każdy projekt wyceniam indywidualnie.">
   <meta name="theme-color" content="#06b6d4">
   <title>Usługi – Karol Wyszyński | Produkty cyfrowe, automatyzacje, procesy</title>
 
@@ -19,7 +19,7 @@
   <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="630" />
   <meta property="og:locale" content="pl_PL" />
-  <meta property="og:site_name" content="Karol Wyszyński – prowadzenie projektów i automatyzacje" />
+  <meta property="og:site_name" content="Karol Wyszyński – Product & Delivery Manager" />
 
   <!-- Twitter Card -->
   <meta name="twitter:card" content="summary_large_image" />
@@ -75,7 +75,7 @@
 <header class="header">
   <div class="container header-inner">
     <a href="/" class="logo-link" aria-label="Karol Wyszyński – strona główna">
-      <img src="/assets/images/kw-design-logo-160w.webp" alt="Karol Wyszyński – prowadzenie projektów i automatyzacje" class="logo-img" width="160" height="96">
+      <img src="/assets/images/kw-design-logo-160w.webp" alt="Karol Wyszyński – Product & Delivery Manager" class="logo-img" width="160" height="96">
     </a>
     <nav class="nav">
       <ul class="nav-list" id="nav-list">
@@ -493,7 +493,22 @@
 
         <details class="faq-item">
           <summary>Pracujesz samodzielnie czy z zespołem?</summary>
-          <p>Prowadzę projekty samodzielnie — od analizy po wdrożenie. Tam, gdzie potrzebny jest dodatkowy specjalista, dobieram zaufaną osobę pod konkretny zakres. Korzystam też z narzędzi AI tam, gdzie realnie skracają pracę bez utraty jakości.</p>
+          <p>Prowadzę cały projekt od analizy po wdrożenie — i to ja odpowiadam za efekt. Tam, gdzie potrzebny jest dodatkowy specjalista, dobieram zaufaną osobę pod konkretny zakres. Korzystam też z narzędzi AI tam, gdzie realnie skracają pracę bez utraty jakości.</p>
+        </details>
+
+        <details class="faq-item">
+          <summary>Jak zarządzasz zmianami w zakresie projektu?</summary>
+          <p>Zakres ustalam na starcie i pilnuję go jako punkt odniesienia. Jeśli w trakcie pojawia się nowy pomysł, oceniam go względem priorytetów: czy wchodzi do tej wersji, czy czeka na kolejną. Dzięki temu projekt nie rozrasta się bez końca, a Ty wiesz, co i kiedy dostajesz.</p>
+        </details>
+
+        <details class="faq-item">
+          <summary>Jak wygląda Twój proces zarządzania ryzykiem?</summary>
+          <p>Największe ryzyka — techniczne, czasowe, zależne od osób trzecich — nazywam już na etapie analizy, zanim staną się problemem. Jeśli coś może pójść nie tak, mówię o tym wcześniej, z planem B, a nie po fakcie.</p>
+        </details>
+
+        <details class="faq-item">
+          <summary>Jak pracujesz z zespołem i dostawcami klienta?</summary>
+          <p>Jeśli projekt wymaga integracji z zespołem klienta albo zewnętrznym dostawcą (np. drukarnią, agencją, innym wykonawcą), ustalam z nimi zakres odpowiedzialności na starcie i jestem jednym punktem kontaktu po stronie wdrożenia — żeby nie było niejasności, kto za co odpowiada.</p>
         </details>
 
         <details class="faq-item">
@@ -535,27 +550,36 @@
                 <input type="tel" id="phone" name="phone" placeholder="123 456 789" />
               </div>
               <div class="form-group">
-                <label for="projectType">Jak mogę pomóc?</label>
-                <select id="projectType" name="projectType">
-                  <option value="">-- wybierz --</option>
-                  <option value="aplikacja">Aplikacja biznesowa</option>
-                  <option value="strona">Strona internetowa</option>
-                  <option value="automatyzacja">Automatyzacja procesu</option>
-                  <option value="analiza">Analiza procesów</option>
-                  <option value="nie-wiem">Nie wiem — pomóż mi to nazwać</option>
-                </select>
+                <label for="company">Firma / Branża (opcjonalnie)</label>
+                <input type="text" id="company" name="company" placeholder="np. drukarnia, e-commerce" />
               </div>
+            </div>
+            <div class="form-group">
+              <label for="projectType">Jak mogę pomóc?</label>
+              <select id="projectType" name="projectType">
+                <option value="">-- wybierz --</option>
+                <option value="aplikacja">Aplikacja biznesowa</option>
+                <option value="strona">Strona internetowa</option>
+                <option value="automatyzacja">Automatyzacja procesu</option>
+                <option value="analiza">Analiza procesów</option>
+                <option value="nie-wiem">Nie wiem — pomóż mi to nazwać</option>
+              </select>
             </div>
             <div class="form-group">
               <label for="message">Opis problemu lub procesu*</label>
               <textarea id="message" name="message" rows="5" placeholder="Opisz, co dziś nie działa, zajmuje za dużo czasu albo generuje błędy. Im konkretniej, tym lepiej." required></textarea>
             </div>
+            <div class="form-group form-group--checkbox">
+              <label class="checkbox-label">
+                <input type="checkbox" id="rodoConsent" name="rodoConsent" required />
+                Zgadzam się na przetwarzanie moich danych w celu obsługi zapytania. <a href="/polityka-prywatnosci">Polityka prywatności</a>.
+              </label>
+            </div>
             <button type="submit" class="submit-btn">
               <span class="btn-text">Wyślij wiadomość</span>
               <span class="btn-loader">Wysyłam...</span>
             </button>
-            <p class="form-note">Odezwę się w ciągu 24 godzin z pierwszą oceną i propozycją następnego kroku.</p>
-            <p class="form-privacy">Wysyłając formularz, zgadzasz się na kontakt w sprawie zapytania. Twoje dane nie trafią do żadnego newslettera. <a href="/polityka-prywatnosci">Polityka prywatności</a>.</p>
+            <p class="form-note">Odezwę się w ciągu 24 godzin z pierwszą oceną i propozycją następnego kroku. Twoje dane nie trafią do żadnego newslettera.</p>
           </form>
         </div>
       </div>
@@ -569,7 +593,7 @@
   <div class="container footer-inner">
     <div class="footer-info">
       <p class="footer-brand">Karol Wyszyński</p>
-      <p>Prowadzenie projektów · Automatyzacje · Wdrożenia cyfrowe</p>
+      <p>Product &amp; Delivery Manager</p>
       <p>Aplikacje, automatyzacje i strony — od analizy procesu po wdrożenie.</p>
       <a href="mailto:wyszynski.k@onet.pl" class="footer-email">wyszynski.k@onet.pl</a>
       <div class="footer-social">

@@ -38,6 +38,7 @@ function doGet(e) {
       name: params.name || '',
       email: params.email || '',
       phone: params.phone || '',
+      company: params.company || '',
       projectType: params.projectType || '',
       budget: params.budget || '',
       message: params.message || ''
@@ -51,7 +52,7 @@ function doGet(e) {
     let sheet = ss.getSheetByName('KONTAKTY');
     if (!sheet) {
       sheet = ss.insertSheet('KONTAKTY');
-      sheet.appendRow(['Data', 'Imię', 'Email', 'Telefon', 'Projekt', 'Budżet', 'Wiadomość', 'Status']);
+      sheet.appendRow(['Data', 'Imię', 'Email', 'Telefon', 'Firma', 'Projekt', 'Budżet', 'Wiadomość', 'Status']);
     }
 
     // Zapisujemy zgłoszenie NAJPIERW, niezależnie od tego czy mail się uda —
@@ -61,6 +62,7 @@ function doGet(e) {
       data.name,
       data.email,
       data.phone,
+      data.company,
       data.projectType,
       data.budget,
       data.message,
@@ -78,14 +80,14 @@ function doGet(e) {
       GmailApp.sendEmail(
         'wyszynski.k@onet.pl',
         `Nowe zgłoszenie: ${data.name}`,
-        `Email: ${data.email}\nProjekt: ${data.projectType}\nWiadomość: ${data.message}`,
+        `Email: ${data.email}\nTelefon: ${data.phone}\nFirma: ${data.company}\nProjekt: ${data.projectType}\nWiadomość: ${data.message}`,
         { replyTo: data.email }
       );
     } catch (err) {
       mailError = err.message;
       // Błąd maila zapisujemy WPROST do arkusza, żeby był widoczny bez
       // zaglądania w logi Apps Script — inaczej ginie bezpowrotnie.
-      sheet.getRange(rowIndex, 8).setValue('BŁĄD MAILA: ' + mailError);
+      sheet.getRange(rowIndex, 9).setValue('BŁĄD MAILA: ' + mailError);
     }
 
     if (mailError) {
