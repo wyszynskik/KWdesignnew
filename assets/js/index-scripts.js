@@ -28,6 +28,16 @@ function initContactForm() {
     const btnText = submitBtn?.querySelector('.btn-text');
     const btnLoader = submitBtn?.querySelector('.btn-loader');
     
+    contactForm.querySelectorAll('[required]').forEach(field => {
+        field.addEventListener('blur', () => validateField(field));
+        field.addEventListener('input', () => {
+            if (field.classList.contains('error')) validateField(field);
+        });
+        if (field.type === 'checkbox') {
+            field.addEventListener('change', () => validateField(field));
+        }
+    });
+
     contactForm.addEventListener('submit', async (e) => {
         e.preventDefault();
 
@@ -40,6 +50,7 @@ function initContactForm() {
                 name: formData.get('name'),
                 email: formData.get('email'),
                 phone: formData.get('phone') || '',
+                company: formData.get('company') || '',
                 projectType: formData.get('projectType') || '',
                 message: formData.get('message')
             };
@@ -76,29 +87,62 @@ function validateContactForm(form) {
     const requiredFields = form.querySelectorAll('[required]');
     let isValid = true;
 
-    form.querySelectorAll('.error').forEach(field => {
-        field.classList.remove('error');
-    });
-
     requiredFields.forEach(field => {
-        if (!field.value.trim()) {
-            field.classList.add('error');
-            isValid = false;
-        }
+        if (!validateField(field)) isValid = false;
     });
-
-    const email = form.querySelector('input[name="email"]');
-    if (email && email.value && !isValidEmail(email.value)) {
-        email.classList.add('error');
-        showNotification('❌ Podaj prawidłowy adres email', 'error');
-        isValid = false;
-    }
 
     if (!isValid) {
-        showNotification('❌ Proszę wypełnić wszystkie wymagane pola', 'error');
+        showNotification('❌ Sprawdź pola oznaczone jako błędne', 'error');
     }
 
     return isValid;
+}
+
+function validateField(field) {
+    if (field.type === 'checkbox') {
+        if (field.hasAttribute('required') && !field.checked) {
+            setFieldError(field, 'Zgoda jest wymagana, żeby wysłać formularz.');
+            return false;
+        }
+        clearFieldError(field);
+        return true;
+    }
+
+    if (field.hasAttribute('required') && !field.value.trim()) {
+        setFieldError(field, 'To pole jest wymagane.');
+        return false;
+    }
+
+    if (field.type === 'email' && field.value && !isValidEmail(field.value)) {
+        setFieldError(field, 'Podaj prawidłowy adres email.');
+        return false;
+    }
+
+    clearFieldError(field);
+    return true;
+}
+
+function setFieldError(field, message) {
+    field.classList.add('error');
+    field.setAttribute('aria-invalid', 'true');
+
+    const host = field.closest('.form-group') || field.parentElement;
+    let msgEl = host.querySelector('.field-error-msg');
+    if (!msgEl) {
+        msgEl = document.createElement('span');
+        msgEl.className = 'field-error-msg';
+        host.appendChild(msgEl);
+    }
+    msgEl.textContent = message;
+}
+
+function clearFieldError(field) {
+    field.classList.remove('error');
+    field.removeAttribute('aria-invalid');
+
+    const host = field.closest('.form-group') || field.parentElement;
+    const msgEl = host.querySelector('.field-error-msg');
+    if (msgEl) msgEl.remove();
 }
 
 function isValidEmail(email) {
