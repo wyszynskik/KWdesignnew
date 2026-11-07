@@ -264,12 +264,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
     history.replaceState(null, '', '#' + id);
 
+    const requestId = id;
+
     fetch(url)
       .then(r => {
         if (!r.ok) throw new Error('HTTP ' + r.status);
         return r.text();
       })
       .then(html => {
+        if (activeProjectId !== requestId) return;
+
         const parser = new DOMParser();
         const doc = parser.parseFromString(html, 'text/html');
         const section = doc.querySelector('section.kwcs');
@@ -311,6 +315,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         waitForProjectsCss(2000).then(() => {
+          if (activeProjectId !== requestId) return;
           viewer.innerHTML = '';
           viewer.appendChild(wrapper);
 
@@ -320,6 +325,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
       })
       .catch(() => {
+        if (activeProjectId !== requestId) return;
         viewer.innerHTML = '<div class="error-msg">Błąd wczytywania projektu. Spróbuj ponownie.</div>';
       });
   }

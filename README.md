@@ -47,15 +47,13 @@ KWdesignnew/
 │   │   ├── index-styles.css    # Reszta stylu stron głównych (/, /uslugi, /narzedzie...)
 │   │   ├── services-page.css   # Dodatki specyficzne dla /uslugi
 │   │   ├── portfolio.css       # Siatka /portfolio
-│   │   ├── projects.css        # Case studies (kwcs-*, breadcrumb, lightbox)
-│   │   └── about-me.css        # (nieużywany — do usunięcia w kolejnej rundzie)
+│   │   └── projects.css        # Case studies (kwcs-*, breadcrumb, lightbox)
 │   ├── js/
 │   │   ├── nav.js              # Menu (hamburger + smooth-scroll) — WSPÓLNY dla
 │   │   │                       # całej witryny, ładowany z defer wszędzie
 │   │   ├── index-scripts.js    # Formularz kontaktowy, FAQ, animacje, lead magnet
 │   │   ├── portfolio.js        # Viewer case studies (hash routing), lightbox
-│   │   ├── projects.js         # Skrypty case studies (lightbox, rail nawigacji)
-│   │   └── analytics.js        # GA4 — jeden plik, jeden identyfikator
+│   │   └── projects.js         # Skrypty case studies (lightbox, rail nawigacji)
 │   ├── images/ · fonts/
 │
 ├── projects/                   # Case studies — ładowane przez /portfolio (AJAX,
@@ -121,9 +119,9 @@ Wszystkie tokeny (kolory, typografia, spacing, cienie, promienie, transitions, z
 
 ---
 
-## 📊 Google Analytics (GA4)
+## 📊 Analityka
 
-Kod pomiarowy scentralizowany w `assets/js/analytics.js`, ładowany na każdej podstronie — identyfikator zmieniasz w jednym miejscu (`MEASUREMENT_ID`). Dopóki ma wartość-zaślepkę `G-XXXXXXXXXX`, skrypt jest nieaktywny.
+Cloudflare Web Analytics — beacon wklejony w `partials/footer.html` (token w `data-cf-beacon`), synchronizowany na wszystkie strony przez `npm run sync`.
 
 ---
 

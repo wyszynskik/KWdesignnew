@@ -242,7 +242,14 @@ function initWebsiteTabs() {
 // Tutaj minimalny wariant: bindowanie kliknięć + scroll-spy.
 // ========================================
 
+let chapterRailObserver = null;
+
 function initChapterRail() {
+  if (chapterRailObserver) {
+    chapterRailObserver.disconnect();
+    chapterRailObserver = null;
+  }
+
   const rail = document.querySelector('.razdwa-chapter-rail');
   if (!rail) return;
 
@@ -269,7 +276,7 @@ function initChapterRail() {
     .filter(Boolean);
 
   if ('IntersectionObserver' in window && targets.length) {
-    const observer = new IntersectionObserver((entries) => {
+    chapterRailObserver = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
         if (!entry.isIntersecting) return;
         const id = entry.target.id;
@@ -281,7 +288,7 @@ function initChapterRail() {
       rootMargin: '-30% 0px -60% 0px',
       threshold: 0
     });
-    targets.forEach(t => observer.observe(t));
+    targets.forEach(t => chapterRailObserver.observe(t));
   }
 }
 

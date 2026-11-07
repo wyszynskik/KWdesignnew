@@ -1892,6 +1892,32 @@ section {
     margin: 0;
 }
 
+/* Desktop — mapa procesu w 3 kolumnach, bez pionowej osi */
+@media (min-width: 1024px) {
+    .process-timeline-compact {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: var(--space-8);
+        max-width: 1100px;
+        padding: 0;
+    }
+    .process-timeline-compact::before {
+        display: none;
+    }
+    .timeline-step {
+        margin-bottom: 0;
+    }
+    .step-marker {
+        position: static;
+        left: auto;
+        top: auto;
+        margin: 0 auto var(--space-4);
+    }
+    .step-content {
+        text-align: center;
+    }
+}
+
 /* CTA Section */
 .process-cta {
     text-align: center;
@@ -3645,6 +3671,22 @@ section {
     background: #0b0f19;
     padding: 48px 0;
     border-top: 1px solid rgba(255,255,255,0.06);
+}
+
+.vision-section {
+    background: #0b0f19;
+    padding: var(--space-16) 0;
+    text-align: center;
+    border-top: 1px solid rgba(255,255,255,0.06);
+}
+.vision-section .section-title {
+    color: white;
+    text-shadow: none;
+}
+.vision-section .section-subtitle {
+    color: rgba(255,255,255,0.75);
+    max-width: 640px;
+    margin: 0 auto;
 }
 
 /* Loss aversion — jednolinijkowy wstęp nad badge */
