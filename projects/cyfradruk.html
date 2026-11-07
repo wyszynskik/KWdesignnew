@@ -30,7 +30,7 @@
   <link rel="icon" type="image/png" sizes="32x32" href="/assets/images/favicon-32x32.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/assets/images/favicon-16x16.png">
   <link rel="apple-touch-icon" sizes="180x180" href="/assets/images/apple-touch-icon.png">
-  <link rel="shortcut icon" href="/favicon.ico">
+  <link rel="shortcut icon" href="/assets/images/favicon.ico">
 
   <link rel="canonical" href="https://kwyszynski.pl/projects/cyfradruk">
 
@@ -57,6 +57,7 @@
 </head>
 
 <body>
+  <a href="#main" class="skip-link">Przejdź do treści</a>
 
   <!-- partial:header -->
 <header class="header">
@@ -97,7 +98,7 @@
        Narzędzie wewnętrzne (drukarnia cyfrowa). Bez people leadership.
   ================================================================ -->
 
-  <main>
+  <main id="main">
     <section class="kwcs" id="case-cyfradruk-pelne" aria-label="Pełne Case Study: CyfraDruk — automatyzacja kontroli pliku przed drukiem">
 
     <!-- ============================================================
@@ -684,7 +685,7 @@
 
   <!-- Lightbox Modal -->
   <div id="lightbox" class="lightbox" role="dialog" aria-modal="true" aria-label="Powiększony obraz">
-    <span class="lightbox-close" role="button" aria-label="Zamknij lightbox" tabindex="0">&times;</span>
+    <button type="button" class="lightbox-close" aria-label="Zamknij lightbox">&times;</button>
     <img class="lightbox-content" id="lightbox-img" alt="Powiększony obraz">
     <div class="lightbox-caption" id="lightbox-caption"></div>
   </div>

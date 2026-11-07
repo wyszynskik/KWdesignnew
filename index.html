@@ -480,29 +480,29 @@
         <h2 class="section-title">Najczęstsze pytania</h2>
         <div class="faq-container">
             <div class="faq-item">
-                <button class="faq-question">Czy to ma sens dla mojej firmy?<span class="faq-icon">+</span></button>
-                <div class="faq-answer">
+                <button type="button" class="faq-question" aria-expanded="false" aria-controls="faq-answer-1">Czy to ma sens dla mojej firmy?<span class="faq-icon" aria-hidden="true">+</span></button>
+                <div class="faq-answer" id="faq-answer-1">
                     <p>Tak, jeśli chcesz uporządkować proces, uprościć stronę, wdrożyć automatyzację albo połączyć te obszary w jeden spójny system działania. Najczęściej współpracuję z firmami, które czują, że da się pracować szybciej, prościej i z mniejszym chaosem, ale brakuje im czasu albo partnera, który przeprowadzi to od początku do wdrożenia.</p>
                 </div>
             </div>
 
             <div class="faq-item">
-                <button class="faq-question">Od czego zaczynamy?<span class="faq-icon">+</span></button>
-                <div class="faq-answer">
+                <button type="button" class="faq-question" aria-expanded="false" aria-controls="faq-answer-2">Od czego zaczynamy?<span class="faq-icon" aria-hidden="true">+</span></button>
+                <div class="faq-answer" id="faq-answer-2">
                     <p>Zaczynamy od krótkiej rozmowy i poznania Twojej sytuacji: co dziś nie działa, co chcesz uporządkować i jaki efekt chcesz osiągnąć. Na tej podstawie proponuję najlepszy kierunek działania, zakres współpracy i kolejne kroki.</p>
                 </div>
             </div>
 
             <div class="faq-item">
-                <button class="faq-question">Ile to trwa?<span class="faq-icon">+</span></button>
-                <div class="faq-answer">
+                <button type="button" class="faq-question" aria-expanded="false" aria-controls="faq-answer-3">Ile to trwa?<span class="faq-icon" aria-hidden="true">+</span></button>
+                <div class="faq-answer" id="faq-answer-3">
                     <p>Mniejsze automatyzacje zamykam zwykle w kilka tygodni, większe projekty trwają kilka miesięcy. Harmonogram z etapami ustalamy po analizie, więc od początku wiesz, kiedy zobaczysz pierwszy efekt.</p>
                 </div>
             </div>
 
             <div class="faq-item">
-                <button class="faq-question">Ile kosztuje współpraca?<span class="faq-icon">+</span></button>
-                <div class="faq-answer">
+                <button type="button" class="faq-question" aria-expanded="false" aria-controls="faq-answer-4">Ile kosztuje współpraca?<span class="faq-icon" aria-hidden="true">+</span></button>
+                <div class="faq-answer" id="faq-answer-4">
                     <p>Każdy projekt wyceniam po krótkiej analizie zakresu. Wycenę dostajesz z podziałem na etapy, żeby było jasne, za co płacisz i kiedy zobaczysz efekt. Orientacyjny próg dla produktów cyfrowych znajdziesz na <a href="/uslugi#produkty">stronie usług</a>.</p>
                 </div>
             </div>
@@ -547,6 +547,10 @@
 
             <div class="contact-form-container">
                 <form id="contactForm" class="contact-form">
+                    <div class="form-group hp-field" aria-hidden="true">
+                        <label for="website">Strona www</label>
+                        <input type="text" id="website" name="website" tabindex="-1" autocomplete="off" />
+                    </div>
                     <div class="form-row">
                         <div class="form-group">
                             <label for="name">Imię*</label>

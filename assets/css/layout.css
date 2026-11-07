@@ -6,6 +6,21 @@
    ============================================================ */
 
 /* Premium Header - Dark Theme z biaĹym KW */
+.skip-link {
+    position: absolute;
+    top: -100%;
+    left: 0;
+    z-index: 10000;
+    background: var(--color-primary-dark);
+    color: var(--color-text-inverse);
+    padding: 12px 20px;
+    font-weight: 600;
+    text-decoration: none;
+}
+.skip-link:focus {
+    top: 0;
+}
+
 .container {
     max-width: 1180px;
     margin: 0 auto;

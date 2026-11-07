@@ -8,9 +8,7 @@ document.addEventListener('DOMContentLoaded', function() {
     initScrollEffects();
     initNotifications();
     initScrollToTop();
-    initCounters();
     initServiceCardsAnimation();
-    initOrderTool();
     initHeroTextAnimation();
 });
 
@@ -52,7 +50,8 @@ function initContactForm() {
                 phone: formData.get('phone') || '',
                 company: formData.get('company') || '',
                 projectType: formData.get('projectType') || '',
-                message: formData.get('message')
+                message: formData.get('message'),
+                website: formData.get('website') || ''
             };
 
             // WYSYŁANIE PRZEZ GET - OMIJA CORS!
@@ -229,41 +228,6 @@ function initLeadMagnetForm() {
     });
 }
 
-function initCounters() {
-    const counters = document.querySelectorAll('.counter');
-    if (counters.length === 0) return;
-
-    const animateCounter = (counter) => {
-        const target = +counter.getAttribute('data-target');
-        const duration = 1500;
-        const stepTime = 20;
-        const steps = duration / stepTime;
-        const increment = target / steps;
-        let current = 0;
-
-        const timer = setInterval(() => {
-            current += increment;
-            if (current >= target) {
-                clearInterval(timer);
-                counter.innerText = target;
-            } else {
-                counter.innerText = Math.ceil(current);
-            }
-        }, stepTime);
-    };
-
-    const observer = new IntersectionObserver((entries, observer) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                animateCounter(entry.target);
-                observer.unobserve(entry.target);
-            }
-        });
-    }, { threshold: 0.8 });
-
-    counters.forEach(counter => observer.observe(counter));
-}
-
 function initFAQ() {
     const faqItems = document.querySelectorAll('.faq-item');
     
@@ -274,14 +238,16 @@ function initFAQ() {
         if (question && answer) {
             question.addEventListener('click', () => {
                 const isActive = item.classList.contains('active');
-                
+
                 faqItems.forEach(otherItem => {
                     if (otherItem !== item && otherItem.classList.contains('active')) {
                         otherItem.classList.remove('active');
+                        otherItem.querySelector('.faq-question')?.setAttribute('aria-expanded', 'false');
                     }
                 });
-                
+
                 item.classList.toggle('active', !isActive);
+                question.setAttribute('aria-expanded', String(!isActive));
             });
         }
     });
@@ -324,6 +290,13 @@ function initHeroTextAnimation() {
     if (heroEyebrow) heroEyebrow.classList.add('is-visible');
     if (heroSubtitle) heroSubtitle.classList.add('is-visible');
     if (heroActions) heroActions.classList.add('is-visible');
+
+    // Zdejmij will-change z liter po zakończeniu animacji wejścia — nie trzymać warstwy GPU bez końca.
+    heroTitle.addEventListener('animationend', (e) => {
+        if (e.target.classList.contains('char')) {
+            e.target.style.willChange = 'auto';
+        }
+    });
 }
 
 function initAnimations() {
@@ -469,58 +442,3 @@ function initErrorTracking() {
 }
 
 // ========== ORDER TOOL – Dane Zamówienia ==========
-function initOrderTool() {
-    const expressCheckbox = document.getElementById('globalExpress');
-    const orderSummary = document.getElementById('orderSummary');
-    const clearBtn = document.getElementById('orderClear');
-    const excelBtn = document.getElementById('orderExcel');
-
-    if (!expressCheckbox || !orderSummary) return;
-
-    // EXPRESS checkbox toggles .is-express on container
-    expressCheckbox.addEventListener('change', function () {
-        orderSummary.classList.toggle('is-express', this.checked);
-    });
-
-    // Clear all order fields
-    if (clearBtn) {
-        clearBtn.addEventListener('click', function () {
-            ['orderName', 'orderPhone', 'orderEmail', 'orderNotes'].forEach(function (id) {
-                const el = document.getElementById(id);
-                if (el) el.value = '';
-            });
-            const priority = document.getElementById('orderPriority');
-            if (priority) priority.selectedIndex = 0;
-            expressCheckbox.checked = false;
-            orderSummary.classList.remove('is-express');
-        });
-    }
-
-    // Export order data to Excel (CSV download)
-    if (excelBtn) {
-        excelBtn.addEventListener('click', function () {
-            const name = document.getElementById('orderName')?.value || '';
-            const phone = document.getElementById('orderPhone')?.value || '';
-            const email = document.getElementById('orderEmail')?.value || '';
-            const priority = document.getElementById('orderPriority')?.value || '';
-            const notes = document.getElementById('orderNotes')?.value || '';
-            const express = expressCheckbox.checked ? 'TAK' : 'NIE';
-
-            const header = 'Imię i Nazwisko;Telefon;E-mail;Priorytet;EXPRESS;Uwagi';
-            const row = [name, phone, email, priority, express, notes]
-                .map(function (v) { return '"' + v.replace(/"/g, '""') + '"'; })
-                .join(';');
-            const csvContent = '\uFEFF' + header + '\n' + row;
-
-            const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-            const url = URL.createObjectURL(blob);
-            const link = document.createElement('a');
-            link.setAttribute('href', url);
-            link.setAttribute('download', 'zamowienie.csv');
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-            URL.revokeObjectURL(url);
-        });
-    }
-}

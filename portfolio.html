@@ -75,6 +75,7 @@
 
 </head>
 <body class="portfolio-page">
+    <a href="#main" class="skip-link">Przejdź do treści</a>
 
     <!-- Header -->
     <!-- partial:header -->
@@ -107,7 +108,7 @@
         </svg>
     </button>
 
-    <main>
+    <main id="main">
     <!-- About Me Section -->
     <section class="about-me-section">
         <div class="container about-me-grid">
@@ -341,7 +342,7 @@
 <!-- /partial:footer -->
 
     <div id="lightbox" class="lightbox" role="dialog" aria-modal="true" aria-label="Powiększony obraz">
-      <span class="lightbox-close" role="button" aria-label="Zamknij lightbox" tabindex="0">&times;</span>
+      <button type="button" class="lightbox-close" aria-label="Zamknij lightbox">&times;</button>
       <img class="lightbox-content" id="lightbox-img" alt="Powiększony obraz">
       <div class="lightbox-caption" id="lightbox-caption"></div>
     </div>
