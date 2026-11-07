@@ -127,6 +127,7 @@ function initLightbox() {
     setTimeout(() => {
       lightbox.classList.add('active');
       lightboxImg.src = img.src;
+      lightboxImg.alt = img.dataset.caption || img.alt || 'Powiększony obraz';
       lightboxCaption.textContent = img.dataset.caption || img.alt || '';
       document.body.classList.add('lightbox-open');
       closeBtn.focus();

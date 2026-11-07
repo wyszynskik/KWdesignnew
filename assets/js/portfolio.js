@@ -289,6 +289,19 @@ document.addEventListener('DOMContentLoaded', () => {
           return;
         }
 
+        // /portfolio ma już własny H1 — case study wstrzyknięty do viewera
+        // nie może mieć drugiego. Demotujemy jego H1 do H2 (sam standalone
+        // /projects/*.html zostaje z H1, bo tam section.kwcs jest jedynym H1 na stronie).
+        const injectedH1 = section.querySelector('h1');
+        if (injectedH1) {
+          const h2 = document.createElement('h2');
+          h2.innerHTML = injectedH1.innerHTML;
+          for (const attr of injectedH1.attributes) {
+            h2.setAttribute(attr.name, attr.value);
+          }
+          injectedH1.replaceWith(h2);
+        }
+
         const wrapper = document.createElement('div');
         wrapper.className = 'project-content';
 
