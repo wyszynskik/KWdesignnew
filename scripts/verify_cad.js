@@ -1,14 +1,19 @@
+// Wymaga uruchomionego `npm run serve` (localhost:8787) w drugim terminalu.
+// BASE_URL=http://inny-host:port node scripts/verify_cad.js  -- zeby zmienic host.
 const { chromium } = require('playwright');
 const fs = require('fs');
+const path = require('path');
+const os = require('os');
 
-const OUT = 'C:\\Users\\Karolek\\AppData\\Local\\Temp\\razdwa_cad';
+const BASE_URL = process.env.BASE_URL || 'http://localhost:8787';
+const OUT = path.join(os.tmpdir(), 'kwdesign-verify', 'razdwa_cad');
 if (!fs.existsSync(OUT)) fs.mkdirSync(OUT, { recursive: true });
 
 (async () => {
   const browser = await chromium.launch();
   const page = await browser.newPage();
   await page.setViewportSize({ width: 1440, height: 900 });
-  await page.goto('http://localhost:8787/KWdesignnew/projects/razdwa_aplikacja.html', { waitUntil: 'networkidle' });
+  await page.goto(`${BASE_URL}/projects/razdwa_aplikacja.html`, { waitUntil: 'networkidle' });
 
   const grid = page.locator('#razdwa-cad ~ .kwcs-sec .kwcs-gallery-grid').first();
   await grid.scrollIntoViewIfNeeded();

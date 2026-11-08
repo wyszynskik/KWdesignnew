@@ -1,8 +1,12 @@
+// Wymaga uruchomionego `npm run serve` (localhost:8787) w drugim terminalu.
+// BASE_URL=http://inny-host:port node scripts/verify_razdwa.js  -- zeby zmienic host.
 const { chromium } = require('playwright');
 const path = require('path');
 const fs = require('fs');
+const os = require('os');
 
-const OUT = 'C:\\Users\\Karolek\\AppData\\Local\\Temp\\razdwa_shots';
+const BASE_URL = process.env.BASE_URL || 'http://localhost:8787';
+const OUT = path.join(os.tmpdir(), 'kwdesign-verify', 'razdwa_shots');
 if (!fs.existsSync(OUT)) fs.mkdirSync(OUT, { recursive: true });
 
 (async () => {
@@ -10,7 +14,7 @@ if (!fs.existsSync(OUT)) fs.mkdirSync(OUT, { recursive: true });
   const page = await browser.newPage();
   await page.setViewportSize({ width: 1440, height: 900 });
 
-  const fileUrl = 'file:///D:/KWdesign/projects/razdwa_aplikacja.html';
+  const fileUrl = `${BASE_URL}/projects/razdwa_aplikacja.html`;
   await page.goto(fileUrl, { waitUntil: 'networkidle' });
 
   // Full page overview
