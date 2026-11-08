@@ -26,13 +26,28 @@ function sanitizeForSheet_(value) {
   return /^[=+\-@]/.test(v) ? "'" + v : v;
 }
 
-// Rate limit: max 1 zgłoszenie z tego samego adresu e-mail na 15 minut —
-// blokuje prosty skrypt walący doGet?email=... w pętli (email bombing na Gmailu właściciela).
-function isRateLimited_(email) {
+// Rate limit per adres e-mail: max 1 zgłoszenie na 15 minut w danym "bucket"
+// (bucket rozdziela formularz kontaktowy od lead magnetu — bez tego ten sam
+// email w jednym i w drugim formularzu blokował się wzajemnie).
+function isRateLimited_(bucket, email) {
   const cache = CacheService.getScriptCache();
-  const key = 'contact_' + email.toLowerCase();
+  const key = bucket + '_' + email.toLowerCase();
   if (cache.get(key)) return true;
   cache.put(key, '1', 15 * 60);
+  return false;
+}
+
+// Globalny throttle niezależny od adresu e-mail: GAS nie udostępnia IP
+// wywołującego (CacheService/doGet nie mają takiego pola), więc rate-limit
+// per-email można obejść rotując adresy — to ogranicza szkodę (np. joe-job,
+// wyczerpanie dziennego limitu Gmaila) sufitem na liczbę wysyłek w danym
+// buckecie na godzinę, bez względu na to, jaki email atakujący poda.
+function isGloballyThrottled_(bucket, maxPerHour) {
+  const cache = CacheService.getScriptCache();
+  const key = 'global_' + bucket;
+  const count = parseInt(cache.get(key) || '0', 10);
+  if (count >= maxPerHour) return true;
+  cache.put(key, String(count + 1), 60 * 60);
   return false;
 }
 
@@ -79,7 +94,11 @@ function doGet(e) {
       return ContentService.createTextOutput('ERROR: Nieprawidłowy adres email');
     }
 
-    if (isRateLimited_(data.email)) {
+    if (isGloballyThrottled_('contact', 20)) {
+      return ContentService.createTextOutput('ERROR: Za duży ruch na formularzu, spróbuj za chwilę');
+    }
+
+    if (isRateLimited_('contact', data.email)) {
       return ContentService.createTextOutput('ERROR: Zgłoszenie z tym adresem email zostało już wysłane, odczekaj 15 minut');
     }
 
@@ -149,7 +168,12 @@ function handleLeadMagnet(e) {
       .setMimeType(ContentService.MimeType.TEXT);
   }
 
-  if (isRateLimited_(email)) {
+  if (isGloballyThrottled_('leadmagnet', 30)) {
+    return ContentService.createTextOutput('ERROR: too much traffic, try later')
+      .setMimeType(ContentService.MimeType.TEXT);
+  }
+
+  if (isRateLimited_('leadmagnet', email)) {
     return ContentService.createTextOutput('ERROR: already sent, try later')
       .setMimeType(ContentService.MimeType.TEXT);
   }
