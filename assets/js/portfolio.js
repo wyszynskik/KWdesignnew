@@ -39,6 +39,9 @@ document.addEventListener('DOMContentLoaded', () => {
     let smileReadyResolve;
     const smileReady = new Promise((resolve) => { smileReadyResolve = resolve; });
     amiHover.addEventListener('load', () => smileReadyResolve(), { once: true });
+    // Bez tego: obrazek 404/offline => smileReady nigdy sie nie rozwiazuje,
+    // revealSmile() wisi w nieskonczoność na "await smileReady" (linia 64).
+    amiHover.addEventListener('error', () => smileReadyResolve(), { once: true });
 
     window.addEventListener('load', () => {
       const loadSmileImage = () => {
