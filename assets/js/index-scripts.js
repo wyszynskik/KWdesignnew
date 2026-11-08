@@ -155,7 +155,7 @@ function setSubmitButtonState(loading, submitBtn, btnText, btnLoader) {
     
     if (loading) {
         btnText.style.display = 'none';
-        btnLoader.style.display = 'block';
+        btnLoader.style.display = 'flex';
         submitBtn.disabled = true;
     } else {
         btnText.style.display = 'block';
