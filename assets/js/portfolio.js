@@ -208,6 +208,7 @@ document.addEventListener('DOMContentLoaded', () => {
     'sir-roger': 'projects/sir-roger',
     'RazDwa': 'projects/razdwa_aplikacja',
     'cyfradruk': 'projects/cyfradruk',
+    'KW-Design': 'projects/KW-Design',
   };
 
   const viewer = document.getElementById('case-viewer');
