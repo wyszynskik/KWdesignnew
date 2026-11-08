@@ -337,6 +337,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
           if (typeof initAccordion === 'function') initAccordion();
           if (typeof initChapterRail === 'function') initChapterRail();
+          // Bez tego: case study z zakladkami (.tab-btn/.tab-content) dzialalo
+          // na samodzielnej stronie /projects/<slug>, ale w tym SPA-viewerze
+          // zakladki byly wyrenderowane i calkowicie nieinteraktywne (listenery
+          // nigdy sie nie podpinaly, bo initWebsiteTabs() nigdy nie bylo wywolane).
+          if (typeof initWebsiteTabs === 'function') initWebsiteTabs();
           watchRailVisibility();
         });
       })
