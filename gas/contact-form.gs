@@ -1,25 +1,16 @@
-// ═══════════════════════════════════════════════════════════════════════════
-// CAŁY KOD BACKENDU GAS DLA KWYSZYNSKI.PL — formularz kontaktowy + lead magnet
-// ═══════════════════════════════════════════════════════════════════════════
-// To jest kompletna, aktualna wersja projektu Google Apps Script podpiętego
-// pod CONTACT_API_URL w assets/js/index-scripts.js.
+// ================ APPS SCRIPT - FORMULARZ KONTAKTOWY + LEAD MAGNET ================
+// WAŻNE: po wklejeniu do script.google.com -> Rozmieść -> Zarządzaj wdrożeniami ->
+// edytuj istniejące wdrożenie -> Wersja: Nowa wersja -> Wdróż. URL /exec się nie zmienia.
 //
-// DEPLOYMENT:
-// 1. Otwórz projekt GAS (script.google.com) → wklej CAŁĄ zawartość tego pliku,
-//    zastępując obecny kod (usuń też ewentualną osobną funkcję autoryzujGmail —
-//    była tylko jednorazowym narzędziem do wymuszenia autoryzacji Gmaila).
-// 2. Rozmieść → Zarządzaj wdrożeniami → edytuj istniejące wdrożenie →
-//    Wersja: Nowa wersja → Wdróż.
-//    URL /exec się NIE zmienia — index-scripts.js zostaje bez zmian.
-// 3. Jeśli po wdrożeniu maile przestaną wychodzić, sprawdź w arkuszu KONTAKTY
-//    kolumnę Status — błędy Gmaila są tam zapisywane wprost (np. "BŁĄD MAILA: ...").
-// ═══════════════════════════════════════════════════════════════════════════
+// Wymaga: w arkuszu KONTAKTY wstawiona nowa kolumna "Firma" między Telefon i Rodzaj
+// projektu (kolumna E), PRZED wdrożeniem tego kodu - inaczej nowe zgłoszenia wylądują
+// w złych kolumnach względem starych nagłówków.
 
 function isValidEmailFormat_(email) {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 }
 
-// Google Sheets wykonuje formuły zaczynające się od =,+,-,@ — apostrof z przodu
+// Google Sheets wykonuje formuły zaczynające się od =,+,-,@ - apostrof z przodu
 // wymusza traktowanie wartości jako tekst (Formula Injection guard).
 function sanitizeForSheet_(value) {
   const v = String(value || '');
@@ -27,8 +18,8 @@ function sanitizeForSheet_(value) {
 }
 
 // Rate limit per adres e-mail: max 1 zgłoszenie na 15 minut w danym "bucket"
-// (bucket rozdziela formularz kontaktowy od lead magnetu — bez tego ten sam
-// email w jednym i w drugim formularzu blokował się wzajemnie).
+// (bucket rozdziela formularz kontaktowy od lead magnetu, żeby ten sam email
+// w jednym i w drugim formularzu się wzajemnie nie blokował).
 function isRateLimited_(bucket, email) {
   const cache = CacheService.getScriptCache();
   const key = bucket + '_' + email.toLowerCase();
@@ -38,10 +29,9 @@ function isRateLimited_(bucket, email) {
 }
 
 // Globalny throttle niezależny od adresu e-mail: GAS nie udostępnia IP
-// wywołującego (CacheService/doGet nie mają takiego pola), więc rate-limit
-// per-email można obejść rotując adresy — to ogranicza szkodę (np. joe-job,
-// wyczerpanie dziennego limitu Gmaila) sufitem na liczbę wysyłek w danym
-// buckecie na godzinę, bez względu na to, jaki email atakujący poda.
+// wywołującego, więc rate-limit per-email da się obejść rotując adresy -
+// to ogranicza szkodę (spam na cudze adresy, wyczerpanie limitu Gmaila)
+// sufitem liczby wysyłek w danym buckecie na godzinę.
 function isGloballyThrottled_(bucket, maxPerHour) {
   const cache = CacheService.getScriptCache();
   const key = 'global_' + bucket;
@@ -51,20 +41,27 @@ function isGloballyThrottled_(bucket, maxPerHour) {
   return false;
 }
 
-// doGet zostaje dla health-checku ("API działa!" przy wejściu w /exec bez
-// parametrów) i starych linków z zapisanymi query-stringami. Formularze na
-// stronie wysyłają teraz przez doPost — dane w body żądania, nie w URL, więc
-// nie trafiają do logów serwera/historii przeglądarki/proxy.
 function doGet(e) {
-  return handleRequest_(e);
+  return handleFormRequest_(e, 'GET');
 }
 
+// Formularz na stronie wysyła teraz POST z body jako URLSearchParams
+// (Content-Type: application/x-www-form-urlencoded) - Apps Script wypełnia
+// e.parameter identycznie jak przy GET, więc ten sam handler obsługuje oba.
+// Dane nie lecą w URL (nie trafiają do logów/historii przeglądarki).
 function doPost(e) {
-  return handleRequest_(e);
+  return handleFormRequest_(e, 'POST');
 }
 
-function handleRequest_(e) {
+function doOptions() {
+  return ContentService.createTextOutput('');
+}
+
+function handleFormRequest_(e, method) {
   try {
+    console.log('📨 Otrzymano ' + method + ' request');
+    console.log('📝 e.parameter:', JSON.stringify(e.parameter));
+
     // Routing dla lead magnetu (checklista PDF z narzedzie.html)
     if (e.parameter && e.parameter.action === 'lead_magnet') {
       return handleLeadMagnet(e);
@@ -78,13 +75,17 @@ function handleRequest_(e) {
       });
     }
 
+    console.log('📝 Przetworzone parametry:', JSON.stringify(params));
+
     if (!params || Object.keys(params).length === 0) {
+      console.log('ℹ️ Brak parametrów - zwracam podstawową odpowiedź');
       return ContentService.createTextOutput('API działa!');
     }
 
-    // Honeypot — ukryte pole w formularzu, wypełnia je tylko bot. Zwracamy
+    // Honeypot - ukryte pole w formularzu, wypełnia je tylko bot. Zwracamy
     // SUCCESS (nie ERROR), żeby bot nie dostał sygnału, że został złapany.
     if (params.website) {
+      console.log('🕷️ Honeypot złapany, ignoruję zgłoszenie');
       return ContentService.createTextOutput('SUCCESS');
     }
 
@@ -98,30 +99,39 @@ function handleRequest_(e) {
       message: params.message || ''
     };
 
+    console.log('📝 Dane:', JSON.stringify(data));
+
     if (!data.name || !data.email || !data.message) {
+      console.log('❌ Brakuje wymaganych danych:', data);
       return ContentService.createTextOutput('ERROR: Brakuje wymaganych danych');
     }
 
     if (!isValidEmailFormat_(data.email)) {
+      console.log('❌ Nieprawidłowy email:', data.email);
       return ContentService.createTextOutput('ERROR: Nieprawidłowy adres email');
     }
 
     if (isGloballyThrottled_('contact', 20)) {
+      console.log('⛔ Globalny throttle - za duży ruch');
       return ContentService.createTextOutput('ERROR: Za duży ruch na formularzu, spróbuj za chwilę');
     }
 
     if (isRateLimited_('contact', data.email)) {
+      console.log('⛔ Rate limit dla:', data.email);
       return ContentService.createTextOutput('ERROR: Zgłoszenie z tym adresem email zostało już wysłane, odczekaj 15 minut');
     }
 
+    // Zapisz do arkusza
     const ss = SpreadsheetApp.getActiveSpreadsheet();
     let sheet = ss.getSheetByName('KONTAKTY');
+
     if (!sheet) {
       sheet = ss.insertSheet('KONTAKTY');
       sheet.appendRow(['Data', 'Imię', 'Email', 'Telefon', 'Firma', 'Projekt', 'Budżet', 'Wiadomość', 'Status']);
+      console.log('📊 Utworzono arkusz KONTAKTY');
     }
 
-    // Zapisujemy zgłoszenie NAJPIERW, niezależnie od tego czy mail się uda —
+    // Zapisujemy zgłoszenie NAJPIERW, niezależnie od tego czy mail się uda -
     // dane klienta nie mogą zginąć, jeśli zawiedzie tylko powiadomienie mailowe.
     const rowIndex = sheet.appendRow([
       new Date(),
@@ -135,7 +145,8 @@ function handleRequest_(e) {
       'NOWE'
     ]).getLastRow();
 
-    let mailError = null;
+    console.log(`✅ Zapisano: ${data.name} <${data.email}>`);
+
     try {
       const imie = data.name.split(' ')[0] || '';
       GmailApp.sendEmail(
@@ -149,28 +160,25 @@ function handleRequest_(e) {
         `Email: ${data.email}\nTelefon: ${data.phone}\nFirma: ${data.company}\nProjekt: ${data.projectType}\nWiadomość: ${data.message}`,
         { replyTo: data.email }
       );
-    } catch (err) {
-      mailError = err.message;
-      // Błąd maila zapisujemy WPROST do arkusza, żeby był widoczny bez
-      // zaglądania w logi Apps Script — inaczej ginie bezpowrotnie.
-      sheet.getRange(rowIndex, 9).setValue('BŁĄD MAILA: ' + mailError);
-    }
-
-    if (mailError) {
-      console.error('Zgłoszenie zapisane, ale wysyłka maila nie powiodła się: ' + mailError);
+      console.log('📧 Emaile wysłane');
+    } catch (mailError) {
+      console.error('❌ Błąd emaili:', mailError.message);
+      // Błąd maila zapisujemy WPROST do arkusza (kolumna Status, teraz I=9
+      // po dodaniu kolumny Firma), żeby był widoczny bez zaglądania w logi.
+      sheet.getRange(rowIndex, 9).setValue('BŁĄD MAILA: ' + mailError.message);
     }
 
     return ContentService.createTextOutput('SUCCESS');
 
   } catch (error) {
-    console.error('Błąd handleRequest_:', error);
+    console.error('❌ Błąd ' + method + ':', error);
     return ContentService.createTextOutput('ERROR: ' + error.message);
   }
 }
 
-// ── LEAD MAGNET ──────────────────────────────────────────────────────────────
+// ── LEAD MAGNET (checklista PDF z narzedzie.html) ───────────────────────────
 var PDF_URL = 'https://kwyszynski.pl/assets/pdf/7-sygnalow-automatyzacja.pdf';
-var SHEET_NAME = 'LeadMagnet';
+var LEAD_MAGNET_SHEET_NAME = 'LeadMagnet';
 
 function handleLeadMagnet(e) {
   var email = (e.parameter.email || '').trim().toLowerCase();
@@ -195,9 +203,9 @@ function handleLeadMagnet(e) {
   var pdfStatus = 'OK';
 
   var ss = SpreadsheetApp.getActiveSpreadsheet();
-  var sheet = ss.getSheetByName(SHEET_NAME);
+  var sheet = ss.getSheetByName(LEAD_MAGNET_SHEET_NAME);
   if (!sheet) {
-    sheet = ss.insertSheet(SHEET_NAME);
+    sheet = ss.insertSheet(LEAD_MAGNET_SHEET_NAME);
     sheet.appendRow(['Timestamp', 'Email', 'Source', 'Status']);
   }
 
@@ -217,7 +225,7 @@ function handleLeadMagnet(e) {
   var htmlBody = [
     '<p>Cześć,</p>',
     '<p>Dziękuję za pobranie materiału. Znajdziesz go w załączniku.</p>',
-    '<p>Jeśli masz konkretny proces, który chcesz omówić — napisz lub przejdź na ',
+    '<p>Jeśli masz konkretny proces, który chcesz omówić - napisz lub przejdź na ',
     '<a href="https://kwyszynski.pl/uslugi">kwyszynski.pl/uslugi</a>.',
     '</p>',
     '<p>Karol Wyszyński<br>Prowadzenie Projektów i Automatyzacja Procesów</p>',
