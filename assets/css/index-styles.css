@@ -1984,6 +1984,7 @@ section {
 
 } /* ✅ KONIEC TABLET */
 
+@media (max-width: 768px) {
     .benefits-grid {
         grid-template-columns: 1fr;
         gap: var(--space-6);
