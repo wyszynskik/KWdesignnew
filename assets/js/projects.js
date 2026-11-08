@@ -83,6 +83,7 @@ function initLightbox() {
   let scrollPosition = 0;
   let imageElement = null;
   let previouslyFocused = null;
+  let openTimer = null;
 
   const closeLightbox = () => {
     lightbox.classList.remove('active');
@@ -124,7 +125,8 @@ function initLightbox() {
     imageElement = img;
     previouslyFocused = document.activeElement;
 
-    setTimeout(() => {
+    openTimer = setTimeout(() => {
+      openTimer = null;
       lightbox.classList.add('active');
       lightboxImg.src = img.src;
       lightboxImg.alt = img.dataset.caption || img.alt || 'Powiększony obraz';
@@ -146,6 +148,15 @@ function initLightbox() {
   });
 
   document.addEventListener('keydown', (e) => {
+    // Escape w oknie 300ms miedzy klikiem i realnym otwarciem (setTimeout
+    // powyzej) - lightbox jeszcze nie ma klasy "active", wiec bez tego
+    // Escape nic nie robi i okno i tak sie otwiera 300ms po probie zamkniecia.
+    if (e.key === 'Escape' && openTimer) {
+      clearTimeout(openTimer);
+      openTimer = null;
+      return;
+    }
+
     if (!lightbox.classList.contains('active')) return;
 
     if (e.key === 'Escape') {
