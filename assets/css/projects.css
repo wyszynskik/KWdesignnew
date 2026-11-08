@@ -46,7 +46,7 @@
 
 
 .kwcs-header:focus-visible {
-  outline: 3px solid #2563eb;
+  outline: 3px solid var(--color-brand);
   outline-offset: 2px;
 }
 
@@ -305,7 +305,7 @@
 }
 
 .kwcs-chip:focus-visible {
-  outline: 3px solid #2563eb;
+  outline: 3px solid var(--color-brand);
   outline-offset: 2px;
 }
 
@@ -397,7 +397,7 @@
 }
 
 .kwcs-card:focus-visible {
-  outline: 3px solid #2563eb;
+  outline: 3px solid var(--color-brand);
   outline-offset: 4px;
 }
 
@@ -485,7 +485,7 @@
 }
 
 .kwcs-cta:focus-visible {
-  outline: 3px solid #2563eb;
+  outline: 3px solid var(--color-brand);
   outline-offset: 2px;
 }
 
@@ -786,7 +786,7 @@ body.lightbox-open {
 }
 
 .showcase-section h3:focus-visible {
-  outline: 3px solid #2563eb;
+  outline: 3px solid var(--color-brand);
   outline-offset: 4px;
 }
 
@@ -829,13 +829,13 @@ body.lightbox-open {
 
 .showcase-item:hover {
   transform: translateY(-6px);
-  box-shadow: 0 16px 50px rgba(37, 99, 235, 0.12), 0 8px 25px rgba(37, 99, 235, 0.08);
-  border-color: rgba(37, 99, 235, 0.3);
+  box-shadow: 0 16px 50px rgba(6, 182, 212, 0.12), 0 8px 25px rgba(6, 182, 212, 0.08);
+  border-color: rgba(6, 182, 212, 0.3);
   z-index: 10;
 }
 
 .showcase-item:focus-visible {
-  outline: 3px solid #2563eb;
+  outline: 3px solid var(--color-brand);
   outline-offset: 4px;
 }
 
@@ -857,7 +857,7 @@ body.lightbox-open {
 }
 
 .showcase-item img:focus-visible {
-  outline: 3px solid #2563eb;
+  outline: 3px solid var(--color-brand);
   outline-offset: 4px;
 }
 
@@ -907,12 +907,12 @@ body.lightbox-open {
 }
 
 .features-box:hover {
-  box-shadow: 0 16px 50px rgba(37, 99, 235, 0.12), 0 8px 25px rgba(37, 99, 235, 0.08);
-  border-color: rgba(37, 99, 235, 0.3);
+  box-shadow: 0 16px 50px rgba(6, 182, 212, 0.12), 0 8px 25px rgba(6, 182, 212, 0.08);
+  border-color: rgba(6, 182, 212, 0.3);
 }
 
 .features-box:focus-visible {
-  outline: 3px solid #2563eb;
+  outline: 3px solid var(--color-brand);
   outline-offset: 4px;
 }
 
@@ -1848,7 +1848,7 @@ body.lightbox-open {
 }
 
 .hero-image-cta:focus-visible {
-  outline: 3px solid #2563eb;
+  outline: 3px solid var(--color-brand);
   outline-offset: 2px;
 }
 
@@ -1921,7 +1921,7 @@ body.lightbox-open {
 
 /* 3. DECYZJE UX (Boxes) */
 .ux-decision-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5rem; max-width: 900px; margin: 2rem auto; }
-.ux-decision-box { background: #fff; border: 1px solid #e2e8f0; border-left: 4px solid #0ea5e9; border-radius: 0.75rem; padding: 1.5rem; box-shadow: 0 4px 12px rgba(0,0,0,0.03); }
+.ux-decision-box { background: #fff; border: 1px solid #e2e8f0; border-left: 4px solid var(--color-brand); border-radius: 0.75rem; padding: 1.5rem; box-shadow: 0 4px 12px rgba(0,0,0,0.03); }
 .ux-decision-box .ux-label { font-size: 0.75rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: var(--color-text-accent); margin-bottom: 0.5rem; display: block; }
 .ux-decision-box h3, .ux-decision-box h4 { font-size: 1rem; font-weight: 700; color: var(--color-text-primary); margin-bottom: 0.5rem; }
 .ux-decision-box p { font-size: 0.875rem; color: var(--color-text-body); line-height: 1.6; margin: 0; }
@@ -4254,7 +4254,7 @@ body { overflow-x: hidden; }
 }
 
 .kwcs-project-nav__link:focus-visible {
-  outline: 3px solid #2563eb;
+  outline: 3px solid var(--color-brand);
   outline-offset: 3px;
 }
 
