@@ -35,7 +35,11 @@ KWdesignnew/
 │
 ├── scripts/
 │   ├── sync-partials.js        # npm run sync / sync:check
-│   └── serve_kwdesign.js       # npm run serve
+│   ├── update-sitemap.js       # npm run sitemap / sitemap:check
+│   ├── serve_kwdesign.js       # npm run serve
+│   └── verify_*.js             # 4 ad-hoc skrypty Playwright (zrzuty razdwa_aplikacja,
+│                                # debug wizualny) — npm run verify:cad/:phase2/:razdwa/:razdwa2,
+│                                # wymagają `npm run serve` uruchomionego w drugim terminalu
 │
 ├── assets/
 │   ├── css/
@@ -45,6 +49,8 @@ KWdesignnew/
 │   │   ├── layout.css          # .header/.nav*/.hamburger/.footer* — ładowany
 │   │   │                       # na KAŻDEJ stronie, w tym projects/*.html
 │   │   ├── index-styles.css    # Reszta stylu stron głównych (/, /uslugi, /narzedzie...)
+│   │   ├── kw-buttons.css      # System przycisków (.kw-btn*) — po index-styles.css,
+│   │   │                       # żeby aliasy wygrywały w kaskadzie
 │   │   ├── services-page.css   # Dodatki specyficzne dla /uslugi
 │   │   ├── portfolio.css       # Siatka /portfolio
 │   │   └── projects.css        # Case studies (kwcs-*, breadcrumb, lightbox)
@@ -54,7 +60,7 @@ KWdesignnew/
 │   │   ├── index-scripts.js    # Formularz kontaktowy, FAQ, animacje, lead magnet
 │   │   ├── portfolio.js        # Viewer case studies (hash routing), lightbox
 │   │   └── projects.js         # Skrypty case studies (lightbox, rail nawigacji)
-│   ├── images/ · fonts/
+│   ├── images/ · fonts/ · pdf/ · data/
 │
 ├── projects/                   # Case studies — ładowane przez /portfolio (AJAX,
 │   ├── razdwa_aplikacja.html   # tylko section.kwcs) ORAZ dostępne samodzielnie
@@ -65,9 +71,15 @@ KWdesignnew/
 │   ├── voucher-salon-magdy.html
 │   └── KW-Design.html
 │
-├── gas/                        # Kod Google Apps Script (formularz + lead magnet)
-└── docs/
-    └── audyt-portfolio.md      # Raport z każdej rundy zmian treści/technicznych
+├── gas/                        # Kod Google Apps Script (formularz + lead magnet) —
+│                                # osobny system (script.google.com), wymaga ręcznego
+│                                # wklejenia + redeployu po każdej zmianie tego pliku
+├── .github/workflows/          # CI: sync:check + sitemap:check na PR/push do main
+├── .gitattributes               # wymusza LF na checkout/commit (zapobiega false-positive
+│                                # w sync:check przez CRLF/LF z edytorów Windows)
+└── docs/                       # Raporty audytowe i materiały pomocnicze (case-study-playbook,
+                                 # szablony case study, mapa przycisków) — audyt-portfolio.md
+                                 # to najdłuższy, zawiera historię każdej rundy zmian
 ```
 
 ---
@@ -99,10 +111,15 @@ Case studies (`projects/*.html`) nie ładują `index-styles.css` — tylko `toke
 ## 🖥️ Komendy
 
 ```bash
-npm run serve        # lokalny serwer statyczny, port 8787 (ścieżka repo liczona z __dirname)
-npm run sync          # synchronizuje partiale do wszystkich stron
-npm run sync:check    # weryfikuje synchronizację, bez zapisu (exit 1 przy rozjeździe)
+npm run serve          # lokalny serwer statyczny, port 8787 (ścieżka repo liczona z __dirname)
+npm run sync           # synchronizuje partiale do wszystkich stron + odświeża sitemap
+npm run sync:check     # weryfikuje synchronizację partiali, bez zapisu (exit 1 przy rozjeździe)
+npm run sitemap        # odświeża <lastmod> w sitemap.xml wg ostatniego commita pliku
+npm run sitemap:check  # weryfikuje sitemap.xml, bez zapisu (exit 1 przy rozjeździe)
+npm run verify:razdwa  # i 3 pozostałe verify:* — ad-hoc Playwright, wymaga npm run serve w tle
 ```
+
+**CI** (`.github/workflows/checks.yml`) uruchamia `sync:check` + `sitemap:check` na każdym PR i pushu do `main`.
 
 ---
 
@@ -115,7 +132,10 @@ Wszystkie tokeny (kolory, typografia, spacing, cienie, promienie, transitions, z
 ## 🔒 Bezpieczeństwo
 
 - `_headers` (Cloudflare Pages, nieaktywny na GitHub Pages): CSP, HSTS, X-Frame-Options.
-- Formularze: dane wysyłane do Google Apps Script (GET).
+- Formularze: POST do Google Apps Script (`gas/contact-form.gs`) — dane w body, nie w URL.
+  Honeypot, walidacja formatu email, sanityzacja przed Formula Injection w arkuszu,
+  rate-limit per-email (15 min) + globalny throttle per godzinę (GAS nie udostępnia
+  IP wywołującego, więc per-email rate-limit da się obejść rotacją adresów).
 
 ---
 
