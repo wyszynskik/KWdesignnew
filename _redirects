@@ -39,18 +39,12 @@
 /projects/wizualizacje.html          /projects/wizualizacje              301
 
 ###############################################################################
-# APLIKACJA GOOGLE APPS SCRIPT – PROXY FORMULARZA
+# APLIKACJA GOOGLE APPS SCRIPT – FORMULARZ
 ###############################################################################
-# UWAGA: Cloudflare Pages jest statyczny. Nie obsłuży PHP.
-# Plik formHandler.php z repo NIE zadziała na Pages.
-# Rozwiązania:
-#   A) Zostawić obecny kod JS z GET do Apps Script (działa, ale dane w URL)
-#   B) Użyć Cloudflare Workers jako proxy do Apps Script (POST)
-#   C) Użyć zewnętrznego serwisu (Formspree, FormSubmit, Netlify Forms)
-#
-# Jeśli wybierzesz opcję B (Workers), poniższa reguła przekieruje
-# ruch z /api/contact na Twojego Workera:
-# /api/contact/*  https://twoj-worker.nazwa.workers.dev/:splat  200
+# Formularz wysyła POST bezpośrednio do Apps Script (assets/js/index-scripts.js,
+# CONTACT_API_URL) - bez proxy, bez danych w URL. Nie wymaga reguły tutaj.
+# Jeśli kiedyś zajdzie potrzeba proxy (np. ukrycie URL-a Apps Script), opcja:
+# Cloudflare Workers jako proxy -> /api/contact/*  https://twoj-worker.nazwa.workers.dev/:splat  200
 
 ###############################################################################
 # SPA FALLBACK (gdybyś w przyszłości przeszedł na React/Vue/Svelte)
