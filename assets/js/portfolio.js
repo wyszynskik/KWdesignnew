@@ -39,6 +39,9 @@ document.addEventListener('DOMContentLoaded', () => {
     let smileReadyResolve;
     const smileReady = new Promise((resolve) => { smileReadyResolve = resolve; });
     amiHover.addEventListener('load', () => smileReadyResolve(), { once: true });
+    // Bez tego: obrazek 404/offline => smileReady nigdy sie nie rozwiazuje,
+    // revealSmile() wisi w nieskonczoność na "await smileReady" (linia 64).
+    amiHover.addEventListener('error', () => smileReadyResolve(), { once: true });
 
     window.addEventListener('load', () => {
       const loadSmileImage = () => {
@@ -334,6 +337,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
           if (typeof initAccordion === 'function') initAccordion();
           if (typeof initChapterRail === 'function') initChapterRail();
+          // Bez tego: case study z zakladkami (.tab-btn/.tab-content) dzialalo
+          // na samodzielnej stronie /projects/<slug>, ale w tym SPA-viewerze
+          // zakladki byly wyrenderowane i calkowicie nieinteraktywne (listenery
+          // nigdy sie nie podpinaly, bo initWebsiteTabs() nigdy nie bylo wywolane).
+          if (typeof initWebsiteTabs === 'function') initWebsiteTabs();
           watchRailVisibility();
         });
       })

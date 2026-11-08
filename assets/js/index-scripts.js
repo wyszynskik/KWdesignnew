@@ -17,7 +17,10 @@ document.addEventListener('DOMContentLoaded', function() {
 const CONTACT_API_URL = 'https://script.google.com/macros/s/AKfycbz7q6dEJrmXBq2WKjcVuLUub0nSTNV1I2F7a8n6UgieHmiESbaxHG-nxrx7sT3AJiCz/exec';
 
 // Contact form functionality
-// Contact form functionality - WERSJA GET (OMIJA CORS)
+// Wysylka przez POST z body jako URLSearchParams - browser sam ustawia
+// Content-Type: application/x-www-form-urlencoded, co jest "simple request"
+// (bez CORS preflight), a dane (imie/email/telefon/wiadomosc) nie leca w URL
+// - nie trafiaja do logow GAS, historii przegladarki ani logow proxy.
 function initContactForm() {
     const contactForm = document.getElementById('contactForm');
     if (!contactForm) return;
@@ -54,10 +57,9 @@ function initContactForm() {
                 website: formData.get('website') || ''
             };
 
-            // WYSYŁANIE PRZEZ GET - OMIJA CORS!
-            const params = new URLSearchParams(data);
-            const response = await fetch(`${CONTACT_API_URL}?${params}`, {
-                method: 'GET'
+            const response = await fetch(CONTACT_API_URL, {
+                method: 'POST',
+                body: new URLSearchParams(data)
             });
 
             const result = await response.text();
@@ -153,7 +155,7 @@ function setSubmitButtonState(loading, submitBtn, btnText, btnLoader) {
     
     if (loading) {
         btnText.style.display = 'none';
-        btnLoader.style.display = 'block';
+        btnLoader.style.display = 'flex';
         submitBtn.disabled = true;
     } else {
         btnText.style.display = 'block';
@@ -189,12 +191,14 @@ function initLeadMagnetForm() {
         const wrap = form.closest('.lm-form-wrap');
 
         try {
-            const params = new URLSearchParams({
-                action: 'lead_magnet',
-                email: email,
-                source: 'narzedzie'
+            const response = await fetch(CONTACT_API_URL, {
+                method: 'POST',
+                body: new URLSearchParams({
+                    action: 'lead_magnet',
+                    email: email,
+                    source: 'narzedzie'
+                })
             });
-            const response = await fetch(`${CONTACT_API_URL}?${params}`, { method: 'GET' });
             if (!response.ok) throw new Error('Błąd serwera (' + response.status + ')');
 
             if (wrap) {

@@ -2164,6 +2164,26 @@ section {
   top: 50%;
   transform: translate(-50%, -50%);
   display: none;
+  align-items: center;
+  gap: 0.6em;
+}
+.btn-loader::before {
+  content: '';
+  display: inline-block;
+  width: 1em;
+  height: 1em;
+  border: 2px solid currentColor;
+  border-top-color: transparent;
+  border-radius: 50%;
+  animation: btn-loader-spin 0.7s linear infinite;
+}
+@keyframes btn-loader-spin {
+  to { transform: rotate(360deg); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .btn-loader::before {
+    animation: none;
+  }
 }
 .form-note {
   text-align: center;
