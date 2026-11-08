@@ -51,7 +51,19 @@ function isGloballyThrottled_(bucket, maxPerHour) {
   return false;
 }
 
+// doGet zostaje dla health-checku ("API działa!" przy wejściu w /exec bez
+// parametrów) i starych linków z zapisanymi query-stringami. Formularze na
+// stronie wysyłają teraz przez doPost — dane w body żądania, nie w URL, więc
+// nie trafiają do logów serwera/historii przeglądarki/proxy.
 function doGet(e) {
+  return handleRequest_(e);
+}
+
+function doPost(e) {
+  return handleRequest_(e);
+}
+
+function handleRequest_(e) {
   try {
     // Routing dla lead magnetu (checklista PDF z narzedzie.html)
     if (e.parameter && e.parameter.action === 'lead_magnet') {
@@ -151,7 +163,7 @@ function doGet(e) {
     return ContentService.createTextOutput('SUCCESS');
 
   } catch (error) {
-    console.error('Błąd doGet:', error);
+    console.error('Błąd handleRequest_:', error);
     return ContentService.createTextOutput('ERROR: ' + error.message);
   }
 }
