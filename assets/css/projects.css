@@ -2081,18 +2081,6 @@ body.lightbox-open {
   font-size: 0.875rem;
 }
 
-.kwcs-cta-link {
-  display: inline-block;
-  margin-top: 1rem;
-  padding: 0.75rem 1.5rem;
-  background: #000;
-  color: var(--color-text-inverse);
-  text-decoration: none;
-  border-radius: 4px;
-  transition: background 0.3s ease;
-}
-.kwcs-cta-link:hover { background: #333; }
-
 /* ==========================================================================
    RESPONSYWNOŚĆ (RAZ DWA)
    ========================================================================== */

@@ -829,8 +829,6 @@ body.portfolio-page #design-archive .section-subtitle {
 .case-grid{display:grid;grid-template-columns:1fr 1fr;gap:50px;align-items:center;margin-bottom:4rem;}
 .case-text h2{font-size:2.2rem;margin-bottom:.6em;font-family:'Playfair Display',serif;color:var(--color-text-primary);}
 .case-text .subtitle{font-size:1.15rem;color:var(--color-text-subtle);margin-bottom:2em;font-weight:400;}
-.btn-case{display:inline-block;background:linear-gradient(135deg,#175bf7,#1d4ed8);color:var(--color-text-inverse);text-decoration:none;padding:14px 32px;border-radius:12px;font-weight:600;transition:all .3s ease;box-shadow:0 6px 20px rgba(23,91,247,0.25);}
-.btn-case:hover{background:linear-gradient(135deg,#0f44b7,#1e3a8a);transform:translateY(-3px);box-shadow:0 10px 30px rgba(23,91,247,0.35);}
 .case-image img{display:block;width:100%;max-width:480px;border-radius:16px;box-shadow:0 6px 28px rgba(0,0,0,.15);margin:0 auto;height:auto;}
 
 @media (max-width:900px){
