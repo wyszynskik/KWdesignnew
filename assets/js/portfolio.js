@@ -67,7 +67,7 @@ document.addEventListener('DOMContentLoaded', () => {
       await smileReady;
       try {
         if (amiHover.decode) await amiHover.decode();
-      } catch (e) {
+      } catch {
         // Dekodowanie nie powiodlo sie (np. przerwany fetch) - i tak
         // pokazujemy obraz, zamiast trzymac uzytkownika bez reakcji.
       }

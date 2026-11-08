@@ -81,7 +81,6 @@ function initLightbox() {
   }
   
   let scrollPosition = 0;
-  let imageElement = null;
   let previouslyFocused = null;
   let openTimer = null;
 
@@ -122,7 +121,6 @@ function initLightbox() {
       block: 'start' 
     });
     
-    imageElement = img;
     previouslyFocused = document.activeElement;
 
     openTimer = setTimeout(() => {

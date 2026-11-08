@@ -290,15 +290,6 @@ section {
 
 
 
-/* Hover-only pod prawdziwą myszką — na dotyku ":hover" zostaje "przyklejony"
-   do ostatnio dotkniętego linku (stąd podkreślenie pod złym wyrazem na mobile) */
-@media (hover: hover) and (pointer: fine) {
-
-}
-
-
-
-
 
 
 
@@ -741,23 +732,20 @@ section {
 
 
 .service-card {
-    background: white;
     border: 1px solid var(--color-border-light);
     border-radius: var(--radius-xl);
     padding: var(--space-8);
     text-align: center;
-    transition: var(--transition-all);
     position: relative;
    overflow: visible;
     cursor: default;
-    
+
     /* ✅ FLEX - dla równej wysokości */
     display: flex;
     flex-direction: column;
     min-height: 100%; /* ✅ Minimum 100% wysokości rodzica */
-    
+
     transform-style: preserve-3d;
-    transform: translateZ(0);
     opacity: 0;
     transform: translateY(30px);
     transition: opacity 0.6s ease-out, transform 0.6s ease-out, box-shadow 0.3s ease;

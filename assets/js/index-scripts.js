@@ -384,7 +384,7 @@ function initNotifications() {
                 if (box.parentNode) box.remove();
             }, 5000);
 
-        } catch (error) {
+        } catch {
             alert(`${type === 'success' ? '✅' : '❌'} ${message}`);
         }
     };
@@ -437,7 +437,7 @@ function initErrorTracking() {
             log.unshift({ ts: new Date().toISOString(), form: formId, msg: String(msg) });
             if (log.length > MAX) log.length = MAX;
             localStorage.setItem(KEY, JSON.stringify(log));
-        } catch (_) {}
+        } catch {}
     };
 
     window.addEventListener('unhandledrejection', function(e) {

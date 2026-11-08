@@ -1,5 +1,7 @@
 'use strict';
 
+const globals = require('globals');
+
 module.exports = [
   {
     ignores: ['gas/**', 'node_modules/**', 'test-results/**'],
@@ -10,16 +12,12 @@ module.exports = [
       ecmaVersion: 2022,
       sourceType: 'script',
       globals: {
-        window: 'readonly',
-        document: 'readonly',
-        navigator: 'readonly',
-        console: 'readonly',
-        fetch: 'readonly',
-        URLSearchParams: 'readonly',
-        IntersectionObserver: 'readonly',
-        requestIdleCallback: 'readonly',
-        requestAnimationFrame: 'readonly',
+        ...globals.browser,
         gtag: 'readonly',
+        showNotification: 'readonly',
+        initAccordion: 'readonly',
+        initChapterRail: 'readonly',
+        initWebsiteTabs: 'readonly',
       },
     },
     rules: {
@@ -34,11 +32,7 @@ module.exports = [
       ecmaVersion: 2022,
       sourceType: 'commonjs',
       globals: {
-        require: 'readonly',
-        module: 'readonly',
-        process: 'readonly',
-        __dirname: 'readonly',
-        console: 'readonly',
+        ...globals.node,
       },
     },
     rules: {
