@@ -172,6 +172,7 @@ function initLeadMagnetForm() {
     const btnText = btn?.querySelector('.lm-btn-text');
     const btnLoader = btn?.querySelector('.lm-btn-loader');
     const emailInput = form.querySelector('input[name="email"]');
+    const fieldError = form.querySelector('#lm_email_error');
 
     form.addEventListener('submit', async (e) => {
         e.preventDefault();
@@ -179,10 +180,12 @@ function initLeadMagnetForm() {
         const email = emailInput?.value.trim();
         if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
             emailInput?.classList.add('error');
+            if (fieldError) fieldError.hidden = false;
             emailInput?.focus();
             return;
         }
         emailInput.classList.remove('error');
+        if (fieldError) fieldError.hidden = true;
 
         if (btn) btn.disabled = true;
         if (btnText) btnText.style.display = 'none';
@@ -199,7 +202,10 @@ function initLeadMagnetForm() {
                     source: 'narzedzie'
                 })
             });
-            if (!response.ok) throw new Error('Błąd serwera (' + response.status + ')');
+            const result = await response.text();
+            if (!response.ok || !result.startsWith('SUCCESS')) {
+                throw new Error('Błąd serwera: ' + result);
+            }
 
             if (wrap) {
                 wrap.innerHTML = `

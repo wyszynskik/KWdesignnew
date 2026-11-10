@@ -2716,12 +2716,12 @@ section {
     min-width: 28px;
 }
 
-.lm-point-text strong {
+.lm-point-text h3 {
     display: block;
     font-size: 0.95rem;
     font-weight: 700;
     color: var(--color-text-primary);
-    margin-bottom: 6px;
+    margin: 0 0 6px;
     line-height: 1.4;
 }
 
@@ -2753,6 +2753,55 @@ section {
     color: var(--color-text-light);
     margin: 0 0 24px;
     line-height: 1.6;
+}
+
+.lm-label {
+    display: block;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--color-text-primary);
+    margin: 0 0 8px;
+}
+
+.lm-input-row {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.lm-form input[type="email"] {
+    flex: 1;
+    min-width: 220px;
+    padding: 13px 16px;
+    border: 1.5px solid #cbd5e1;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    font-family: inherit;
+    color: var(--color-text-primary);
+    background: #fff;
+    outline: none;
+    transition: border-color 0.2s ease;
+}
+
+.lm-form input[type="email"]:focus {
+    border-color: var(--color-primary);
+}
+
+.lm-form input[type="email"].error {
+    border-color: #ef4444;
+}
+
+.lm-field-error {
+    font-size: 0.8rem;
+    color: #dc2626;
+    margin: 8px 0 0;
+}
+
+.lm-privacy {
+    font-size: 0.78rem;
+    color: var(--color-text-subtle);
+    line-height: 1.5;
+    margin: 14px 0 0;
 }
 
 .lm-btn {
@@ -2840,6 +2889,9 @@ section {
     }
     .lm-form-wrap {
         padding: 24px 20px;
+    }
+    .lm-input-row {
+        flex-direction: column;
     }
     .lm-btn {
         width: 100%;
