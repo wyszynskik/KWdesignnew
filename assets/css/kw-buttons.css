@@ -136,10 +136,10 @@
    -------------------------------------------------------------------------- */
 .kw-btn--primary::before,
 .kw-btn.hero-cta::before, .kw-btn.hero-image-cta::before, .kw-btn.kwcs-cta::before,
-.kw-btn.btn-cta::before, .kw-btn.btn-case::before, .kw-btn.btn-primary::before,
+.kw-btn.btn-cta::before, .kw-btn.btn-primary::before,
 .kw-btn.btn-hero-cta::before, .kw-btn.submit-btn::before, .kw-btn.lm-btn::before,
 .kw-btn--secondary::before, .kw-btn.btn-secondary::before,
-.kw-btn.kwcs-cta--ghost::before, .kw-btn.btn-large::before,
+.kw-btn.kwcs-cta--ghost::before,
 .kw-btn--icon::before,
 .kw-btn.kw-btn--inverse::before {
   content: "";
@@ -156,10 +156,10 @@
 }
 .kw-btn--primary:hover:not(:disabled):not(.is-disabled)::before,
 .kw-btn.hero-cta:hover::before, .kw-btn.hero-image-cta:hover::before, .kw-btn.kwcs-cta:hover::before,
-.kw-btn.btn-cta:hover::before, .kw-btn.btn-case:hover::before, .kw-btn.btn-primary:hover::before,
+.kw-btn.btn-cta:hover::before, .kw-btn.btn-primary:hover::before,
 .kw-btn.btn-hero-cta:hover::before, .kw-btn.submit-btn:hover::before, .kw-btn.lm-btn:hover::before,
 .kw-btn--secondary:hover:not(:disabled):not(.is-disabled)::before, .kw-btn.btn-secondary:hover::before,
-.kw-btn.kwcs-cta--ghost:hover::before, .kw-btn.btn-large:hover::before,
+.kw-btn.kwcs-cta--ghost:hover::before,
 .kw-btn--icon:hover:not(:disabled):not(.is-disabled)::before,
 .kw-btn.kw-btn--inverse:hover:not(:disabled):not(.is-disabled)::before {
   opacity: 1;
@@ -209,7 +209,7 @@
 
 /* =============================================================================
    TYP 1 — PRIMARY
-   Aliasy opt-in: hero-cta, hero-image-cta, kwcs-cta, btn-cta, btn-case,
+   Aliasy opt-in: hero-cta, hero-image-cta, kwcs-cta, btn-cta,
                   btn-primary, submit-btn, lm-btn, btn-hero-cta
    ============================================================================= */
 .kw-btn--primary,
@@ -217,7 +217,6 @@
 .kw-btn.hero-image-cta,
 .kw-btn.kwcs-cta,
 .kw-btn.btn-cta,
-.kw-btn.btn-case,
 .kw-btn.btn-primary,
 .kw-btn.btn-hero-cta,
 .kw-btn.submit-btn,
@@ -232,7 +231,6 @@
 .kw-btn.hero-image-cta:hover:not(:disabled),
 .kw-btn.kwcs-cta:hover:not(:disabled),
 .kw-btn.btn-cta:hover:not(:disabled),
-.kw-btn.btn-case:hover:not(:disabled),
 .kw-btn.btn-primary:hover:not(:disabled),
 .kw-btn.btn-hero-cta:hover:not(:disabled),
 .kw-btn.submit-btn:hover:not(:disabled),
@@ -248,7 +246,6 @@
 .kw-btn.hero-image-cta:active,
 .kw-btn.kwcs-cta:active,
 .kw-btn.btn-cta:active,
-.kw-btn.btn-case:active,
 .kw-btn.btn-primary:active,
 .kw-btn.btn-hero-cta:active,
 .kw-btn.submit-btn:active,
@@ -259,12 +256,11 @@
 
 /* =============================================================================
    TYP 2 — SECONDARY (obrys / ghost)
-   Aliasy opt-in: btn-secondary, kwcs-cta--ghost, btn-large
+   Aliasy opt-in: btn-secondary, kwcs-cta--ghost
    ============================================================================= */
 .kw-btn--secondary,
 .kw-btn.btn-secondary,
-.kw-btn.kwcs-cta--ghost,
-.kw-btn.btn-large {
+.kw-btn.kwcs-cta--ghost {
   background: transparent;
   color: var(--kw-btn-accent);
   border-color: var(--kw-btn-accent);
@@ -272,8 +268,7 @@
 }
 .kw-btn--secondary:hover:not(:disabled):not(.is-disabled),
 .kw-btn.btn-secondary:hover:not(:disabled),
-.kw-btn.kwcs-cta--ghost:hover:not(:disabled),
-.kw-btn.btn-large:hover:not(:disabled) {
+.kw-btn.kwcs-cta--ghost:hover:not(:disabled) {
   background: var(--kw-btn-accent);
   color: var(--color-text-inverse);
   transform: translateY(var(--kw-btn-hover-lift));
@@ -282,22 +277,20 @@
 }
 .kw-btn--secondary:active,
 .kw-btn.btn-secondary:active,
-.kw-btn.kwcs-cta--ghost:active,
-.kw-btn.btn-large:active {
+.kw-btn.kwcs-cta--ghost:active {
   transform: translateY(0);
 }
 
 /* =============================================================================
    TYP 3 — TERTIARY (link-akcja)
-   Aliasy opt-in: service-btn, card-cta, kwcs-cta-link
+   Aliasy opt-in: service-btn, card-cta
    UWAGA: lm-teaser-cta USUNIĘTY z tertiary (2026-07-11) — na homepage to
    prominentne, wypełnione CTA na ciemnej sekcji → obsługiwane wariantem
    --inverse, nie jako link tertiary.
    ============================================================================= */
 .kw-btn--tertiary,
 .kw-btn.service-btn,
-.kw-btn.card-cta,
-.kw-btn.kwcs-cta-link {
+.kw-btn.card-cta {
   background: transparent;
   color: var(--kw-btn-accent);
   border-color: transparent;
@@ -309,16 +302,14 @@
 }
 .kw-btn--tertiary:hover:not(:disabled):not(.is-disabled),
 .kw-btn.service-btn:hover:not(:disabled),
-.kw-btn.card-cta:hover:not(:disabled),
-.kw-btn.kwcs-cta-link:hover:not(:disabled) {
+.kw-btn.card-cta:hover:not(:disabled) {
   color: var(--kw-btn-accent-dark);
   background: var(--kw-btn-accent-tint);
   border-radius: 0.375rem;
 }
 .kw-btn--tertiary:active,
 .kw-btn.service-btn:active,
-.kw-btn.card-cta:active,
-.kw-btn.kwcs-cta-link:active {
+.kw-btn.card-cta:active {
   background: var(--kw-btn-accent-tint-strong);
 }
 /* Strzałka „→" w tertiary lekko przesuwa się na hover */

@@ -1,12 +1,14 @@
+// Wymaga uruchomionego `npm run serve` (localhost:8787) w drugim terminalu.
+// BASE_URL=http://inny-host:port node scripts/verify_razdwa2.js  -- zeby zmienic host.
 const { chromium } = require('playwright');
-const { execFile, spawn } = require('child_process');
 const fs = require('fs');
 const path = require('path');
+const os = require('os');
 
-const OUT = 'C:\\Users\\Karolek\\AppData\\Local\\Temp\\razdwa_shots2';
+const OUT = path.join(os.tmpdir(), 'kwdesign-verify', 'razdwa_shots2');
 if (!fs.existsSync(OUT)) fs.mkdirSync(OUT, { recursive: true });
 
-const BASE = 'http://localhost:8787/KWdesignnew';
+const BASE = process.env.BASE_URL || 'http://localhost:8787';
 
 (async () => {
   const browser = await chromium.launch();

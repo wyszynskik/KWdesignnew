@@ -320,9 +320,7 @@
     justify-content: space-between;
   }
 
-  .logo, 
-  .site-logo, 
-  .header-logo,
+  .logo,
   a.logo,
   .logo-link {
     margin-left: var(--space-6) !important;
@@ -331,8 +329,6 @@
 
   .logo-img,
   .logo img,
-  .header-logo img,
-  .site-logo img,
   a.logo img,
   a[class*="logo"] img {
     height: 48px !important;

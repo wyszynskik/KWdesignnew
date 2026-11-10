@@ -326,12 +326,6 @@
     color: var(--color-text-inverse);
 }
 
-/* Package Details Section */
-.package-details {
-    padding: 80px 0;
-    background: #f8f9fa;
-}
-
 .section-title {
     font-size: clamp(1.75rem, 4vw, 2.5rem);
     font-weight: 700;
@@ -349,34 +343,6 @@
     line-height: 1.6;
 }
 
-.details-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-    gap: 32px;
-    max-width: 1200px;
-    margin: 0 auto;
-}
-
-.detail-card {
-    background: #ffffff;
-    border-radius: 20px;
-    padding: 40px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    position: relative;
-    border: 2px solid transparent;
-}
-
-.detail-card:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.12);
-}
-
-.detail-card.featured {
-    border-color: var(--color-primary);
-    background: linear-gradient(180deg, rgba(6, 182, 212, 0.03) 0%, #ffffff 100%);
-}
-
 .popular-badge {
     position: absolute;
     top: -12px;
@@ -390,49 +356,6 @@
     font-weight: 600;
     box-shadow: 0 4px 12px rgba(6, 182, 212, 0.3);
     z-index: 10;
-}
-
-.detail-header {
-    text-align: center;
-    margin-bottom: 32px;
-    padding-bottom: 24px;
-    border-bottom: 2px solid #f0f0f0;
-}
-
-.detail-icon {
-    font-size: 3rem;
-    margin-bottom: 16px;
-}
-
-.detail-header h3 {
-    font-size: 1.75rem;
-    font-weight: 700;
-    color: var(--color-text-accent);
-    margin-bottom: 8px;
-    font-family: var(--font-heading);
-}
-
-.detail-tagline {
-    font-size: 1rem;
-    color: var(--color-text-body);
-    font-weight: 500;
-}
-
-.detail-section {
-    margin-bottom: 24px;
-}
-
-.detail-section h4 {
-    font-size: 1.125rem;
-    font-weight: 700;
-    color: var(--color-text-body);
-    margin-bottom: 12px;
-}
-
-.detail-section p {
-    font-size: 0.9375rem;
-    line-height: 1.7;
-    color: var(--color-text-body);
 }
 
 /* Pricing Grid */
@@ -501,27 +424,6 @@
     font-weight: 500;
 }
 
-.card-pricing {
-    text-align: center;
-    margin-bottom: 24px;
-    padding-bottom: 24px;
-    border-bottom: 2px solid #f0f0f0;
-}
-
-.price-label {
-    font-size: 0.875rem;
-    color: var(--color-text-subtle);
-    display: block;
-    margin-bottom: 4px;
-}
-
-.price-amount {
-    font-size: 2.5rem;
-    font-weight: 700;
-    color: var(--color-text-accent);
-    display: block;
-}
-
 .card-features ul {
     list-style: none;
     padding: 0;
@@ -561,18 +463,6 @@
     color: var(--color-text-body);
 }
 
-.meta-item {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    font-size: 0.875rem;
-    color: var(--color-text-body);
-}
-
-.meta-item svg {
-    color: var(--color-text-accent);
-}
-
 .card-btn {
     display: block;
     width: 100%;
@@ -607,12 +497,6 @@
     color: var(--color-text-inverse);
 }
 
-/* Service Scope */
-.service-scope {
-    padding: 80px 0;
-    background: #f8f9fa;
-}
-
 .scope-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -621,45 +505,9 @@
     margin: 0 auto;
 }
 
-.scope-column {
-    background: #ffffff;
-    padding: 32px;
-    border-radius: 16px;
-    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
-}
-
 .scope-icon {
     font-size: 2.5rem;
     margin-bottom: 16px;
-}
-
-.scope-column h3 {
-    font-size: 1.375rem;
-    font-weight: 700;
-    color: var(--color-text-accent-hover);
-    margin-bottom: 20px;
-}
-
-.scope-column ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-}
-
-.scope-column li {
-    padding: 8px 0 8px 24px;
-    position: relative;
-    color: var(--color-text-body);
-    font-size: 0.9375rem;
-    line-height: 1.6;
-}
-
-.scope-column li::before {
-    content: '✓';
-    position: absolute;
-    left: 0;
-    color: var(--color-text-accent);
-    font-weight: 700;
 }
 
 /* Comparison Table */
@@ -712,283 +560,6 @@
     text-align: left;
     font-weight: 500;
     color: var(--color-text-body);
-}
-
-.comparison-table .highlighted {
-    background: rgba(6, 182, 212, 0.05);
-}
-
-.comparison-table .check {
-    color: var(--color-text-accent);
-    font-weight: 700;
-    font-size: 1.25rem;
-}
-
-.comparison-table .cross {
-    color: var(--color-text-subtle);
-    font-size: 1.25rem;
-}
-
-.price-row td {
-    padding: 24px 20px;
-    font-size: 1.125rem;
-}
-
-/* CTA Section */
-.services-cta {
-    padding: 100px 0;
-    background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-dark) 100%);
-    text-align: center;
-    color: var(--color-text-inverse);
-}
-
-.cta-content h2 {
-    font-size: clamp(1.75rem, 4vw, 2.5rem);
-    font-weight: 700;
-    margin-bottom: 16px;
-    color: var(--color-text-inverse);
-}
-
-.cta-content p {
-    font-size: 1.125rem;
-    margin-bottom: 32px;
-    max-width: 800px;
-    margin-left: auto;
-    margin-right: auto;
-    opacity: 0.95;
-}
-
-.btn-large {
-    padding: 18px 40px;
-    font-size: 1.0625rem;
-    background: #ffffff;
-    color: var(--color-text-accent);
-    font-weight: 600;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-    border-radius: 12px;
-    text-decoration: none;
-    transition: all 0.3s ease;
-    white-space: nowrap;
-    overflow: visible;
-    min-height: auto;
-    max-width: 90vw;
-}
-
-.btn-large:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
-}
-
-/* ========== PACKAGE GUIDE ========== */
-.package-guide {
-    padding: 80px 0;
-    background: #ffffff;
-}
-
-.guide-cards {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 32px;
-    max-width: 1200px;
-    margin: 0 auto;
-}
-
-.guide-card {
-    background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
-    border-radius: 20px;
-    padding: 32px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
-    border: 2px solid #f0f0f0;
-    transition: all 0.3s ease;
-}
-
-.guide-card:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
-    border-color: var(--color-primary);
-}
-
-.guide-number {
-    display: inline-block;
-    width: 48px;
-    height: 48px;
-    line-height: 48px;
-    text-align: center;
-    background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-dark) 100%);
-    color: var(--color-text-inverse);
-    font-weight: 700;
-    font-size: 1.5rem;
-    border-radius: 50%;
-    margin-bottom: 20px;
-    box-shadow: 0 4px 12px rgba(6, 182, 212, 0.3);
-}
-
-.guide-card h3 {
-    font-size: 1.25rem;
-    font-weight: 700;
-    color: var(--color-text-primary);
-    margin-bottom: 20px;
-}
-
-.guide-options {
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-}
-
-.guide-option {
-    background: #ffffff;
-    padding: 16px;
-    border-radius: 12px;
-    border: 1px solid #e0e0e0;
-    transition: all 0.2s ease;
-}
-
-.guide-option:hover {
-    border-color: var(--color-primary);
-    background: rgba(6, 182, 212, 0.02);
-}
-
-.option-label {
-    display: block;
-    font-weight: 600;
-    color: var(--color-text-accent);
-    margin-bottom: 6px;
-    font-size: 0.9375rem;
-}
-
-.option-answer {
-    font-size: 0.875rem;
-    color: var(--color-text-body);
-    margin: 0;
-}
-
-.option-answer strong {
-    color: var(--color-text-accent-hover);
-    font-weight: 700;
-}
-
-/* ========== DETAIL BENEFITS ========== */
-.detail-benefits {
-    margin-top: 24px;
-    padding: 24px;
-    background: rgba(6, 182, 212, 0.05);
-    border-radius: 12px;
-    border-left: 4px solid var(--color-primary);
-}
-
-.detail-benefits h4 {
-    font-size: 1.125rem;
-    font-weight: 700;
-    color: var(--color-text-body);
-    margin-bottom: 16px;
-}
-
-.detail-benefits ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-}
-
-.detail-benefits li {
-    padding: 8px 0 8px 24px;
-    position: relative;
-    color: var(--color-text-body);
-    font-size: 0.9375rem;
-    line-height: 1.6;
-}
-
-.detail-benefits li::before {
-    content: '✓';
-    position: absolute;
-    left: 0;
-    color: var(--color-text-accent);
-    font-weight: 700;
-    font-size: 1.125rem;
-}
-
-/* ========== POPULAR BADGE DETAIL ========== */
-.popular-badge-detail {
-    position: absolute;
-    top: -12px;
-    left: 50%;
-    transform: translateX(-50%);
-    background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-dark) 100%);
-    color: var(--color-text-inverse);
-    padding: 6px 20px;
-    border-radius: 20px;
-    font-size: 0.8125rem;
-    font-weight: 600;
-    box-shadow: 0 4px 12px rgba(6, 182, 212, 0.3);
-    white-space: nowrap;
-    z-index: 10;
-}
-
-/* ========== TESTIMONIALS ========== */
-.services-testimonials {
-    padding: 80px 0;
-    background: #f8f9fa;
-}
-
-.testimonials-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 32px;
-    max-width: 1200px;
-    margin: 0 auto;
-}
-
-.testimonial {
-    background: #ffffff;
-    padding: 32px;
-    border-radius: 16px;
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.testimonial:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
-}
-
-.testimonial-rating {
-    color: var(--color-text-warning);
-    font-size: 1.25rem;
-    margin-bottom: 16px;
-}
-
-.testimonial blockquote {
-    margin: 0;
-    padding: 0;
-    border: none;
-}
-
-.testimonial blockquote p {
-    font-size: 1rem;
-    line-height: 1.7;
-    color: var(--color-text-body);
-    font-style: italic;
-    margin-bottom: 20px;
-}
-
-.testimonial footer {
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-}
-
-.testimonial footer strong {
-    font-size: 1rem;
-    font-weight: 600;
-    color: var(--color-text-primary);
-}
-
-.testimonial-role {
-    font-size: 0.875rem;
-    color: var(--color-text-subtle);
 }
 
 /* ========== FAQ ========== */
@@ -1189,18 +760,15 @@
     }
 
     /* Other sections responsive */
-    .details-grid,
     .pricing-grid {
         grid-template-columns: 1fr;
         gap: 24px;
     }
 
-    .detail-card,
     .pricing-card {
         padding: 32px;
     }
 
-    .detail-icon,
     .card-icon {
         font-size: 2.5rem;
     }
@@ -1211,20 +779,11 @@
         height: 40px;
     }
 
-    .detail-header h3,
     .card-title {
         font-size: 1.5rem;
     }
 
-    .price-amount {
-        font-size: 2rem;
-    }
-
     .scope-grid {
-        grid-template-columns: 1fr;
-    }
-
-    .guide-cards {
         grid-template-columns: 1fr;
     }
 
@@ -1251,15 +810,6 @@
     .comparison-table th,
     .comparison-table td {
         padding: 12px;
-    }
-
-    .services-cta {
-        padding: 80px 0;
-    }
-
-    .btn-large {
-        padding: 16px 32px;
-        font-size: 1rem;
     }
 }
 

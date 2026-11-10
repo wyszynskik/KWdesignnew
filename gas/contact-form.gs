@@ -2,9 +2,13 @@
 // WAŻNE: po wklejeniu do script.google.com -> Rozmieść -> Zarządzaj wdrożeniami ->
 // edytuj istniejące wdrożenie -> Wersja: Nowa wersja -> Wdróż. URL /exec się nie zmienia.
 //
-// Wymaga: w arkuszu KONTAKTY wstawiona nowa kolumna "Firma" między Telefon i Rodzaj
-// projektu (kolumna E), PRZED wdrożeniem tego kodu - inaczej nowe zgłoszenia wylądują
-// w złych kolumnach względem starych nagłówków.
+// Wymaga PRZED wdrożeniem tego kodu, w arkuszu KONTAKTY:
+// 1. Kolumna "Firma" już powinna być wstawiona (między Telefon i Rodzaj projektu) -
+//    to było zrobione przy poprzednim wdrożeniu.
+// 2. USUŃ kolumnę "Budżet" całkowicie (prawy klik na nagłówek -> Usuń kolumnę).
+//    Pole nie istnieje w formularzu na stronie, więc zawsze było puste - kod
+//    już go nie wysyła. Bez usunięcia kolumny w arkuszu nowe wiersze (8 wartości)
+//    rozjadą się względem starych nagłówków (9 kolumn).
 
 function isValidEmailFormat_(email) {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
@@ -95,7 +99,6 @@ function handleFormRequest_(e, method) {
       phone: params.phone || '',
       company: params.company || '',
       projectType: params.projectType || '',
-      budget: params.budget || '',
       message: params.message || ''
     };
 
@@ -127,7 +130,7 @@ function handleFormRequest_(e, method) {
 
     if (!sheet) {
       sheet = ss.insertSheet('KONTAKTY');
-      sheet.appendRow(['Data', 'Imię', 'Email', 'Telefon', 'Firma', 'Projekt', 'Budżet', 'Wiadomość', 'Status']);
+      sheet.appendRow(['Data', 'Imię', 'Email', 'Telefon', 'Firma', 'Projekt', 'Wiadomość', 'Status']);
       console.log('📊 Utworzono arkusz KONTAKTY');
     }
 
@@ -140,7 +143,6 @@ function handleFormRequest_(e, method) {
       data.phone,
       sanitizeForSheet_(data.company),
       data.projectType,
-      data.budget,
       sanitizeForSheet_(data.message),
       'NOWE'
     ]).getLastRow();
@@ -163,9 +165,10 @@ function handleFormRequest_(e, method) {
       console.log('📧 Emaile wysłane');
     } catch (mailError) {
       console.error('❌ Błąd emaili:', mailError.message);
-      // Błąd maila zapisujemy WPROST do arkusza (kolumna Status, teraz I=9
-      // po dodaniu kolumny Firma), żeby był widoczny bez zaglądania w logi.
-      sheet.getRange(rowIndex, 9).setValue('BŁĄD MAILA: ' + mailError.message);
+      // Błąd maila zapisujemy WPROST do arkusza (kolumna Status, H=8:
+      // Data/Imię/Email/Telefon/Firma/Projekt/Wiadomość/Status), żeby był
+      // widoczny bez zaglądania w logi.
+      sheet.getRange(rowIndex, 8).setValue('BŁĄD MAILA: ' + mailError.message);
     }
 
     return ContentService.createTextOutput('SUCCESS');
