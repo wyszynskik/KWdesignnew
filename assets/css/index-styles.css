@@ -3146,23 +3146,55 @@ ul.hero-info-icons {
 }
 
 
-/* Hero desktop — tekst podniesiony do góry kolumny, więcej oddechu między wierszami */
+/* Zdjęcie hero bez białej ramki (wszystkie szerokości) */
+.hero-image-container,
+.hero-image-container:hover {
+    background: transparent;
+    padding: 0 !important;
+}
+.hero-image img {
+    border-radius: var(--radius-3xl) !important;
+}
+
+/* Hero desktop — tekst rozłożony na wysokość zdjęcia (zrównoważony z portretem) */
 @media (min-width: 901px) {
     .hero-main-content {
-        align-items: start;
+        align-items: stretch;
+    }
+    .hero-image {
+        position: relative;
+        justify-content: flex-start;
+    }
+    .hero-image-container {
+        max-width: 378px; /* -10% względem 420px */
+    }
+    /* Podpis pod zdjęciem nie wydłuża kolumny — tekst równa się do samego zdjęcia */
+    .hero-image-caption {
+        position: absolute;
+        top: calc(100% + var(--space-4));
+        left: 0;
+        right: 0;
+        margin: 0 auto;
     }
     .hero-text {
-        padding-top: var(--space-6);
+        padding-top: 0;
+        margin: var(--space-10) 0; /* te same marginesy co .hero-image */
+        justify-content: flex-start;
     }
     .hero-text .hero-eyebrow {
         margin-top: var(--space-4);  /* tytuł → eyebrow: 10 + 16 = 26px */
     }
     .hero-text .hero-subtitle {
-        margin-top: var(--space-5);  /* eyebrow → opis: 10 + 20 = 30px */
+        margin-top: auto;            /* elastyczny odstęp pod eyebrow */
+        padding-top: var(--space-5);
         font-size: clamp(1rem, 1.35vw, 1.125rem); /* każde zdanie mieści się w jednej linii */
         margin-left: 0;
     }
     .hero-text .hero-info-icons {
         margin-top: var(--space-8);
+    }
+    .hero-actions {
+        margin-top: auto;            /* przycisk równa się z dołem zdjęcia */
+        padding-top: var(--space-6);
     }
 }
