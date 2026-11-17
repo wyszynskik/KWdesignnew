@@ -3015,6 +3015,13 @@ ul.hero-info-icons {
 .info-icon .text {
     white-space: normal;
 }
+/* Pytanie w hero — może się zawinąć, żeby nie wychodziło poza ekran na mobile */
+.info-icon--stat .highlight-digits {
+    flex-shrink: 1;
+    min-width: 0;
+    line-height: 1.2;
+    text-align: left;
+}
 
 /* Portret — bardziej adekwatny asset, kadr zbalansowany z kolumną tekstu */
 .hero-image-container {
