@@ -773,67 +773,10 @@ section {
     border-color: var(--color-primary);
 }
 
-.service-card.featured {
-    border-color: var(--color-primary);
-    box-shadow:
-        0 24px 56px -10px rgba(0, 0, 0, 0.24),
-        0 14px 32px -6px rgba(6, 182, 212, 0.32),
-        0 0 0 2px rgba(6, 182, 212, 0.18);
-    background: linear-gradient(145deg, white 0%, #f0f9ff 100%);
-    transform: translateY(-14px);
-}
 
-.service-card.featured.fade-slide-in {
-    transform: translateY(-14px);
-}
 
-.service-card.featured:hover {
-    transform: translateY(-20px);
-    box-shadow:
-        0 32px 64px -12px rgba(0, 0, 0, 0.3),
-        0 20px 48px -8px rgba(6, 182, 212, 0.38),
-        0 0 0 2px var(--color-primary);
-}
-.popular-badge {
-    position: absolute;
-    top: -16px;
-    left: 50%;
-    transform: translateX(-50%);
-    background: linear-gradient(135deg,
-        var(--color-primary) 0%,
-        var(--color-primary-dark) 100%);
-    color: white;
-    padding: 6px 16px;
-    border-radius: 20px;
-    font-size: 0.7rem;
-    font-weight: var(--font-weight-bold);
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    box-shadow:
-        0 4px 14px rgba(6, 182, 212, 0.55),
-        0 2px 6px rgba(0, 0, 0, 0.18);
-    z-index: 10;
-    border: 2px solid white;
-    white-space: nowrap;
-}
 
-/* Animacja pulsowania dla przyciągnięcia uwagi */
-.popular-badge {
-    animation: badge-pulse 2s ease-in-out infinite;
-}
 
-@keyframes badge-pulse {
-    0%, 100% {
-        box-shadow: 
-            0 6px 16px rgba(6, 182, 212, 0.5),
-            0 2px 8px rgba(0,0,0,0.2);
-    }
-    50% {
-        box-shadow: 
-            0 8px 20px rgba(6, 182, 212, 0.7),
-            0 4px 12px rgba(0,0,0,0.25);
-    }
-}
 
 
 .service-icon {
@@ -944,11 +887,6 @@ section {
     transform: scale(1.12) translateY(-5px);
 }
 
-/* Dla karty featured - delikatnie mocniejszy efekt */
-.service-card.featured:hover .service-icon img {
-    filter: drop-shadow(0 10px 20px rgba(6, 182, 212, 0.6)) brightness(1.15);
-    transform: scale(1.15) translateY(-6px);
-}
 
 
 /* Premium Testimonials Carousel - Fixed Scrollbar Issue */
@@ -1546,13 +1484,7 @@ section {
         margin: 0 auto;
     }
     
-    .service-card.featured {
-        transform: translateY(0);
-    }
     
-    .service-card.featured.fade-slide-in {
-        transform: translateY(0);
-    }
     
     /* Wyłącz transform na mobile dla lepszej wydajności */
     .service-card {
@@ -1565,16 +1497,7 @@ section {
             0 15px 40px -10px rgba(0, 0, 0, 0.2),
             0 8px 20px -5px rgba(6, 182, 212, 0.2);
     }
-/* Efekt hover dla ikon SVG */
 
-
-    .service-card.featured {
-        transform: none !important;
-    }
-
-    .service-card.featured:hover {
-        transform: translateY(-8px) !important;
-    }
 
     /* Touch-friendly przyciski */
     .service-btn {
@@ -1766,11 +1689,6 @@ section {
     padding: var(--space-2) var(--space-4) !important;
     font-size: 0.86rem !important;
     border-radius: var(--radius-md) !important;
-  }
-  .popular-badge {
-    font-size: 0.67rem !important;
-    padding: 4px 9px !important;
-    border-radius: 9px !important;
   }
 
   /* ========== TIMELINE ========== */
@@ -2573,15 +2491,14 @@ ul.card-features {
     }
 }
 
-/* ========== ZESTAW A: outline CTA dla bocznych kart usług ========== */
-/* Środkowa karta (featured) zachowuje pełny cyan. Boczne dostają styl outline. */
-.service-card:not(.featured) .service-btn {
+/* ========== Outline CTA dla kart usług (wszystkie karty równorzędne) ========== */
+.service-card .service-btn {
     background: transparent;
     color: var(--color-text-accent);
     border: 2px solid var(--color-primary);
     box-shadow: none;
 }
-.service-card:not(.featured) .service-btn:hover {
+.service-card .service-btn:hover {
     background: var(--color-primary);
     color: var(--color-text-inverse);
     box-shadow: var(--shadow-md);
@@ -3228,3 +3145,24 @@ ul.hero-info-icons {
     .hero-image-container { max-width: 400px !important; }
 }
 
+
+/* Hero desktop — tekst podniesiony do góry kolumny, więcej oddechu między wierszami */
+@media (min-width: 901px) {
+    .hero-main-content {
+        align-items: start;
+    }
+    .hero-text {
+        padding-top: var(--space-6);
+    }
+    .hero-text .hero-eyebrow {
+        margin-top: var(--space-4);  /* tytuł → eyebrow: 10 + 16 = 26px */
+    }
+    .hero-text .hero-subtitle {
+        margin-top: var(--space-5);  /* eyebrow → opis: 10 + 20 = 30px */
+        font-size: clamp(1rem, 1.35vw, 1.125rem); /* każde zdanie mieści się w jednej linii */
+        margin-left: 0;
+    }
+    .hero-text .hero-info-icons {
+        margin-top: var(--space-8);
+    }
+}
