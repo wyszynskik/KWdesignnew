@@ -1494,3 +1494,23 @@ Gałąź `runda-poprawki-drobne` od `origin/main`.
 ### Definicja done
 - **axe = 0** na `/`, `/portfolio`, `/uslugi`, `/narzedzie`, `/polityka-prywatnosci` (desktop 1440 i mobile 390) oraz na 7 case studies w trybie viewer i standalone + bare `/portfolio`.
 - Zmiany są wyłącznie tekstowe (alt, meta, treść) — brak wpływu na strukturę/kontrast, więc Lighthouse Accessibility = 100 i Performance bez regresji (brak zmian w zasobach renderowanych).
+
+---
+
+## Runda humanizacji treści `/` + uproszczenie dołu strony (2026-11-25)
+
+Gałąź `claude/awesome-wozniak-hmoy5e` od `origin/main`. PR #164. Zakres: wyłącznie `index.html` i `assets/css/index-styles.css` (+ `sitemap.xml` z regeneracji). Partiale nietknięte, więc `npm run sync` niepotrzebny.
+
+Cel: strona ma brzmieć **ludzko i opowiadać historię**, a czytelnik ma pisać, bo sam rozpoznaje u siebie problem — zamiast odbierać stronę jako czysto sprzedażową.
+
+1. **Sekcja „O mnie" — nowa narracja.** Zamiast języka CV/korpo osobista historia (10 lat grafiki → zmęczenie powtarzalną robotą → budowanie narzędzi), zbudowana wokół hasła właściciela: *„wystarczą chęci i zaangażowanie, żeby rzeczy trudne i nudne stały się łatwe i przyjemne"*. Usunięto linijkę „Kluczowe kompetencje" oraz siatkę 3 kafelków benefitów (powielały bio i sekcję „Jak do tego podchodzę").
+2. **Dół strony — mniej sekcji, jeden jasny cel.** Z 5 bloków (3 ciemne) do 4 (1 ciemny). Checklista (lead magnet) przeniesiona na jasny motyw jako cicha ścieżka „zrób sam"; sekcja „Wyobraź sobie…" wchłonięta jako wstęp sekcji **Kontakt**, która zostaje jedynym ciemnym blokiem (czytelny sygnał końca i wezwania). Nowe copy checklisty i kontaktu w tonie „napisz, bo widzisz u siebie problem".
+3. **FAQ — animacja rozwijania.** Sprężysty obrót ikony (`+` → `×`, `cubic-bezier` z odbiciem), wjazd treści odpowiedzi z fade + przesunięciem, panel na `max-height`/`padding`. Pełny blok `@media (prefers-reduced-motion: reduce)` wyłączający ruch.
+4. **Porządki CSS.** Usunięto martwe reguły po punktach 1–2: `.benefits-grid` (+ 4 warianty w media queries), `.benefit-card*`, `.benefit-icon`, `.about-skills`. Żaden selektor nie występuje w HTML ani JS na całej stronie (`grep` = 0). −109 linii, bilans nawiasów `{ }` 493/493.
+5. **Sitemap.** `lastmod` dla `/` 2026-11-17 → 2026-11-25 (wymóg `sitemap:check` w CI po zmianie `index.html`).
+
+### Definicja done (ta runda)
+- **axe = 0** naruszeń na `/` (axe-core 4.10 via Playwright, lokalny serwer `npm run serve`, reguły WCAG 2.0/2.1 A+AA). Zmierzone po wprowadzeniu zmian treści i po usunięciu martwego CSS.
+- **Lighthouse Accessibility = 100 i Performance bez regresji — z charakteru zmian:** brak nowych zasobów renderowanych, brak zmian w JS i obrazach, ta sama semantyka DOM; dodano wyłącznie treść, animację czysto CSS (z poszanowaniem reduced-motion) i usunięto nieużywane reguły. Kontrasty tekstu na nowej **jasnej** checkliście zweryfikowane tokenami: tytuł `--color-text-primary` 17.85:1, opis `--color-text-subtle` 6.46:1, badge/akcent `--color-text-accent` 5.36:1 (wszystkie ≥ 4.5:1).
+- **CI `checks`** (`sync:check` + `sitemap:check`) zielone na headzie `336d6bd`.
+- Produkcja kwyszynski.pl nieosiągalna z kontenera (proxy 403) — podgląd na żywo po scaleniu i odświeżeniu CDN wykonuje właściciel.
