@@ -604,10 +604,6 @@ section {
     margin-bottom: var(--space-4);
 }
 
-.about-skills {
-    margin-top: var(--space-6);
-}
-
 @media (max-width: 768px) {
     .about-intro {
         flex-direction: column;
@@ -617,93 +613,6 @@ section {
         max-width: 240px;
     }
 }
-
-.benefits-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: var(--space-10);
-    margin-bottom: var(--space-20);
-    max-width: 960px;
-    margin-left: auto;
-    margin-right: auto;
-    align-items: stretch;
-    grid-auto-rows: 1fr;
-}
-
-
-.benefit-card {
-    background: rgba(255, 255, 255, 0.03);
-    padding: var(--space-10) var(--space-8);
-    border-radius: var(--radius-2xl);
-    text-align: center;
-    transition: var(--transition-all);
-    border: 1px solid rgba(255, 255, 255, 0.07);
-    position: relative;
-    overflow: hidden;
-    cursor: default;
-    transform-style: preserve-3d;
-    display: flex;
-    flex-direction: column;
-    height: 100%;
-    box-shadow: none;
-}
-
-
-.benefit-card:hover {
-    transform: translateY(-8px) scale(1.01);
-    box-shadow:
-        0 20px 50px -10px rgba(0, 0, 0, 0.3),
-        0 0 40px rgba(6, 182, 212, 0.18);
-    border-color: rgba(6, 182, 212, 0.35);
-    background: rgba(255, 255, 255, 0.06);
-}
-
-
-.benefit-card:hover::before {
-    opacity: 1;
-}
-
-.benefit-icon {
-    width: 64px;
-    height: 64px;
-    margin: 0 auto var(--space-5);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 50%;
-    background: rgba(6, 182, 212, 0.10);
-    border: 1px solid rgba(6, 182, 212, 0.2);
-    color: var(--color-text-accent);
-    font-size: 2rem;
-    line-height: 1;
-    transition: var(--transition-normal);
-    flex-shrink: 0;
-}
-
-.benefit-card:hover .benefit-icon {
-    transform: rotate(8deg) scale(1.1);
-    background: rgba(6, 182, 212, 0.22);
-    box-shadow: 0 0 24px rgba(6, 182, 212, 0.45);
-    border-color: rgba(6, 182, 212, 0.5);
-}
-
-.benefit-card h3 {
-    font-size: 1.4rem;
-    font-weight: var(--font-weight-bold);
-    margin-bottom: var(--space-4);
-    color: var(--color-text-primary);
-    letter-spacing: -0.01em;
-}
-
-.benefit-card p {
-    font-size: 1.05rem;
-    color: var(--color-text-body);
-    line-height: 1.7;
-    letter-spacing: 0.01em;
-    margin: 0;
-}
-
-
 
 /* Enhanced Services Section with 3D Effect */
 .services-section {
@@ -1911,10 +1820,6 @@ section {
     }
 
     /* ========== OTHER SECTIONS ========== */
-    .benefits-grid {
-        grid-template-columns: repeat(2, 1fr);
-    }
-
     /* Testimonials */
     .testimonial-card {
         flex: 0 0 calc(50% - var(--space-4));
@@ -1923,11 +1828,6 @@ section {
 } /* ✅ KONIEC TABLET */
 
 @media (max-width: 768px) {
-    .benefits-grid {
-        grid-template-columns: 1fr;
-        gap: var(--space-6);
-    }
-
     .services-grid {
         grid-template-columns: 1fr;
         gap: var(--space-6);
@@ -2009,10 +1909,6 @@ section {
         gap: var(--space-8);
     }
 
-    .benefits-grid {
-        grid-template-columns: repeat(2, 1fr);
-    }
-
     /* Hero Layout */
 
     .hero-text {
@@ -2073,11 +1969,6 @@ section {
 @media (min-width: 1025px) {
 
 
-
-    /* 2. BENEFITS - 3 kolumny (3 karty w 1 rzędzie) */
-    .benefits-grid {
-        grid-template-columns: repeat(3, 1fr) !important;
-    }
 
     /* 4. SERVICES - 3 kolumny */
     .services-grid {
