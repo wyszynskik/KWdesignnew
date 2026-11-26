@@ -1531,3 +1531,20 @@ Dół po zmianie: `O mnie → checklista → kontakt` (3 bloki, nadal 1 ciemny).
 - **axe = 0** naruszeń na `/` (axe-core 4.10 via Playwright, lokalny serwer).
 - **A11y = 100 i Performance bez regresji — z charakteru zmian:** usunięcie sekcji i skrócenie treści, brak nowych zasobów renderowanych, brak zmian w JS/obrazach.
 - Podstrony `/uslugi` i `/portfolio` do analogicznej przebudowy (ludzki ton, mniej sekcji) w kolejnych, osobnych rundach — ustalone z właścicielem.
+
+---
+
+## Runda — powrót FAQ w ludzkim tonie (2026-11-26)
+
+Gałąź `claude/awesome-wozniak-hmoy5e` (restart od `origin/main` po scaleniu #165). Zakres: wyłącznie `index.html`.
+
+Właściciel wrócił do decyzji o FAQ: zamiast kasować, przywrócić — ale z pytaniami, które **coś opowiadają**, a nie sprzedają.
+
+- **Przywrócono sekcję FAQ (`#faq`)** między „O mnie" a checklistą. Nowy, cieplejszy tytuł **„Nie wiesz wszystkiego?"** zamiast „Najczęstsze pytania". Pięć pytań w 1. osobie, głosem właściciela: (1) czy mój problem nadaje się do automatyzacji, (2) nie umiem nazwać, o co chodzi, (3) skąd wiesz, że zadziała, (4) nie znam się na technologii — obsłużę to?, (5) mam tylko mętny pomysł. Odpowiedzi napisane przez właściciela, zredagowane do spójnego, rozmownego tonu.
+- **Style `.faq-*` (w tym animacja rozwijania) i `initFAQ()` były zachowane** z rundy 2026-11-26 (usunięcie FAQ) — przywrócenie to więc wyłącznie HTML sekcji, zero zmian w CSS/JS.
+
+Dół: `O mnie → FAQ → checklista → kontakt` (FAQ jasne, ciemny pozostaje tylko kontakt).
+
+### Definicja done (ta runda)
+- **axe = 0** na `/` (axe-core 4.10 via Playwright, w tym ze stanem z otwartym pytaniem).
+- **A11y = 100 i Performance bez regresji** — zmiana to wyłącznie treść HTML osadzona w istniejących, przetestowanych stylach; zero nowych zasobów renderowanych.
