@@ -1548,3 +1548,21 @@ Dół: `O mnie → FAQ → checklista → kontakt` (FAQ jasne, ciemny pozostaje 
 ### Definicja done (ta runda)
 - **axe = 0** na `/` (axe-core 4.10 via Playwright, w tym ze stanem z otwartym pytaniem).
 - **A11y = 100 i Performance bez regresji** — zmiana to wyłącznie treść HTML osadzona w istniejących, przetestowanych stylach; zero nowych zasobów renderowanych.
+
+---
+
+## Runda przebudowy `/portfolio` — ludzki ton + jeden cel kontaktu (2026-11-26)
+
+Gałąź `claude/awesome-wozniak-hmoy5e` (restart od `origin/main` po scaleniu #166). Zakres: `portfolio.html`, `assets/css/portfolio.css`, `assets/js/portfolio.js`. Analogiczna do rund na `/` — historia zamiast CV, jeden cel kontaktu, mniej korpo.
+
+1. **Hero.** H1 z „Prowadzę projekty cyfrowe od zakresu do działającego wdrożenia" → **„Każdy z&nbsp;tych projektów zaczął się od czyjegoś problemu"**; podtytuł (słowa właściciela): „Zobacz, co usprawniłem i&nbsp;jaki efekt to dało — może rozpoznasz tu coś, co występuje u&nbsp;Ciebie."
+2. **„Wybrane projekty" — lead** z abstrakcyjnego (poziomy: automatyzacja/strona/produkt) na konkretny: „Za każdym z&nbsp;nich stoi konkretny problem… Zobacz, co z&nbsp;tym zrobiłem i&nbsp;jaki był efekt." Karty i&nbsp;ich liczby bez zmian (dowód).
+3. **„Doświadczenie" — wariant (1):** siatka statystyk (`Branże / Staż / Zrealizowane`) → jedno ludzkie zdanie z&nbsp;liczbami w&nbsp;środku (8&nbsp;lat, 10+&nbsp;automatyzacji, aplikacja, 5&nbsp;stron). Akapit używa istniejącej klasy `.section-subtitle` (kolor z&nbsp;CSS), więc zero nowych stylów.
+4. **CTA końcowe — jeden cel kontaktu.** H2 „Rozpoznajesz u&nbsp;siebie podobny problem?"; przycisk główny **„Napisz, co chcesz uprościć" → `/#contact`** (ten sam formularz co na `/`) zamiast LinkedIn. LinkedIn (szczegóły realizacji), usługi i&nbsp;e-mail zostają drugorzędnie. Zamyka wyciek ruchu na zewnątrz.
+5. **`portfolio.js`.** Fallback nadpisujący `.cta-lead` przy ustawionym `cvUrl` zaktualizowany do nowego tonu (był LinkedIn-owy). `id="cta-linkedin"` zachowany na linku LinkedIn (teraz drugorzędnym) — nie urywa ewentualnego śledzenia.
+6. **Porządki CSS.** Usunięte martwe `.exp-stats-grid` (+ `@media`) i `.adg-label` po zmianie w pkt&nbsp;3.
+
+### Definicja done (ta runda)
+- **axe = 0** na `/portfolio` (axe-core 4.10 via Playwright, lokalny serwer). Przycisk główny CTA prowadzi do `/#contact` (zweryfikowane).
+- **A11y = 100 i Performance bez regresji** — zmiana treści + usunięcie nieużywanych reguł; brak nowych zasobów renderowanych, bez zmian w&nbsp;obrazach.
+- Produkcja po scaleniu — podgląd właściciela po odświeżeniu CDN.

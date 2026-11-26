@@ -70,11 +70,7 @@ body.portfolio-page .hamburger:hover{background:var(--color-dark-light);}
    (tokens.css). Lokalne zmienne --portfolio-text-* oraz nadpisania
    redundantne wobec projects.css/index-styles.css (.eyebrow, .razdwa-summary-cell
    .label, .footer-bottom p) usunięte w rundzie KOLORY. Poniżej pozostają
-   reguły, dla których to jedyne źródło koloru (.adg-label, .section-subtitle). */
-body.portfolio-page .adg-label {
-  color: var(--color-text-accent);
-}
-
+   reguła, dla której to jedyne źródło koloru (.section-subtitle). */
 body.portfolio-page #portfolio-section .section-subtitle,
 body.portfolio-page #experience-section .section-subtitle,
 body.portfolio-page #design-archive .section-subtitle {
@@ -1028,22 +1024,6 @@ body.portfolio-page #design-archive .section-subtitle {
 .experience-section {
   padding: var(--space-20) 0;
   background: var(--color-background);
-}
-
-.exp-stats-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: var(--space-4);
-  margin-top: var(--space-10);
-  margin-left: auto;
-  margin-right: auto;
-  max-width: 860px;
-}
-
-@media (max-width: 640px) {
-  .exp-stats-grid {
-    grid-template-columns: 1fr;
-  }
 }
 
 /* === CTA SECTION === */

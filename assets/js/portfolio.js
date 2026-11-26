@@ -187,7 +187,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const lead = document.querySelector('.cta-lead');
     if (lead) {
-      lead.textContent = 'Pobierz CV albo napisz na LinkedIn. Opowiem, jak wyglądał zakres, harmonogram i decyzje w każdym z nich.';
+      lead.textContent = 'Pobierz CV albo napisz w dwóch zdaniach, co Cię męczy — odpiszę w ciągu 24 godzin z pierwszą oceną i pomysłem na następny krok.';
     }
 
     const buttonsWrap = document.querySelector('.cta-buttons');
