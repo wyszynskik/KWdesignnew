@@ -1175,13 +1175,6 @@ section {
   position: relative;
   z-index: 2;
 }
-.contact-vision {
-  max-width: 620px;
-  margin: 0 auto var(--space-6);
-  font-size: 1.05rem;
-  line-height: 1.65;
-  color: rgba(255, 255, 255, 0.82);
-}
 .contact-title {
   font-family: var(--font-heading);
   margin-bottom: var(--space-4);

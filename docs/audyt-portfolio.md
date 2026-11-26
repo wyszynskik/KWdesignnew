@@ -1514,3 +1514,20 @@ Cel: strona ma brzmieć **ludzko i opowiadać historię**, a czytelnik ma pisać
 - **Lighthouse Accessibility = 100 i Performance bez regresji — z charakteru zmian:** brak nowych zasobów renderowanych, brak zmian w JS i obrazach, ta sama semantyka DOM; dodano wyłącznie treść, animację czysto CSS (z poszanowaniem reduced-motion) i usunięto nieużywane reguły. Kontrasty tekstu na nowej **jasnej** checkliście zweryfikowane tokenami: tytuł `--color-text-primary` 17.85:1, opis `--color-text-subtle` 6.46:1, badge/akcent `--color-text-accent` 5.36:1 (wszystkie ≥ 4.5:1).
 - **CI `checks`** (`sync:check` + `sitemap:check`) zielone na headzie `336d6bd`.
 - Produkcja kwyszynski.pl nieosiągalna z kontenera (proxy 403) — podgląd na żywo po scaleniu i odświeżeniu CDN wykonuje właściciel.
+
+---
+
+## Runda odchudzania dołu `/` — usunięcie FAQ + skrócenie kontaktu (2026-11-26)
+
+Gałąź `claude/awesome-wozniak-hmoy5e` (restart od `origin/main` po scaleniu #164). Zakres: `index.html` + `assets/css/index-styles.css`.
+
+1. **Usunięto sekcję FAQ (`#faq`).** Brak realnych pytań od klientów — generyczne „najczęstsze pytania" brzmiały jak wypełniacz, sprzecznie z ludzkim tonem. Obsługę objekcji (czas, cena) przejmie podstrona Usługi. **Style `.faq-*` (w tym animacja rozwijania) i funkcja `initFAQ()` zostają** na wypadek powrotu z prawdziwymi pytaniami — wycięty wyłącznie HTML sekcji.
+2. **Kontakt — mniej tekstu.** Usunięto akapit „Wyobraź sobie…" (`.contact-vision`); nowy tytuł „Wolisz oddać to komuś, kto zrobi to za Ciebie?"; jeden krótki podtytuł zamiast dwóch bloków; nota pod formularzem skrócona do „Twoje dane nie trafią do żadnego newslettera." (bez powtórki o 24 h). **Pola formularza bez zmian** — decyzja właściciela (telefon i firma zostają).
+3. **Porządki CSS.** Usunięto martwy styl `.contact-vision`.
+
+Dół po zmianie: `O mnie → checklista → kontakt` (3 bloki, nadal 1 ciemny).
+
+### Definicja done (ta runda)
+- **axe = 0** naruszeń na `/` (axe-core 4.10 via Playwright, lokalny serwer).
+- **A11y = 100 i Performance bez regresji — z charakteru zmian:** usunięcie sekcji i skrócenie treści, brak nowych zasobów renderowanych, brak zmian w JS/obrazach.
+- Podstrony `/uslugi` i `/portfolio` do analogicznej przebudowy (ludzki ton, mniej sekcji) w kolejnych, osobnych rundach — ustalone z właścicielem.
